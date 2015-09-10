@@ -1,0 +1,36 @@
+<head>
+  <title>WeQuo</title>
+</head>
+
+<body>
+</body>
+
+<template name="login">
+    login
+    {{> loginButtons}}
+</template>
+
+<template name="profile">
+<img src="{{profile.pictureUrl}}"/>
+<br>
+{{profile.firstName}} {{profile.lastName}} 
+
+</template>
+
+<template name='quiz'>
+    <button>i've taken all questions</button>
+</template>
+
+<template name="invite">
+invite people
+<ul>
+{{#each connection}}
+<li>{{firstName}}</li>
+{{/each}}
+</ul>
+
+</template>
+
+<template name="loading">
+loading
+</template>
