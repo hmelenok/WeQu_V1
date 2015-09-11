@@ -33,7 +33,43 @@ if (Meteor.isClient) {
             Router.go("/invite")
         }
     });
-
+    
+    nQuestion = new ReactiveVar(0);  
+  
+    Template.quiz.helpers({ 
+      nQuestion: nQuestion.get(),
+    
+      people: [
+        {name: "Vladimir", img: "http://cdn.picturecorrect.com/wp-content/uploads/2014/03/vladimir-putin.jpg"},
+        {name: "Ivan", img: "https://pbs.twimg.com/profile_images/2188074564/Screen_Shot_2012-05-03_at_10.35.23_PM.png"},
+        {name: "Ohyoon", img: "https://pbs.twimg.com/profile_images/562180783272517634/fhyzflTJ_400x400.png"},
+      ],
+      
+      questions: [
+        {question: "What do you think about bout?", 
+          answers: [
+            {number: "1", answer: "Dog" },
+            {number: "2", answer: "Cat" },
+            {number: "3", answer: "Rain" },
+            {number: "4", answer: "A lot" }
+          ]
+        },
+        {question: "What do you think?", 
+          answers: [
+            {number: "1", answer: "rrrr" },
+            {number: "3", answer: "Rain" },
+            {number: "4", answer: "A lot" }
+          ]
+        },
+        {question: "Yes or No?", 
+          answers: [
+            {number: "1", answer: "Yes" },
+            {number: "2", answer: "No" },
+          ]
+       },
+      ]
+    });
+  
     Template.registerHelper("case", function(){
         var pair =_.chain(this).pairs().first().value();
 

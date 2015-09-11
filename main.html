@@ -19,20 +19,18 @@
 
 <template name='quiz'>
   <section>
-    <img src=""><br>
-    Name<br>
+    <img src="{{people.[1].img}}" class="avatar"><br>
+    {{people.[1].name}}<br>
     <button>next person</button>
   </section>
   <section>
     <div class="question">
-      What do you think about Ivan?
+      {{questions.[1].question}}
     </div>
     <ul class="answers">
-      <li class="answer">1</li>
-      <li class="answer">2</li>
-      <li class="answer">3</li>
-      <li class="answer">4</li>
-      <li class="answer">5</li>
+      {{#each questions.[1].answers}}
+        <li class="answer" id="{{this.number}}">{{this.answer}}</li>
+      {{/each}}
     </ul>
     <div class="statusBar">
       <button>Next</button>

@@ -84,8 +84,9 @@
                        (setInterval (fn [] (invite-status.set :default)) 1000)))
                    (console.log err result))))
   
-  (defm-event :invite "click button" []
-    (Router.go :/profile)
+  (defm-event :quiz "click .answer" []
+    (console.log :click!)
+    (nQuestion.set 1)
     )
   
   )

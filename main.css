@@ -64,6 +64,12 @@ section {
   
 }
 
+.avatar {
+  height: 120px;
+  clip-path: circle(60px at center);
+  -webkit-clip-path: circle(60px at center);
+}
+
 .answers {
   padding: 0px;
   
@@ -122,11 +128,11 @@ section {
   flex-grow: 1;
   -webkit-flex-grow: 1;
 
-  flex-shrink: 1;
-  -webkit-flex-shrink: 1;
+  flex-shrink: 0;
+  -webkit-flex-shrink: 0;
 
-  flex-basis: auto;
-  -webkit-flex-basis: auto;
+  flex-basis: 40vw;
+  -webkit-flex-basis: 40vw;
 }
 
 li.answer:nth-child(odd) {
