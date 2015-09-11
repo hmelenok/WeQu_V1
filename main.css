@@ -1,1 +1,142 @@
-/* CSS declarations go here */
+html, body {
+  margin: 0; 
+  padding: 0;
+  height: 100%;
+  
+  /* container properties */
+
+  display: flex;
+  display: -webkit-flex;
+
+  flex-direction: column;
+  -webkit-flex-direction: column;
+
+  flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+
+  justify-content: center;
+  -webkit-justify-content: center;
+
+  align-items: stretch;
+  -webkit-align-items: stretch;
+
+
+  /* item properties */
+
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+
+  flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+
+  flex-basis: auto;
+  -webkit-flex-basis: auto;
+}
+
+section {
+  
+  display: flex;
+  display: -webkit-flex;
+
+  flex-direction: column;
+  -webkit-flex-direction: column;
+
+  flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+
+  justify-content: center;
+  -webkit-justify-content: center;
+
+  align-items: center;
+  -webkit-align-items: center;
+
+  
+  /* item properties */
+
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+
+  flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+
+  flex-basis: auto;
+  -webkit-flex-basis: auto;
+  
+}
+
+.answers {
+  padding: 0px;
+  
+  min-height: 20vh;
+  width: 100vw;
+  
+  /* container properties */
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: stretch;
+  -webkit-align-items: stretch;
+
+  /* item properties */
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+  flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+  flex-basis: auto;
+  -webkit-flex-basis: auto;
+}
+
+.answer {
+  margin: 0px;
+  margin-top: -1px;
+  padding: 0px;
+  
+  min-width: 40%;
+  border: 1px solid black;
+    
+  /* container properties */
+
+  display: flex;
+  display: -webkit-flex;
+
+  flex-direction: column;
+  -webkit-flex-direction: column;
+
+  flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+
+  justify-content: center;
+  -webkit-justify-content: center;
+
+  align-items: center;
+  -webkit-align-items: center;
+
+
+  /* item properties */
+
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+
+  flex-shrink: 1;
+  -webkit-flex-shrink: 1;
+
+  flex-basis: auto;
+  -webkit-flex-basis: auto;
+}
+
+li.answer:nth-child(odd) {
+    border: none;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+li.answer:nth-child(even) {
+    border: none;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}

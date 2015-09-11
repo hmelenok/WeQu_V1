@@ -1,5 +1,6 @@
 <head>
   <title>WeQuo</title>
+  <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no">
 </head>
 
 <body>
@@ -11,14 +12,34 @@
 </template>
 
 <template name="profile">
-<img src="{{profile.pictureUrl}}"/>
-<br>
-{{profile.firstName}} {{profile.lastName}} 
-
+  <img src="{{profile.pictureUrl}}"/>
+  <br>
+  {{profile.firstName}} {{profile.lastName}} 
 </template>
 
 <template name='quiz'>
-    <button>i've taken all questions</button>
+  <section>
+    <img src=""><br>
+    Name<br>
+    <button>next person</button>
+  </section>
+  <section>
+    <div class="question">
+      What do you think about Ivan?
+    </div>
+    <ul class="answers">
+      <li class="answer">1</li>
+      <li class="answer">2</li>
+      <li class="answer">3</li>
+      <li class="answer">4</li>
+      <li class="answer">5</li>
+    </ul>
+    <div class="statusBar">
+      <button>Next</button>
+    </div>
+  </section>
+  <button>i've taken all questions</button>
+  {{>menu}}
 </template>
 
 <template name="invite">
@@ -44,6 +65,15 @@ error sending email
 
 <template name="loading">
 loading
+</template>
+
+<template name="menu">
+  <div class="menuBar">
+    <a href="/invite">Vote</a>
+    <a href="/invite">People</a>
+    <a href="/feed">Feed</a>
+    <a href="/Profile">Profile</a>
+  </div>
 </template>
 
 <template name="_case_default">

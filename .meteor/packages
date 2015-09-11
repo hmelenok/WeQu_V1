@@ -11,3 +11,4 @@ iron:router
 accounts-ui
 reactive-var
 meteor-wisp
+fourseven:scss

@@ -1,0 +1,19 @@
+/*.answers {
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+  @include justify-content(center);
+  @include align-items(stretch);
+
+  @include flex-grow(1);
+  @include flex-shrink(1);
+  @include flex-basis(auto); 
+}
+
+.answer {
+  min-width: 40%;
+  
+  @include flex-grow(1);
+  @include flex-shrink(1);
+  @include flex-basis(auto); 
+}*/
