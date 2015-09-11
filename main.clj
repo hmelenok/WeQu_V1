@@ -85,7 +85,6 @@
                    (console.log err result))))
   )
 
-
 (eg
   (defm-server-method :invite [email]
     email)
@@ -108,6 +107,7 @@
        (Meteor.methods (let [h {}] 
                          (set! (get h ~name) (fn ~@body)) 
                          h)))))
+
 
 (defm-server-method :invite [email]
   email)
