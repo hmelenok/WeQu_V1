@@ -71,3 +71,4 @@ var handler = function (compileStep) {
 };
 
 Plugin.registerSourceHandler("wisp", handler);
+Plugin.registerSourceHandler("clj", handler);
