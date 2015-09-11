@@ -1,4 +1,7 @@
-/*.answers {
+
+@import "lib/flexbox.scss";
+
+.answers {
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(wrap);
@@ -16,4 +19,4 @@
   @include flex-grow(1);
   @include flex-shrink(1);
   @include flex-basis(auto); 
-}*/
+}
