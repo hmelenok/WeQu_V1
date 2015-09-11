@@ -9,3 +9,5 @@ insecure
 pauli:accounts-linkedin
 iron:router
 accounts-ui
+reactive-var
+meteor-wisp

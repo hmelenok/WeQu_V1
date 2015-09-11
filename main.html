@@ -22,15 +22,30 @@
 </template>
 
 <template name="invite">
-invite people
-<ul>
-{{#each connection}}
+invite people<br>
+<!--<ul>
+{{#each connections}}
 <li>{{firstName}}</li>
 {{/each}}
-</ul>
+</ul>-->
 
+{{#case inviteStatus='sending'}}
+sending...
+{{/case}}
+{{#case inviteStatus='sent'}}
+sent!
+{{/case}}
+{{#case inviteStatus='error'}}
+error sending email
+{{/case}}
+<input name="email" placeholder="email address"/>
+<button>invite</button>
 </template>
 
 <template name="loading">
 loading
+</template>
+
+<template name="_case_default">
+  {{> UI.contentBlock}}
 </template>
