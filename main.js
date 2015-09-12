@@ -41,39 +41,52 @@ if (Meteor.isClient) {
     
     nQuestion = new ReactiveVar(0);  
   
+    questions = new ReactiveVar([
+      {question: "What do you think about him?", 
+        answers: [
+          {number: "1", answer: "Dictator" },
+          {number: "2", answer: "Tiran" },
+          {number: "3", answer: "Model" },
+          {number: "4", answer: "Very good guy" }
+        ]
+      },
+      {question: "What do you think?", 
+        answers: [
+          {number: "1", answer: "rrrr" },
+          {number: "3", answer: "Rain" },
+          {number: "4", answer: "A lot" }
+        ]
+      },
+      {question: "Yes or No?", 
+        answers: [
+          {number: "1", answer: "Yes" },
+          {number: "2", answer: "No" },
+        ]
+      }
+    ]);
+  
     Template.quiz.helpers({ 
-      nQuestion: nQuestion.get(),
-    
+      currentQuestion: function () {
+        return questions.get()[nQuestion.get()]
+      },
+      
       people: [
         {name: "Vladimir", img: "http://cdn.picturecorrect.com/wp-content/uploads/2014/03/vladimir-putin.jpg"},
         {name: "Ivan", img: "https://pbs.twimg.com/profile_images/2188074564/Screen_Shot_2012-05-03_at_10.35.23_PM.png"},
         {name: "Ohyoon", img: "https://pbs.twimg.com/profile_images/562180783272517634/fhyzflTJ_400x400.png"},
       ],
       
-      questions: [
-        {question: "What do you think about him?", 
-          answers: [
-            {number: "1", answer: "Dictator" },
-            {number: "2", answer: "Tiran" },
-            {number: "3", answer: "Model" },
-            {number: "4", answer: "Very good guy" }
-          ]
-        },
-        {question: "What do you think?", 
-          answers: [
-            {number: "1", answer: "rrrr" },
-            {number: "3", answer: "Rain" },
-            {number: "4", answer: "A lot" }
-          ]
-        },
-        {question: "Yes or No?", 
-          answers: [
-            {number: "1", answer: "Yes" },
-            {number: "2", answer: "No" },
-          ]
-       },
-      ]
     });
+  
+    Template.quiz.events({
+      'click .answer, click .skip': function (event) {
+        if (questions.get()[nQuestion.get() + 1]) {
+          nQuestion.set(nQuestion.get() + 1) 
+        } else {nQuestion.set(0)}
+        console.log("click!");
+        console.log(nQuestion.get());
+      },
+    }); 
   
     Template.registerHelper("case", function(){
         var pair =_.chain(this).pairs().first().value();

@@ -83,12 +83,6 @@
                        (invite-status.set :sent)
                        (setInterval (fn [] (invite-status.set :default)) 1000)))
                    (console.log err result))))
-  
-  (defm-event :quiz "click .answer" []
-    (console.log nQuestion.get)
-    (nQuestion.set 1)
-    )
-  
   )
 
 (eg

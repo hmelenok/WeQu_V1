@@ -29,15 +29,15 @@
   </section>
   <section>
     <div class="question">
-      {{questions.[0].question}}
+      {{currentQuestion.question}}
     </div>
     <ul class="answers">
-      {{#each questions.[0].answers}}
+      {{#each currentQuestion.answers}}
         <li class="answer" id="{{this.number}}">{{this.answer}}</li>
       {{/each}}
     </ul>
     <div class="statusBar">
-      <button>Next</button>
+      <a href="" class="skip">Skip</a>
     </div>
   </section>
   <button>i've taken all questions</button>
