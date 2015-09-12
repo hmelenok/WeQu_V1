@@ -32,6 +32,29 @@ if (Meteor.isClient) {
             return Connections.find({});
         }*/
     });
+  
+    var par1 = 0.7;
+    var par2 = 0.38;
+    var par3 = 0.5;
+    var par4 = 0.54;
+    var par5 = 0.68;
+    var par6 = 0.4;
+  
+    Template.profile.helpers({
+        x1 : function() {return Math.round(150-150*par1)},
+        y1 : function() {return Math.round(150-75*par1)},
+        x2 : function() {return 150},
+        y2 : function() {return Math.round(150-150*par2)},
+        x3 : function() {return Math.round(150+150*par3)},
+        y3 : function() {return Math.round(150-75*par3)},
+        x4 : function() {return Math.round(150+150*par4)},
+        y4 : function() {return Math.round(150+75*par4)},
+        x5 : function() {return 150},
+        y5 : function() {return Math.round(150+150*par5)},
+        x6 : function() {return Math.round(150-150*par6)},
+        y6 : function() {return Math.round(150+75*par6)},
+    });
+
 
     Template.quiz.events({
         "click button" : function(){
@@ -79,7 +102,7 @@ if (Meteor.isClient) {
     });
   
     Template.quiz.events({
-      'click .answer, click .skip': function (event) {
+      'click .answer, touch .answer, click .skip, touch .skip': function (event) {
         if (questions.get()[nQuestion.get() + 1]) {
           nQuestion.set(nQuestion.get() + 1) 
         } else {nQuestion.set(0)}
