@@ -46,12 +46,12 @@ if (Meteor.isClient) {
       ],
       
       questions: [
-        {question: "What do you think about bout?", 
+        {question: "What do you think about him?", 
           answers: [
-            {number: "1", answer: "Dog" },
-            {number: "2", answer: "Cat" },
-            {number: "3", answer: "Rain" },
-            {number: "4", answer: "A lot" }
+            {number: "1", answer: "Dictator" },
+            {number: "2", answer: "Tiran" },
+            {number: "3", answer: "Model" },
+            {number: "4", answer: "Very good guy" }
           ]
         },
         {question: "What do you think?", 

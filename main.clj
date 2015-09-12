@@ -85,7 +85,7 @@
                    (console.log err result))))
   
   (defm-event :quiz "click .answer" []
-    (console.log :click!)
+    (console.log nQuestion.get)
     (nQuestion.set 1)
     )
   

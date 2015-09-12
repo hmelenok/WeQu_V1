@@ -1,22 +1,16 @@
 
 @import "lib/flexbox.scss";
 
-.answers {
+.menuBar {
+  height: 50px;
+  
   @include flexbox;
   @include flex-direction(row);
-  @include flex-wrap(wrap);
-  @include justify-content(center);
-  @include align-items(stretch);
+  @include flex-wrap(nowrap);
+  @include justify-content(space-around);
+  @include align-items(center);
 
-  @include flex-grow(1);
-  @include flex-shrink(1);
-  @include flex-basis(auto); 
-}
-
-.answer {
-  min-width: 40%;
-  
-  @include flex-grow(1);
+  @include flex-grow(0);
   @include flex-shrink(1);
   @include flex-basis(auto); 
 }
