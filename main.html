@@ -12,12 +12,16 @@
 </template>
 
 <template name="profile">
-  <img src="{{profile.pictureUrl}}"/>
-  <br>
-  {{profile.firstName}} {{profile.lastName}} 
+  {{>menu}}
+  <section>
+    <img src="{{profile.pictureUrl}}"/>
+    <br>
+    {{profile.firstName}} {{profile.lastName}}
+  </section>
 </template>
 
 <template name='quiz'>
+  {{>menu}}
   <section>
     <img src="{{people.[0].img}}" class="avatar"><br>
     {{people.[0].name}}<br>
@@ -37,28 +41,48 @@
     </div>
   </section>
   <button>i've taken all questions</button>
-  {{>menu}}
 </template>
 
 <template name="invite">
-invite people<br>
-<!--<ul>
-{{#each connections}}
-<li>{{firstName}}</li>
-{{/each}}
-</ul>-->
+  {{>menu}}
+  <section>
+    invite people<br>
+    <!--<ul>
+    {{#each connections}}
+    <li>{{firstName}}</li>
+    {{/each}}
+    </ul>-->
 
-{{#case inviteStatus='sending'}}
-sending...
-{{/case}}
-{{#case inviteStatus='sent'}}
-sent!
-{{/case}}
-{{#case inviteStatus='error'}}
-error sending email
-{{/case}}
-<input name="email" placeholder="email address"/>
-<button>invite</button>
+    {{#case inviteStatus='sending'}}
+    sending...
+    {{/case}}
+    {{#case inviteStatus='sent'}}
+    sent!
+    {{/case}}
+    {{#case inviteStatus='error'}}
+    error sending email
+    {{/case}}
+    <input name="email" placeholder="email address"/>
+    <button>invite</button>
+  </section>
+</template>
+
+<template name="feed">
+  {{>menu}}
+  <section>
+    <div class="feedElement">
+      Change in your score 12 points.
+    </div>
+    <div class="feedElement">
+      Change in your score 12 points.
+    </div>
+    <div class="feedElement">
+      Change in your score 12 points.
+    </div>
+    <div class="feedElement">
+      Change in your score 12 points.
+    </div>
+  </section>
 </template>
 
 <template name="loading">
@@ -67,10 +91,10 @@ loading
 
 <template name="menu">
   <div class="menuBar">
-    <a href="/invite">Vote</a>
+    <a href="/quiz">Vote</a>
     <a href="/invite">People</a>
     <a href="/feed">Feed</a>
-    <a href="/Profile">Profile</a>
+    <a href="/profile">Profile</a>
   </div>
 </template>
 

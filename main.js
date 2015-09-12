@@ -22,6 +22,11 @@ if (Meteor.isClient) {
         this.render("quiz");
     });
 
+    Router.route('/feed', function(){
+        this.render("feed");
+    });
+
+
     Template.invite.helpers({
         /*connections : function(){
             return Connections.find({});
