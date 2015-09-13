@@ -167,7 +167,7 @@
   (defm-event :admin "click button" []
     (Meteor.call :import)))
 
-(comment defm-server-method :import []
+(defm-server-method :import []
   (def qs (Assets.getText "questions.csv"))
   (Answers.remove {})
   (def lines (qs.split "\r\n"))
