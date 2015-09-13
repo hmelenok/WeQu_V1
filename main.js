@@ -42,19 +42,18 @@ if (Meteor.isClient) {
   
     Template.profile.helpers({
         x1 : function() {return Math.round(150-150*par1)},
-        y1 : function() {return Math.round(150-75*par1)},
+        y1 : function() {return Math.round(150-86.6*par1)},
         x2 : function() {return 150},
         y2 : function() {return Math.round(150-150*par2)},
         x3 : function() {return Math.round(150+150*par3)},
-        y3 : function() {return Math.round(150-75*par3)},
+        y3 : function() {return Math.round(150-86.6*par3)},
         x4 : function() {return Math.round(150+150*par4)},
-        y4 : function() {return Math.round(150+75*par4)},
+        y4 : function() {return Math.round(150+86.6*par4)},
         x5 : function() {return 150},
         y5 : function() {return Math.round(150+150*par5)},
         x6 : function() {return Math.round(150-150*par6)},
-        y6 : function() {return Math.round(150+75*par6)},
+        y6 : function() {return Math.round(150+86.6*par6)},
     });
-
 
     Template.quiz.events({
         "click button" : function(){
