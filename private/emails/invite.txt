@@ -1,0 +1,7 @@
+Hi,
+
+<%= from %> wants you to evaluate his/her soft skills
+<%= link %>
+
+--
+WeQuo team

@@ -11,8 +11,22 @@
     {{> loginButtons}}
 </template>
 
+<template name="menu">
+  <div class="menuBar">
+    <a href="/quiz">Vote</a>
+    <a href="/invite">People</a>
+    <a href="/feed">Feed</a>
+    <a href="/profile">Profile</a>
+    <a href="/admin">Admin</a>
+  </div>
+</template>
+
+<template name="ApplicationLayout">
+{{> menu}}
+{{> yield}}
+</template>
+
 <template name="profile">
-  {{>menu}}
   <section>
     <img src="{{profile.pictureUrl}}"/>
     <br>
@@ -29,30 +43,40 @@
 </template>
 
 <template name='quiz'>
-  {{>menu}}
   <section>
-    <img src="{{people.[0].img}}" class="avatar"><br>
-    {{people.[0].name}}<br>
-    <button>next person</button>
+    <img src="{{person.pictureUrl}}" class="avatar"><br>
+    {{person.firstName}} {{person.lastName}}<br>
+    <!--<button>next person</button>-->
   </section>
   <section>
     <div class="question">
-      {{currentQuestion.question}}
+      {{question}}
     </div>
     <ul class="answers">
-      {{#each currentQuestion.answers}}
-        <li class="answer" id="{{this.number}}">{{this.answer}}</li>
+      {{#each answers}}
+        <li class="answer" id="{{_id}}">{{text}}</li>
       {{/each}}
     </ul>
     <div class="statusBar">
       <a href="" class="skip">Skip</a>
     </div>
   </section>
-  <button>i've taken all questions</button>
+</template>
+
+<template name='quiz-finished'>
+You've accomplished evaluation
+<button> invite friends </button>
+</template>
+
+<template name="evaluate">
+Evaluate me
+</template>
+
+<template name="admin">
+<button> import answers </button>
 </template>
 
 <template name="invite">
-  {{>menu}}
   <section>
     invite people<br>
     <!--<ul>
@@ -76,7 +100,6 @@
 </template>
 
 <template name="feed">
-  {{>menu}}
   <section>
     <div class="feedElement">
       Change in your score 12 points.
@@ -97,14 +120,6 @@
 loading
 </template>
 
-<template name="menu">
-  <div class="menuBar">
-    <a href="/quiz">Vote</a>
-    <a href="/invite">People</a>
-    <a href="/feed">Feed</a>
-    <a href="/profile">Profile</a>
-  </div>
-</template>
 
 <template name="_case_default">
   {{> UI.contentBlock}}

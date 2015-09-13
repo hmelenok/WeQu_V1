@@ -1,38 +1,5 @@
 if (Meteor.isClient) {
 
-    Router.onBeforeAction(function () {
-        if (!Meteor.userId()) {
-            this.render('login');
-        } else {
-            this.next();
-        }
-    });
-
-    Router.route('/', function(){
-        this.render("quiz");
-    });
-
-    Router.route('/profile', function(){
-        this.render("profile", {data : function(){
-            return Meteor.user();
-        }});
-    });
-
-    Router.route('/quiz', function(){
-        this.render("quiz");
-    });
-
-    Router.route('/feed', function(){
-        this.render("feed");
-    });
-
-
-    Template.invite.helpers({
-        /*connections : function(){
-            return Connections.find({});
-        }*/
-    });
-  
     var par1 = 0.7;
     var par2 = 0.38;
     var par3 = 0.5;
@@ -55,13 +22,7 @@ if (Meteor.isClient) {
         y6 : function() {return Math.round(150+86.6*par6)},
     });
 
-    Template.quiz.events({
-        "click button" : function(){
-            Router.go("/invite")
-        }
-    });
-    
-    nQuestion = new ReactiveVar(0);  
+    /*nQuestion = new ReactiveVar(0);  
   
     questions = new ReactiveVar([
       {question: "What do you think about him?", 
@@ -108,7 +69,7 @@ if (Meteor.isClient) {
         console.log("click!");
         console.log(nQuestion.get());
       },
-    }); 
+    }); */
   
     Template.registerHelper("case", function(){
         var pair =_.chain(this).pairs().first().value();
