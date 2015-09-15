@@ -21,12 +21,21 @@
   </div>
 </template>
 
+<template name="menuProfile">
+  <div class="menuBar">
+    <a href="/profile">Overview</a>
+    <a href="/profile/skills">Skills</a>
+    <a href="/profile/writtenFeedback">Wr_FB</a>
+  </div>
+</template>
+
 <template name="ApplicationLayout">
 {{> menu}}
 {{> yield}}
 </template>
 
 <template name="profile">
+  {{>menuProfile}}
   <section>
     <img src="{{profile.pictureUrl}}"/>
     <br>
@@ -38,6 +47,176 @@
         <polygon points="{{x1}},{{y1}} {{x2}},{{y2}} {{x3}},{{y3}} {{x4}},{{y4}} {{x5}},{{y5}} {{x6}},{{y6}}"
                  fill=lime fill-opacity="0.25" stroke="purple" stroke-width="1" />
       </svg>
+    </div>
+  </section>
+</template>
+
+<template name="profileSkills">
+  {{>menuProfile}}
+  <section class="feed">
+    <h3>Value</h3>
+    <div class="skillElement">
+      <div class="title">Business focused</div>
+      <div class="bar" style="width:120px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Problem analysis</div>
+      <div class="bar" style="width:100px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Self learner</div>
+      <div class="bar" style="width:200px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Assertive	Strategic</div>
+      <div class="bar" style="width:140px"></div>
+    </div>
+      <div class="skillElement">
+      <div class="title">Listening</div>
+      <div class="bar" style="width:50px"></div>
+    </div>
+    
+    <h3>Decision making</h3>
+    <div class="skillElement">
+      <div class="title">People focused</div>
+      <div class="bar" style="width:120px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Creative</div>
+      <div class="bar" style="width:100px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Efficient</div>
+      <div class="bar" style="width:200px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Positive</div>
+      <div class="bar" style="width:140px"></div>
+    </div>
+      <div class="skillElement">
+      <div class="title">Delegation</div>
+      <div class="bar" style="width:50px"></div>
+    </div>
+    
+    <h3>Self management</h3>
+    <div class="skillElement">
+      <div class="title">Presentation</div>
+      <div class="bar" style="width:120px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Integrity</div>
+      <div class="bar" style="width:100px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Conceptual thinking</div>
+      <div class="bar" style="width:200px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Initiative</div>
+      <div class="bar" style="width:140px"></div>
+    </div>
+      <div class="skillElement">
+      <div class="title">Accepts criticism</div>
+      <div class="bar" style="width:50px"></div>
+    </div>
+    
+    <h3>Team work</h3>
+    <div class="skillElement">
+      <div class="title">Coaching</div>
+      <div class="bar" style="width:120px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Storytelling</div>
+      <div class="bar" style="width:100px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Trustful</div>
+      <div class="bar" style="width:200px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Manage conflict</div>
+      <div class="bar" style="width:140px"></div>
+    </div>
+      <div class="skillElement">
+      <div class="title">Resilient</div>
+      <div class="bar" style="width:50px"></div>
+    </div>
+    
+    <h3>Leadership</h3>
+    <div class="skillElement">
+      <div class="title">Respectful</div>
+      <div class="bar" style="width:120px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Commitment</div>
+      <div class="bar" style="width:100px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Written communication</div>
+      <div class="bar" style="width:200px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Authenticity</div>
+      <div class="bar" style="width:140px"></div>
+    </div>
+      <div class="skillElement">
+      <div class="title">Resilient</div>
+      <div class="bar" style="width:50px"></div>
+    </div>
+    
+    <h3>Communication</h3>
+    <div class="skillElement">
+      <div class="title">Negotiation	</div>
+      <div class="bar" style="width:120px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Persistence</div>
+      <div class="bar" style="width:100px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Facilitate</div>
+      <div class="bar" style="width:200px"></div>
+    </div>
+    <div class="skillElement">
+      <div class="title">Empathy</div>
+      <div class="bar" style="width:140px"></div>
+    </div>
+      <div class="skillElement">
+      <div class="title">Sociability</div>
+      <div class="bar" style="width:50px"></div>
+    </div>
+  </section>
+</template>
+
+<template name="profileWrittenFeedback">
+  {{>menuProfile}}
+  <section class="feed">
+    <div class="feedElement">
+      <div class="who">
+        <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
+      </div>
+      <div class="what">
+        Ivan Pashchenko wrote<br>
+        Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
+      </div>
+    </div>
+    <div class="feedElement">
+      <div class="who">
+        <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
+      </div>
+      <div class="what">
+        Ivan Pashchenko wrote<br>
+        Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
+      </div>
+    </div>
+    <div class="feedElement">
+      <div class="who">
+        <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
+      </div>
+      <div class="what">
+        Ivan Pashchenko wrote<br>
+        Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
+      </div>
     </div>
   </section>
 </template>
@@ -78,6 +257,14 @@ Evaluate me
 
 <template name="invite">
   <section>
+    <div>
+      Ilya Ovdin | invited
+    </div>
+    <div>
+      Ivan Pashchenko | accepted invite
+    </div>
+  </section>
+  <section>
     invite people<br>
     <!--<ul>
     {{#each connections}}
@@ -100,18 +287,31 @@ Evaluate me
 </template>
 
 <template name="feed">
-  <section>
+  <section class="feed">
     <div class="feedElement">
-      Change in your score 12 points.
+      <div class="who">
+        <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
+      </div>
+      <div class="what">
+        Ivan Pashchenko voted Empathy.
+      </div>
     </div>
     <div class="feedElement">
-      Change in your score 12 points.
-    </div>
+      <div class="who">
+        <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
+      </div>
+      <div class="what">
+        Ivan Pashchenko wrote:<br>
+        Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
+      </div>
+    </div>    
     <div class="feedElement">
-      Change in your score 12 points.
-    </div>
-    <div class="feedElement">
-      Change in your score 12 points.
+      <div class="who">
+        <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
+      </div>
+      <div class="what">
+        Ivan Pashchenko voted Empathy      
+      </div>
     </div>
   </section>
 </template>

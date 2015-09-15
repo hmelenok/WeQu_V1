@@ -63,6 +63,12 @@
 (route "/profile"
        (this.render :profile { :data (fn [] (Meteor.user))}))
 
+(route "/profile/skills"
+       (this.render :profileSkills { :data (fn [] (Meteor.user))}))
+
+(route "/profile/writtenFeedback"
+       (this.render :profileWrittenFeedback { :data (fn [] (Meteor.user))}))
+
 (comment
   (defm-event :invite "click button" [event template]
     (conosle.log "hello world"))

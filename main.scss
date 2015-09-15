@@ -1,8 +1,25 @@
 
 @import "lib/flexbox.scss";
 
+@mixin clip-path($clip) {
+  -webkit-clip-path: $clip;
+  -moz-clip-path: $clip;
+  -ms-clip-path: $clip;
+  clip-path: $clip;
+}
+
+.avatar {
+  height: 120px;
+  @include clip-path(circle(50% at center));
+}
+
+.avatarSmall {
+  @extend .avatar;
+  height: 40px;
+}  
+
 .menuBar {
-  height: 50px;
+  min-height: 50px;
   border: 1px solid grey;
   
   @include flexbox;
@@ -14,4 +31,88 @@
   @include flex-grow(0);
   @include flex-shrink(1);
   @include flex-basis(auto); 
+}
+
+section {
+  padding: 20px;
+  
+  @include flex-grow(1);
+  @include flex-shrink(1);
+  @include flex-basis(auto); 
+  
+  @include flexbox;
+  @include flex-direction(column);
+  @include flex-wrap(nowrap);
+  @include justify-content(center);
+  @include align-items(center);
+}
+
+.feed {
+  @extend sextion;
+  
+  overflow-y: auto;
+
+  @include justify-content(flex-start);
+
+  .feedElement {
+    width: 100%;
+    padding: 10px 0;
+
+    @include flexbox;
+    @include flex-direction(row);
+    @include flex-wrap(nowrap);
+    @include justify-content(flex-start);
+    @include align-items(stretch);
+
+    > div.who {
+      //border: 1px solid red;
+
+      @include flex-grow(0);
+      @include flex-shrink(1);
+      @include flex-basis(auto);
+
+      @include flexbox;
+      @include flex-direction(row);
+      @include flex-wrap(nowrap);
+      @include justify-content(flex-start);
+      @include align-items(flex-start);
+    }
+    > div.what {
+      //border: 1px solid green;
+      padding-left: 10px;
+
+      @include flex-grow(1);
+      @include flex-shrink(1);
+      @include flex-basis(auto);
+
+      @include flexbox;
+      @include flex-direction(row);
+      @include flex-wrap(nowrap);
+      @include justify-content(flex-start);
+      @include align-items(center);
+    }
+  }
+}
+
+.skillElement {
+  width: 100%;
+  padding: 5px 0;
+  
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(nowrap);
+  @include justify-content(flex-start);
+  @include align-items(center);
+ 
+  > div {
+    //border: 1px solid red;
+  }
+  .title {
+    width: 125px;
+  }
+  .bar {
+    margin-left: 10px;
+    height: 10px;
+    background-color: aqua;
+  }
 }
