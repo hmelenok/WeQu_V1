@@ -22,6 +22,64 @@ if (Meteor.isClient) {
         y6 : function() {return Math.round(150+86.6*par6)},
     });
 
+    Template.profileSkills.helpers({  
+      skills: [
+        { category: 'Value',
+          skillSet: [
+            {skill: 'Business focused', value: 20},
+            {skill: 'People focused', value: 180},
+            {skill: 'Integrity', value: 10},
+            {skill: 'Trustful', value: 150},
+            {skill: 'Authenticity', value: 80}
+          ]
+        },
+        { category: 'Desicion Making',
+          skillSet: [
+            {skill: 'Problem analysis', value: 50},
+            {skill: 'Creative', value: 120},
+            {skill: 'Conceptual thinking', value: 50},
+            {skill: 'Manage conflict', value: 12},
+            {skill: 'Negotiation', value: 75}
+          ]
+        },
+        { category: 'Self management',
+          skillSet: [
+            {skill: 'Self learner', value: 150},
+            {skill: 'Efficient' , value: 120},
+            {skill: 'Initiative', value: 50},
+            {skill: 'Resilient', value: 120},
+            {skill: 'Persistence', value: 190}
+          ]
+        },
+        { category: 'Team work',
+          skillSet: [
+            {skill: 'Assertive', value: 6},
+            {skill: 'Positive', value: 80},
+            {skill: 'Accepts criticism', value: 20},
+            {skill: 'Respectful', value: 180},
+            {skill: 'Facilitate', value: 12 }
+          ]
+        },
+        { category: 'Leadership' ,
+          skillSet: [
+            {skill: 'Strategic', value: 180},
+            {skill: 'Delegation', value: 35},
+            {skill: 'Coaching', value: 12},
+            {skill: 'Commitment', value: 120},
+            {skill: 'Empathy', value: 190}
+          ]
+        },
+        { category: 'Communication ' ,
+          skillSet: [
+            {skill: 'Listening' , value: 12},
+            {skill: 'Presentation', value: 134},
+            {skill: 'Storytelling', value: 180},
+            {skill: 'Written communication', value: 30},
+            {skill: 'Sociability', value: 60}
+          ]
+        }
+      ]
+    });
     /*nQuestion = new ReactiveVar(0);  
   
     questions = new ReactiveVar([
