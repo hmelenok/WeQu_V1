@@ -235,7 +235,7 @@
     (set! this.answers (_.rest this.answers 2))
     result)
 
-  (defm-event :quiz "click .answer" [event]
+  (defm-event :quiz "click .answer, touchend .answer" [event]
     (Meteor.call :answer (event.target.getAttribute "id") (Meteor.userId)
                  (fn [err result]
                    ;TODO show error

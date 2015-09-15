@@ -7,8 +7,10 @@
 </body>
 
 <template name="login">
+  <section>
     login
     {{> loginButtons}}
+  </section>
 </template>
 
 <template name="menu">
@@ -75,7 +77,7 @@
 </template>
 
 <template name="profileWrittenFeedback">
-  {{>menuProfile}}
+  {{> menuProfile}}
   <section class="feed">
     <div class="feedElement">
       <div class="who">
@@ -114,7 +116,7 @@
     <!--<button>next person</button>-->
   </section>
   <section>
-    {{#if question.writtenFeedback}}
+    {{#if canWrittenFeedback}}
       <div class="question">
         Why do you think so?
       </div>
@@ -130,14 +132,17 @@
       </ul>
     {{/if}}
     <div class="statusBar">
-      <a href="" class="skip">Skip</a>
+      <div>Answered {{answered}} out of 30</div>
+      <div><a href="" class="skip">Skip</a></div>
     </div>
   </section>
 </template>
 
 <template name='quiz-finished'>
-You've accomplished evaluation
-<button> invite friends </button>
+  <section>
+    You've accomplished evaluation
+    <button> invite friends </button>
+  </section>
 </template>
 
 <template name="evaluate">
@@ -145,7 +150,9 @@ Evaluate me
 </template>
 
 <template name="admin">
-<button> import answers </button>
+  <section>
+    <button> import answers </button>
+  </section>
 </template>
 
 <template name="invite">
