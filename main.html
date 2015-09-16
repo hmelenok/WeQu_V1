@@ -1,5 +1,5 @@
 <head>
-  <title>WeQuo</title>
+  <title>WeQu</title>
   <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no">
 </head>
 
@@ -25,12 +25,16 @@
   <div class="menuBar">
     <a href="/profile">Overview</a>
     <a href="/profile/skills">Skills</a>
-    <a href="/profile/writtenFeedback">Wr_FB</a>
+    <a href="/profile/written-feedback">Wr_FB</a>
   </div>
 </template>
 
 <template name="ApplicationLayout">
 {{> menu}}
+{{> yield}}
+</template>
+
+<template name="ScriptLayout">
 {{> yield}}
 </template>
 
@@ -48,6 +52,9 @@
                  fill=lime fill-opacity="0.25" stroke="purple" stroke-width="1" />
       </svg>
     </div>
+    {{#if inScript}}
+    <button id="finish"> finish </button>
+    {{/if}}
   </section>
 </template>
 
@@ -114,24 +121,28 @@
     <!--<button>next person</button>-->
   </section>
   <section>
-    {{#if question.writtenFeedback}}
+    {{#if writtenFeedback}}
       <div class="question">
         Why do you think so?
       </div>
       <textarea rows="3" style="width:100%">Wrote your feedback here</textarea>
+
     {{else}}
       <div class="question">
-        {{question}}
+        {{question.text}}
       </div>
       <ul class="answers">
-        {{#each answers}}
+        {{#each question.answers}}
           <li class="answer" id="{{_id}}">{{text}}</li>
         {{/each}}
       </ul>
     {{/if}}
+    {{#if writtenFeedback}}
     <div class="statusBar">
       <a href="" class="skip">Skip</a>
+      <a href="" class="writeAnswer">Answer</a>
     </div>
+    {{/if}}
   </section>
 </template>
 
@@ -145,7 +156,8 @@ Evaluate me
 </template>
 
 <template name="admin">
-<button> import answers </button>
+<button id="import"> import answers </button>
+<button id="reset"> reset script </button>
 </template>
 
 <template name="invite">
@@ -210,7 +222,13 @@ Evaluate me
 </template>
 
 <template name="loading">
+<section>
 loading
+</section>
+</template>
+
+<template name="scriptLoginInit">
+{{>loading}}
 </template>
 
 

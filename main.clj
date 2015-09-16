@@ -1,7 +1,3 @@
-
-;(Router.route "/test" (fn [] (this.render :loading)))
-
-
 (defmacro comment [& operations]
   nil)
 
@@ -43,7 +39,7 @@
 
 (defmacro route [path & body]
   `(Router.route ~path
-                (fn [] ~@body)))
+                (fn [] ~@body) {:name ~path}))
 
 
 (Router.configure { layoutTemplate :ApplicationLayout})
@@ -53,6 +49,22 @@
     (if (Meteor.userId)
       (this.next)
       (this.render :login))))
+
+(Router.on-before-action 
+  (fn []
+    (if (Meteor.user)
+      (do
+        (def profile (.-profile (Meteor.user)))
+        (if (not profile.script)
+          (set! profile.script [:login :init]))
+
+        (if (== (aget profile.script 0) :login)
+          (Router.go "/script-login"))
+        ))
+    (this.next)
+    ) { :except ["/script-login" "/admin"]})
+
+;TODO why except does not work?
 
 (route "/"
        (Router.go "/quiz"))
@@ -66,7 +78,7 @@
 (route "/profile/skills"
        (this.render :profileSkills { :data (fn [] (Meteor.user))}))
 
-(route "/profile/writtenFeedback"
+(route "/profile/written-feedback"
        (this.render :profileWrittenFeedback { :data (fn [] (Meteor.user))}))
 
 (comment
@@ -82,15 +94,15 @@
   (Template.invite.helpers { "test" (fn [] )}))
 
 (defmacro defm-event [template event & body]
-  `(.events (get Template ~template) 
+  `(.events (aget Template ~template) 
             (let [h {}] 
-              (set! (get h ~event) (fn ~@body)) 
+              (set! (aget h ~event) (fn ~@body)) 
               h)))
 
 (defmacro defm-helper [template name & body]
-  `(.helpers (get Template ~template) 
+  `(.helpers (aget Template ~template) 
             (let [h {}] 
-              (set! (get h ~name) (fn ~@body)) 
+              (set! (aget h ~name) (fn ~@body)) 
               h)))
 (on-client
   (route "/invite"
@@ -135,7 +147,7 @@
   `(do
      (on-server
        (Meteor.methods (let [h {}] 
-                         (set! (get h ~name) (fn ~@body)) 
+                         (set! (aget h ~name) (fn ~@body)) 
                          h)))))
 
 (def Invitation (new Mongo.Collection "invitation"))
@@ -170,21 +182,26 @@
   (route "/admin"
          (this.render "admin"))
 
-  (defm-event :admin "click button" []
-    (Meteor.call :import)))
+  (defm-event :admin "click #import" []
+    (Meteor.call :import))
+
+  (defm-event :admin "click #reset" []
+    (set-script [:login :init])))
+
 
 (defm-server-method :import []
   (def qs (Assets.getText "questions.csv"))
   (Answers.remove {})
+  (Feedback.remove {})
   (def lines (qs.split "\r\n"))
   (loop [i 0]
     (if (< i lines.length)
       (do
-        (def l (.split (get lines i) ","))
+        (def l (.split (aget lines i) ","))
         (def q { :_id (String i)
-                :category (get l 0) 
-                :skill (get l 1) 
-                :text (get l 2)
+                :category (aget l 0) 
+                :skill (aget l 1) 
+                :text (aget l 2)
                 })
         (Answers.insert q)
         (recur (+ i 1))))))
@@ -206,8 +223,6 @@
            (Answers.find {}))
 
 (on-client
-  (def quizzy (_.template "What is more true about <%= name %>?"))
-
   (route "/quiz"
          (this.wait (Meteor.subscribe :answers))
          (if (this.ready)
@@ -221,37 +236,263 @@
   (defm-event :quiz-finished "click button" []
     (Router.go "/invite"))
 
+  ;TODO
   (defm-helper :quiz :person []
     (.-profile (Meteor.user)))
 
+  (def questionDep (new Tracker.Dependency))
+
+  ;question.answer = false // skip
+  ;question.answer = 2
+  ;question.answer = undefined
+  (defn current-question [questions]
+    (questionDep.depend)
+    (_.find questions 
+            (fn [question]
+              (or (not (_.has question :answer)) (not (_.has question :written))))))
+
+  (defm-helper :quiz :writtenFeedback []
+    (def question (current-question this.feedback.qset))
+    (and (not (== this.feedback.to this.feedback.from)) question (_.has question :answer) (not (_.has question :written))))
+
+  (defm-helper :quiz :self []
+    (== this.feedback.from this.feedback.to))
+
   (defm-helper :quiz :question []
-    (def profile (.-profile (Meteor.user)))
-    (quizzy {:name (+ profile.first-name " " profile.last-name)}))
+    (current-question this.feedback.qset))
 
-  (def answerDep (new Tracker.Dependency))
-  (defm-helper :quiz :answers []
-    (answerDep.depend)
-    (def result (_.first this.answers 2))
-    (set! this.answers (_.rest this.answers 2))
-    result)
+  (defm-event :quiz "click .answer, touch .answer, click .skip, touch .skip, click .writeAnswer, touch .writeAnswer" [event template]
+    (def feedback template.data.feedback)
+    (def question (current-question feedback.qset))
 
-  (defm-event :quiz "click .answer" [event]
-    (Meteor.call :answer (event.target.getAttribute "id") (Meteor.userId)
+    (def button-type (event.target.get-attribute :class))
+
+    (if (== button-type :answer)
+      (do
+        (set! question.answer (event.target.get-attribute :id))
+        (if (== feedback.to feedback.from)
+          (set! question.written false))))
+
+    (if (== button-type :skip)
+      (if (_.has question :answer)
+        (set! question.written false)
+        (set! question.answer false)))
+
+
+    (if (== button-type :writeAnswer)
+      (do
+        (set! question.written (.val (template.$ "textarea")))))
+
+    (Meteor.call :feedback feedback._id feedback.qset
                  (fn [err result]
-                   ;TODO show error
-                   (set! this.answered (+ 1 (or this.answered 0)))
-                   (if (> this.answered 5)
-                     (Router.go "/quiz-finished")
-                     (answerDep.changed))))
-    )
-
-  (defm-event :quiz "click .skip" []
-    (answerDep.changed))
-  )
+                   (print :feedback err result)
+                   (if (current-question feedback.qset)
+                     (questionDep.changed)
+                     (if (in-script)
+                       (Meteor.call :feedback-result feedback._id 
+                                    (fn [err result]
+                                      (print :feedback-result err result)
+                                      (set-script [:login :profile])))))))))
 
 (def Feedback (new Mongo.Collection "feedback"))
 
-(defm-server-method :answer [id person]
-  (def answer (Answers.findOne id))
-  (Feedback.insert {:answer id :category answer.category :skill answer.skill :person person :from (Meteor.userId)})
-  0)
+(defm-server-method :feedback [id qset]
+  (check (Meteor.user-id) String)
+  (Feedback.update {:from (Meteor.user-id) :_id id} { :$set { :qset qset }}))
+
+(comment on-client 
+  (Meteor.startup (fn [] (Meteor.call :feedback-result :kcMBQRcEoExefwLpq))))
+
+(defm-server-method :feedback-result [id]
+  (check (Meteor.user-id) String)
+  (def feedback (Feedback.find-one {:from (Meteor.user-id) :_id id}))
+  (def score (_.clone initial-score)) 
+  (_.each feedback.qset 
+          (fn [question]
+            (def answer (_.find question.answers (fn [answer] (== question.answer answer._id))))
+            (print :answer answer)
+            (inc (get score.categories answer.category))
+            (inc (get (get score answer.category) answer.skill))
+            ;TODO put written feedback into
+            ))
+  (print :feedback-result score)
+  (Feedback.update {:from (Meteor.user-id) :_id id} {:$set {:score score}})
+  )
+
+(defmacro ->
+  [& operations]
+  (reduce
+    (fn [form operation]
+      (cons (first operation)
+            (cons form (rest operation))))
+    (first operations)
+    (rest operations)))
+
+
+(def framework 
+  {
+   :value [ :business_focused :people_focused :intergity :trustful :authenticity ]
+   :problem_solving  [ :problem_analysis :creative :conceptual_thinking :manage_conflict :negotiation ]
+   :self_mgmt [:self_learning :efficient :initiative :stress_tolerance :persistence ]
+   :team_work [:assertive :positive :accept_critics :respectful :facilitation ]
+   :leadership [ :strategic :delegation :coaching :committed :empathy ]
+   :communication [ :listening :presentation :story_telling :written_communication :sociability ]
+   })
+
+(defmacro inc [sym]
+  `(set! ~sym (+ 1 ~sym)))
+
+(defn gen-question-set [name answers]
+  (def quizzy (_.template "What is more true about <%= name %>?"))
+  (def question-text (quizzy {:name name}))
+  ;TODO
+  (def answers (_.shuffle answers))
+  (def question-set [])
+  (loop []
+    (if (and (> answers.length 2) (< question-set.length 30))
+      (do
+        (question-set.push {:text question-text :answers [(answers.pop) (answers.pop)]})
+        (recur))))
+  question-set)
+
+(defm-server-method :gen-question-set [userId]
+  (check (Meteor.userId) String)
+  (def profile (.-profile (Meteor.user)))
+  (def name 
+    (if (== userId (Meteor.userId))
+      "you"
+      (+ profile.firstName " " profile.lastName)))
+  (set! qset (gen-question-set name (.fetch (Answers.find {}))))
+  (Feedback.upsert {:from (Meteor.userId) :to userId} {:from (Meteor.userId) :to userId :qset qset :score initial-score })
+  qset)
+
+(def initial-score 
+  {
+   :categories { :value 0 :problem_solving 0 :self_mgmt 0 :team_work 0 :leadership 0 :communication 0 }
+   :value { :business_focused 0 :people_focused 0 :intergity 0 :trustful 0 :authenticity 0 }
+   :problem_solving  { :problem_analysis 0 :creative 0 :conceptual_thinking 0  :manage_conflict 0 :negotiation 0 }
+   :self_mgmt { :self_learning 0 :efficient 0 :initiative 0 :stress_tolerance 0 :persistence 0 }
+   :team_work { :assertive 0 :positive 0 :accept_critics 0 :respectful 0 :facilitation 0 }
+   :leadership { :strategic 0 :delegation 0 :coaching 0 :committed 0 :empathy 0 }
+   :communication { :listening 0 :presentation 0 :story_telling 0 :written_communication 0 :sociability 0 }
+   })
+
+(defn route-star-data []
+
+  (def score 
+    (->
+      (_.chain (.fetch (Feedback.find {})))
+      (.reduce 
+        (fn [score feedback]
+          (inc (aget score.categories feedback.category))
+          (inc (aget (get score feedback.category) feedback.skill))
+          score) initial-score)
+      (.pairs)
+      (.map (fn [pair]
+              (def values (aget pair 1))
+              (def maximum (_.reduce (_.values values)
+                                     (fn [maximum val] (Math.max  maximum val)) 3))
+              (def result 
+                (-> 
+                  (_.chain values)
+                  (.pairs)
+                  (.map (fn [p]
+                          (set! (aget p 1) (/ (get p 1) maximum))
+                          p
+                          ))
+                  (.object)
+                  (.value)))
+              
+              (set! (aget pair 1) result)
+              pair
+              ))
+      (.object)
+      (.value)))
+  (this.render :star { :data { :score score}}))
+
+(publish :feedback [to from]
+         (def query {})
+         (if to
+           (set! query.to to))
+         (if from
+           (set! query.from from))
+         (Feedback.find query))
+
+
+
+
+(comment
+  [:invite :quiz]
+  [:invite  ]
+  [:login :init]
+  [:login :quiz 0]
+  [:login :quiz 2]
+  [:login :profile]
+  [:login :invite]
+  [:login :finished]
+   )
+
+(on-client
+  (route "/script-login"
+         (this.layout "ScriptLayout")
+         (if (Meteor.user)
+           (script-login-route.apply this)
+           (this.render :loading)))
+
+  (Template.script-login-init.onCreated 
+    (fn []
+      (Meteor.call :gen-question-set (Meteor.userId) 
+                   (fn [err result]
+                     (print :gen-question-set err result)
+                     (set-script [ :login :quiz ])
+                     )))))
+
+(defn set-script [value]
+  (Meteor.users.update (Meteor.userId) { :$set { "profile.script" value}}))
+
+
+(defn in-script []
+  (> (.-length (get-script)) 0))
+
+(on-client
+  (Template.registerHelper :inScript (fn [] (in-script))))
+
+(defn get-script []
+  (get (get (Meteor.user) :profile) :script))
+
+(on-client
+  (defm-event :profile "click #finish" []
+    (set-script [])
+    (print "finish clicked")
+    (Router.go "/profile")))
+
+(defn script-login-route []
+  (def script (.-script (.-profile (Meteor.user))))
+
+  (def phase (or (get script 1) :init))
+
+  (if (== phase :init)
+    (this.render :scriptLoginInit))
+
+  (if (== phase :profile) 
+    (this.render :profile))
+
+  (def self this)
+  (if (== phase :quiz)
+    (do
+      (Meteor.subscribe :feedback (Meteor.user-id) (Meteor.user-id))
+      (if (self.ready)
+        (if (Feedback.find-one {:from (Meteor.user-id) :to (Meteor.user-id)})
+          (self.render :quiz 
+                       { :data 
+                        { :feedback (Feedback.find-one {:from (Meteor.user-id) :to (Meteor.user-id)})
+                         :personId (Meteor.userId)
+                         }})
+          (self.render :loading))
+        (self.render :loading)
+        )))
+
+  (if (== phase :invite)
+    (this.render :invite))
+
+  )
