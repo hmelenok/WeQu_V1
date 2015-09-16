@@ -7,8 +7,10 @@
 </body>
 
 <template name="login">
+  <section>
     login
     {{> loginButtons}}
+  </section>
 </template>
 
 <template name="menu">
@@ -82,7 +84,7 @@
 </template>
 
 <template name="profileWrittenFeedback">
-  {{>menuProfile}}
+  {{> menuProfile}}
   <section class="feed">
     <div class="feedElement">
       <div class="who">
@@ -141,14 +143,18 @@
     <div class="statusBar">
       <a href="" class="skip">Skip</a>
       <a href="" class="writeAnswer">Answer</a>
+      <!--TODO: <div>Answered {{answered}} out of 30</div>-->
+      <div><a href="" class="skip">Skip</a></div>
     </div>
     {{/if}}
   </section>
 </template>
 
 <template name='quiz-finished'>
-You've accomplished evaluation
-<button> invite friends </button>
+  <section>
+    You've accomplished evaluation
+    <button> invite friends </button>
+  </section>
 </template>
 
 <template name="evaluate">
@@ -156,8 +162,14 @@ Evaluate me
 </template>
 
 <template name="admin">
+<<<<<<< HEAD
 <button id="import"> import answers </button>
 <button id="reset"> reset script </button>
+=======
+  <section>
+    <button> import answers </button>
+  </section>
+>>>>>>> origin/master
 </template>
 
 <template name="invite">

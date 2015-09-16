@@ -1,5 +1,5 @@
 if (Meteor.isClient) {
-
+  
     var par1 = 0.7;
     var par2 = 0.38;
     var par3 = 0.5;
@@ -8,18 +8,22 @@ if (Meteor.isClient) {
     var par6 = 0.4;
   
     Template.profile.helpers({
-        x1 : function() {return Math.round(150-150*par1)},
-        y1 : function() {return Math.round(150-86.6*par1)},
-        x2 : function() {return 150},
-        y2 : function() {return Math.round(150-150*par2)},
-        x3 : function() {return Math.round(150+150*par3)},
-        y3 : function() {return Math.round(150-86.6*par3)},
-        x4 : function() {return Math.round(150+150*par4)},
-        y4 : function() {return Math.round(150+86.6*par4)},
-        x5 : function() {return 150},
-        y5 : function() {return Math.round(150+150*par5)},
-        x6 : function() {return Math.round(150-150*par6)},
-        y6 : function() {return Math.round(150+86.6*par6)},
+      x1 : function() {return Math.round(150-150*par1)},
+      y1 : function() {return Math.round(150-86.6*par1)},
+      x2 : function() {return 150},
+      y2 : function() {return Math.round(150-150*par2)},
+      x3 : function() {return Math.round(150+150*par3)},
+      y3 : function() {return Math.round(150-86.6*par3)},
+      x4 : function() {return Math.round(150+150*par4)},
+      y4 : function() {return Math.round(150+86.6*par4)},
+      x5 : function() {return 150},
+      y5 : function() {return Math.round(150+150*par5)},
+      x6 : function() {return Math.round(150-150*par6)},
+      y6 : function() {return Math.round(150+86.6*par6)},
+    });
+  
+    Template.profileSkills.helpers({ 
+      
     });
 
     Template.profileSkills.helpers({  
