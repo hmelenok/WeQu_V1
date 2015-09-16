@@ -452,7 +452,7 @@
 
 
 (defn in-script []
-  (> (.-length (get-script)) 0))
+  (> (get (get-script) :length) 0))
 
 (on-client
   (Template.registerHelper :inScript (fn [] (in-script))))
