@@ -48,16 +48,21 @@
     {{profile.firstName}} {{profile.lastName}}
   </section>
   <section>
-    <div height="300px" style="background-image: url('/img/skills.png'); background-size: cover; background-position: center">
-      <svg height="300" width="300">
-        <polygon points="{{x1}},{{y1}} {{x2}},{{y2}} {{x3}},{{y3}} {{x4}},{{y4}} {{x5}},{{y5}} {{x6}},{{y6}}"
-                 fill=lime fill-opacity="0.25" stroke="purple" stroke-width="1" />
-      </svg>
-    </div>
+      {{> polygon my.categories}}
     {{#if inScript}}
     <button id="finish"> next </button>
     {{/if}}
   </section>
+</template>
+
+<template name="polygon">
+
+    <div height="300px" style="background-image: url('/img/skills.png'); background-size: cover; background-position: center">
+      <svg height="300" width="300">
+        <polygon points="{{self_mgmt}} {{problem_solving}} {{team_work}} {{communication}} {{leadership}} {{value}}"
+                 fill=lime fill-opacity="0.25" stroke="purple" stroke-width="1" />
+      </svg>
+    </div>
 </template>
 
 <template name="skillCategories">

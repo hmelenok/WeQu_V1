@@ -72,8 +72,15 @@
 (route "/feed"
        (this.render :feed))
 
+;TODO
 (route "/profile"
-       (this.render :profile { :data (fn [] (Meteor.user))}))
+       (this.wait (Meteor.subscribe :feedback))
+       (if (and (this.ready) (Feedback.find-one {:from (Meteor.user-id)}))
+         (this.render :profile { :data { :myfeedback (Feedback.find-one {:from (Meteor.user-id)})
+                                        :profile (get (Meteor.user) :profile)
+                                        }})
+         (this.render :loading)
+         ))
 
 (route "/profile/skills"
        (this.render :profileSkills { :data (fn [] (Meteor.user))}))
@@ -219,9 +226,6 @@
            ~name 
            (fn ~@body))))))
 
-(publish :answers []
-           (Answers.find {}))
-
 (on-client
   (route "/quiz"
          (this.wait (Meteor.subscribe :answers))
@@ -305,8 +309,8 @@
           (fn [question]
             (def answer (_.find question.answers (fn [answer] (== question.answer answer._id))))
             (print :answer answer)
-            (inc (get score.categories answer.category))
-            (inc (get (get score answer.category) answer.skill))
+            (inc (get score answer.category))
+            (inc (get score answer.skill))
             ;TODO put written feedback into
             ))
   (print :feedback-result score)
@@ -360,7 +364,7 @@
   (Feedback.upsert {:from (Meteor.userId) :to userId} {:from (Meteor.userId) :to userId :qset qset :score initial-score })
   qset)
 
-(def initial-score 
+(comment def initial-score 
   {
    :categories { :value 0 :problem_solving 0 :self_mgmt 0 :team_work 0 :leadership 0 :communication 0 }
    :value { :business_focused 0 :people_focused 0 :intergity 0 :trustful 0 :authenticity 0 }
@@ -371,15 +375,56 @@
    :communication { :listening 0 :presentation 0 :story_telling 0 :written_communication 0 :sociability 0 }
    })
 
-(defn route-star-data []
+(def initial-score 
+  {
+   :value 0 :problem_solving 0 :self_mgmt 0 :team_work 0 :leadership 0 :communication 0
+   :business_focused 0 :people_focused 0 :intergity 0 :trustful 0 :authenticity 0
+   :problem_analysis 0 :creative 0 :conceptual_thinking 0  :manage_conflict 0 :negotiation 0
+   :self_learning 0 :efficient 0 :initiative 0 :stress_tolerance 0 :persistence 0
+   :assertive 0 :positive 0 :accept_critics 0 :respectful 0 :facilitation 0
+   :strategic 0 :delegation 0 :coaching 0 :committed 0 :empathy 0
+   :listening 0 :presentation 0 :story_telling 0 :written_communication 0 :sociability 0
+   })
 
+(on-client
+  (Template.profile.onCreated 
+    (fn []
+      (def score this.data.myfeedback.score)
+      (def my {})
+      (def radius 150)
+      (def vertices (aget (_.keys framework) :length))
+      (def maxvalue (_.max (_.values (_.pick score (_.keys framework)))))
+      (def i 0)
+      (set! my.categories 
+            (_.object (_.map [:self_mgmt :problem_solving :team_work :communication :leadership :value] 
+                             (fn [key]
+                               (def len (/ (aget score key) maxvalue))
+                               (def angle (+ (* Math.PI 0.5) (* i (/ (* 2 Math.PI) vertices))) )
+                               (inc i)
+                               [key 
+                                (+ 
+                                     (Math.round (+ radius (* (Math.cos angle) radius len))) 
+                                  ","
+                                     (Math.round (+ radius (* (Math.sin angle) radius len))))
+]
+                               ))))
+      (set! this.data.my my)
+      ))
+  
+  (comment Template.polygon.onCreated
+    (fn []
+      (print :polygon this.data)
+      ))
+  )
+
+(comment defn route-star-data []
   (def score 
     (->
       (_.chain (.fetch (Feedback.find {})))
       (.reduce 
         (fn [score feedback]
-          (inc (aget score.categories feedback.category))
-          (inc (aget (get score feedback.category) feedback.skill))
+          (inc (aget score feedback.category))
+          (inc (aget  feedback.skill))
           score) initial-score)
       (.pairs)
       (.map (fn [pair]
@@ -404,10 +449,8 @@
       (.value)))
   (this.render :star { :data { :score score}}))
 
-(publish :feedback [to from]
-         (def query {})
-         (if to
-           (set! query.to to))
+(publish :feedback [from]
+         (def query {:to this.user-id})
          (if from
            (set! query.from from))
          (Feedback.find query))
@@ -424,7 +467,7 @@
   [:login :profile]
   [:login :invite]
   [:login :finished]
-   )
+  )
 
 (on-client
   (route "/script-login"
@@ -468,7 +511,7 @@
   (defm-event :profile "click #finish" []
     (set-script [:login :invite])
     (Router.go "/profile"))
-  
+
   (defm-event :scriptLoginFinish (click :button) []
     (set-script [])
     (Router.go "/"))
@@ -486,15 +529,14 @@
   (if (== phase :init)
     (this.render :scriptLoginInit))
 
-
   (if (== phase :quiz)
     (do
-      (Meteor.subscribe :feedback (Meteor.user-id) (Meteor.user-id))
+      (Meteor.subscribe :feedback (Meteor.user-id))
       (if (self.ready)
-        (if (Feedback.find-one {:from (Meteor.user-id) :to (Meteor.user-id)})
+        (if (Feedback.find-one {:from (Meteor.user-id)})
           (self.render :quiz 
                        { :data 
-                        { :feedback (Feedback.find-one {:from (Meteor.user-id) :to (Meteor.user-id)})
+                        { :feedback (Feedback.find-one {:from (Meteor.user-id)})
                          :personId (Meteor.userId)
                          }})
           (self.render :loading))
@@ -502,14 +544,23 @@
         )))
 
   (if (== phase :profile) 
-    (this.render :profile))
+    (do
+      (Meteor.subscribe :feedback (Meteor.user-id))
+      (if (and (self.ready) (Feedback.find-one {:from (Meteor.user-id)}))
+        (self.render :profile 
+                     { :data 
+                      { :myfeedback (Feedback.find-one {:from (Meteor.user-id)})
+                       :profile (get (Meteor.user) :profile)
+                       }})
+        (self.render :loading))))
 
   (if (== phase :after-quiz)
     (this.render :scriptLoginAfterQuiz))
 
   (if (== phase :invite)
     (this.render :invite))
-  
+
   (if (== phase :finish)
-    (this.render :scriptLoginFinish))
-  )
+    (this.render :scriptLoginFinish)))
+
+
