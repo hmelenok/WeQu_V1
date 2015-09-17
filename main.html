@@ -55,7 +55,7 @@
       </svg>
     </div>
     {{#if inScript}}
-    <button id="finish"> finish </button>
+    <button id="finish"> next </button>
     {{/if}}
   </section>
 </template>
@@ -150,13 +150,6 @@
   </section>
 </template>
 
-<template name='quiz-finished'>
-  <section>
-    You've accomplished evaluation
-    <button> invite friends </button>
-  </section>
-</template>
-
 <template name="evaluate">
 Evaluate me
 </template>
@@ -169,6 +162,9 @@ Evaluate me
 </template>
 
 <template name="invite">
+{{#if inScript}}
+{{else}}
+    <!--TODO-->
   <section>
     <div>
       Ilya Ovdin | invited
@@ -177,7 +173,9 @@ Evaluate me
       Ivan Pashchenko | accepted invite
     </div>
   </section>
+{{/if}}
   <section>
+
     invite people<br>
     <!--<ul>
     {{#each connections}}
@@ -195,7 +193,10 @@ Evaluate me
     error sending email
     {{/case}}
     <input name="email" placeholder="email address"/>
-    <button>invite</button>
+    <button id="invite">invite</button>
+    {{#if inScript}}
+    <button id="next"> next </button>
+    {{/if}}
   </section>
 </template>
 
@@ -238,6 +239,22 @@ loading
 <template name="scriptLoginInit">
 {{>loading}}
 </template>
+
+<template name="scriptLoginAfterQuiz">
+<section>
+    Well Done!<br>
+    Check you profile
+    <button>next</button>
+</section>
+</template>
+
+<template name="scriptLoginFinish">
+<section>
+    Well Done!<br>
+    <button>finish</button>
+</section>
+</template>
+
 
 
 <template name="_case_default">

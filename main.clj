@@ -67,7 +67,7 @@
 ;TODO why except does not work?
 
 (route "/"
-       (Router.go "/quiz"))
+       (Router.go "/profile"))
 
 (route "/feed"
        (this.render :feed))
@@ -82,7 +82,7 @@
        (this.render :profileWrittenFeedback { :data (fn [] (Meteor.user))}))
 
 (comment
-  (defm-event :invite "click button" [event template]
+  (defm-event :invite (click :#invite) [event template]
     (conosle.log "hello world"))
   ;translates to
   (Template.invite.events 
@@ -230,12 +230,6 @@
                                        :answered 0}} )
            (this.render :loading)))
 
-  (route "/quiz-finished" 
-         (this.render :quiz-finished))
-
-  (defm-event :quiz-finished "click button" []
-    (Router.go "/invite"))
-
   ;TODO
   (defm-helper :quiz :person []
     (.-profile (Meteor.user)))
@@ -292,7 +286,7 @@
                        (Meteor.call :feedback-result feedback._id 
                                     (fn [err result]
                                       (print :feedback-result err result)
-                                      (set-script [:login :profile])))))))))
+                                      (set-script [:login :after-quiz])))))))))
 
 (def Feedback (new Mongo.Collection "feedback"))
 
@@ -425,8 +419,8 @@
   [:invite :quiz]
   [:invite  ]
   [:login :init]
-  [:login :quiz 0]
-  [:login :quiz 2]
+  [:login :quiz]
+  [:login :after-quiz]
   [:login :profile]
   [:login :invite]
   [:login :finished]
@@ -460,24 +454,39 @@
 (defn get-script []
   (get (get (Meteor.user) :profile) :script))
 
+(comment
+  (click :button :.answer)
+  "click button, touch button, click .answer, touch .answer")
+
+(defn click [& rest]
+  (.join (_.map rest (fn [selector] (+ "click " selector ", touch " selector))) ", "))
+
 (on-client
+  (defm-event :scriptLoginAfterQuiz "click button" []
+    (set-script [:login :profile]))
+
   (defm-event :profile "click #finish" []
+    (set-script [:login :invite])
+    (Router.go "/profile"))
+  
+  (defm-event :scriptLoginFinish (click :button) []
     (set-script [])
-    (print "finish clicked")
-    (Router.go "/profile")))
+    (Router.go "/"))
+
+  (defm-event :invite (click :#next) []
+    (set-script [:login :finish]))
+  )
 
 (defn script-login-route []
   (def script (.-script (.-profile (Meteor.user))))
+  (def self this)
 
   (def phase (or (get script 1) :init))
 
   (if (== phase :init)
     (this.render :scriptLoginInit))
 
-  (if (== phase :profile) 
-    (this.render :profile))
 
-  (def self this)
   (if (== phase :quiz)
     (do
       (Meteor.subscribe :feedback (Meteor.user-id) (Meteor.user-id))
@@ -492,7 +501,15 @@
         (self.render :loading)
         )))
 
+  (if (== phase :profile) 
+    (this.render :profile))
+
+  (if (== phase :after-quiz)
+    (this.render :scriptLoginAfterQuiz))
+
   (if (== phase :invite)
     (this.render :invite))
-
+  
+  (if (== phase :finish)
+    (this.render :scriptLoginFinish))
   )
