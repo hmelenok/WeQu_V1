@@ -1,6 +1,45 @@
 (defmacro comment [& operations]
   nil)
 
+(defmacro inc [sym]
+  `(set! ~sym (+ 1 ~sym)))
+
+(comment
+  (publish :answers []
+           (Answers.find {})))
+
+(defmacro publish [name & body]
+  `(on-server
+     (Meteor.startup
+       (fn []
+         (Meteor.publish 
+           ~name 
+           (fn ~@body))))))
+
+
+(comment
+  (defm-server-method :invite [email]
+    email)
+  ;translates to
+  (on-server
+    (Meteor.methods
+      { :invite 
+       (fn [email]
+         email
+         )}))
+
+  ;TODO
+  (on-client
+    (defn invite [email] callback
+      (Meteor.call :invite email callback))))
+
+(defmacro defm-server-method [name & body] 
+  `(do
+     (on-server
+       (Meteor.methods (let [h {}] 
+                         (set! (aget h ~name) (fn ~@body)) 
+                         h)))))
+
 ; shortcuts
 (comment
   (on-client 
@@ -42,27 +81,39 @@
                 (fn [] ~@body) {:name ~path}))
 
 
+(defn click [& rest]
+  (.join (_.map rest (fn [selector] (+ "click " selector ", touch " selector))) ", "))
+
 (Router.configure { layoutTemplate :ApplicationLayout})
 
 (Router.on-before-action 
   (fn []
     (if (Meteor.userId)
       (this.next)
-      (this.render :login))))
+      (this.render :login)))
+  { :except ["/invitation/:_id" "/script-invitation"]}
+  )
+
+(on-server
+  (Accounts.onCreateUser 
+    (fn [options user]
+      (set! user.profile (or options.profile {}))
+      (set! user.profile.login-script :init)
+      (print :onUserCreated user.profile)
+      user
+      )))
 
 (Router.on-before-action 
   (fn []
-    (if (Meteor.user)
-      (do
-        (def profile (.-profile (Meteor.user)))
-        (if (not profile.script)
-          (set! profile.script [:login :init]))
+    (if (get-login-script) 
+      (Router.go "/script-login"))
 
-        (if (== (aget profile.script 0) :login)
-          (Router.go "/script-login"))
-        ))
+    (if (Session.get :invite) 
+      (Router.go "/script-invitation"))
+
+
     (this.next)
-    ) { :except ["/script-login" "/admin"]})
+    ) { :except ["/script-login" "/admin" "/script-invitation" "/invitation/:_id"]})
 
 ;TODO why except does not work?
 
@@ -134,56 +185,34 @@
                    (console.log err result))))
   )
 
-(comment
-  (defm-server-method :invite [email]
-    email)
-  ;translates to
-  (on-server
-    (Meteor.methods
-      { :invite 
-       (fn [email]
-         email
-         )}))
 
-  ;TODO
-  (on-client
-    (defn invite [email] callback
-      (Meteor.call :invite email callback))))
 
-(defmacro defm-server-method [name & body] 
-  `(do
-     (on-server
-       (Meteor.methods (let [h {}] 
-                         (set! (aget h ~name) (fn ~@body)) 
-                         h)))))
-
-(def Invitation (new Mongo.Collection "invitation"))
 
 (defm-server-method :invite [email]
   (check (Meteor.userId) String)
   ;TODO validate email
-  (def template (_.template (Assets.getText "emails/invite.txt")))
   (def profile (.-profile (Meteor.user)))
-  (def record { :from (Meteor.userId) :to email})
-  (Invitation.upsert record record)
-  (set! record (Invitation.findOne record))
+  (def name (+ profile.first-name " " profile.last-name))
+  (set! qset (gen-question-set name (.fetch (Answers.find {}))))
+  (Feedback.upsert {:from email :to (Meteor.userId)} {:from email :to (Meteor.userId) :qset qset :score initial-score })
+  (def rec (Feedback.find-one {:from email :to (Meteor.userId)}))
+  
+  (print :rec rec)
+  (def template (_.template (Assets.getText "emails/invite.txt")))
   (Email.send 
     { :to email 
      :from "delivery@wequo.com"
      :subject "please evaluate my skills"
-     :text (template {:from (+ profile.first-name " " profile.last-name)
-                      :link (Meteor.absoluteUrl (+ "evaluate/" record._id)) })
+     :text (template {:from name 
+                      :link (Meteor.absoluteUrl (+ "invitation/" rec._id )) })
      });
   email)
 
 
-(route "/evaluate/:id"
-       (this.wait (Meteor.subscribe :connections))
-       (this.render :evaluate))
-
-(def Answers (new Mongo.Collection "answers"))
 
 ; import questions
+
+(def Answers (new Mongo.Collection :answers))
 
 (on-client
   (route "/admin"
@@ -193,50 +222,42 @@
     (Meteor.call :import))
 
   (defm-event :admin "click #reset" []
-    (set-script [:login :init])))
+    (set-login-script :init)))
 
+
+(on-server
+  (defn import-questions []
+    (def qs (Assets.getText "questions.csv"))
+    (Answers.remove {})
+    (Feedback.remove {})
+    (def lines (qs.split "\r\n"))
+    (loop [i 0]
+      (if (< i lines.length)
+        (do
+          (def l (.split (aget lines i) ","))
+          (def q { :_id (String i)
+                  :category (aget l 0) 
+                  :skill (aget l 1) 
+                  :text (aget l 2)
+                  })
+          (Answers.insert q)
+          (recur (+ i 1))))) 
+    )
+
+  (Meteor.startup 
+    (fn []
+      (if (not (Answers.find-one {}))
+        (import-questions)))))
 
 (defm-server-method :import []
-  (def qs (Assets.getText "questions.csv"))
-  (Answers.remove {})
-  (Feedback.remove {})
-  (def lines (qs.split "\r\n"))
-  (loop [i 0]
-    (if (< i lines.length)
-      (do
-        (def l (.split (aget lines i) ","))
-        (def q { :_id (String i)
-                :category (aget l 0) 
-                :skill (aget l 1) 
-                :text (aget l 2)
-                })
-        (Answers.insert q)
-        (recur (+ i 1))))))
+  (import-questions))
 
   
-(comment
-  (publish :answers []
-           (Answers.find {})))
-
-(defmacro publish [name & body]
-  `(on-server
-     (Meteor.startup
-       (fn []
-         (Meteor.publish 
-           ~name 
-           (fn ~@body))))))
 
 (on-client
   (route "/quiz"
-         (this.wait (Meteor.subscribe :answers))
-         (if (this.ready)
-           (this.render :quiz  {:data {:answers (_.shuffle (.fetch (Answers.find {})))
-                                       :answered 0}} )
-           (this.render :loading)))
-
-  ;TODO
-  (defm-helper :quiz :person []
-    (.-profile (Meteor.user)))
+         ;TODO
+         (this.render :loading))
 
   (def questionDep (new Tracker.Dependency))
 
@@ -259,7 +280,7 @@
   (defm-helper :quiz :question []
     (current-question this.feedback.qset))
 
-  (defm-event :quiz "click .answer, touch .answer, click .skip, touch .skip, click .writeAnswer, touch .writeAnswer" [event template]
+  (defm-event :quiz (click :.answer :.skip :.writeAnswer) [event template]
     (def feedback template.data.feedback)
     (def question (current-question feedback.qset))
 
@@ -286,24 +307,34 @@
                    (print :feedback err result)
                    (if (current-question feedback.qset)
                      (questionDep.changed)
-                     (if (in-script)
-                       (Meteor.call :feedback-result feedback._id 
-                                    (fn [err result]
-                                      (print :feedback-result err result)
-                                      (set-script [:login :after-quiz])))))))))
+                     (Meteor.call :feedback-result feedback._id 
+                                  (fn [err result]
+                                    (print :feedback-result err result)
+                                    (if (get-login-script)
+                                      (set-login-script :after-quiz))
+                                    (if (Session.get :invite)
+                                      (Session.set-persistent :invite :finish))
+
+                                    ))
+                     )))))
 
 (def Feedback (new Mongo.Collection "feedback"))
 
 (defm-server-method :feedback [id qset]
-  (check (Meteor.user-id) String)
-  (Feedback.update {:from (Meteor.user-id) :_id id} { :$set { :qset qset }}))
+  (def selector {:_id id})
+  (if (Meteor.user-id)
+    (set! selector.from (Meteor.user-id)))
+
+  (Feedback.update selector { :$set { :qset qset }}))
 
 (comment on-client 
   (Meteor.startup (fn [] (Meteor.call :feedback-result :kcMBQRcEoExefwLpq))))
 
 (defm-server-method :feedback-result [id]
-  (check (Meteor.user-id) String)
-  (def feedback (Feedback.find-one {:from (Meteor.user-id) :_id id}))
+  (def selector {:_id id})
+  (if (Meteor.user-id)
+    (set! selector.from (Meteor.user-id)))
+  (def feedback (Feedback.find-one selector))
   (def score (_.clone initial-score)) 
   (_.each feedback.qset 
           (fn [question]
@@ -314,8 +345,7 @@
             ;TODO put written feedback into
             ))
   (print :feedback-result score)
-  (Feedback.update {:from (Meteor.user-id) :_id id} {:$set {:score score}})
-  )
+  (Feedback.update selector {:$set {:score score}}))
 
 (defmacro ->
   [& operations]
@@ -337,11 +367,9 @@
    :communication [ :listening :presentation :story_telling :written_communication :sociability ]
    })
 
-(defmacro inc [sym]
-  `(set! ~sym (+ 1 ~sym)))
+(def quizzy (_.template "What is more true about <%= name %>?"))
 
 (defn gen-question-set [name answers]
-  (def quizzy (_.template "What is more true about <%= name %>?"))
   (def question-text (quizzy {:name name}))
   ;TODO
   (def answers (_.shuffle answers))
@@ -410,44 +438,7 @@
                                ))))
       (set! this.data.my my)
       ))
-  
-  (comment Template.polygon.onCreated
-    (fn []
-      (print :polygon this.data)
-      ))
   )
-
-(comment defn route-star-data []
-  (def score 
-    (->
-      (_.chain (.fetch (Feedback.find {})))
-      (.reduce 
-        (fn [score feedback]
-          (inc (aget score feedback.category))
-          (inc (aget  feedback.skill))
-          score) initial-score)
-      (.pairs)
-      (.map (fn [pair]
-              (def values (aget pair 1))
-              (def maximum (_.reduce (_.values values)
-                                     (fn [maximum val] (Math.max  maximum val)) 3))
-              (def result 
-                (-> 
-                  (_.chain values)
-                  (.pairs)
-                  (.map (fn [p]
-                          (set! (aget p 1) (/ (get p 1) maximum))
-                          p
-                          ))
-                  (.object)
-                  (.value)))
-              
-              (set! (aget pair 1) result)
-              pair
-              ))
-      (.object)
-      (.value)))
-  (this.render :star { :data { :score score}}))
 
 (publish :feedback [from]
          (def query {:to this.user-id})
@@ -457,17 +448,6 @@
 
 
 
-
-(comment
-  [:invite :quiz]
-  [:invite  ]
-  [:login :init]
-  [:login :quiz]
-  [:login :after-quiz]
-  [:login :profile]
-  [:login :invite]
-  [:login :finished]
-  )
 
 (on-client
   (route "/script-login"
@@ -481,50 +461,46 @@
       (Meteor.call :gen-question-set (Meteor.userId) 
                    (fn [err result]
                      (print :gen-question-set err result)
-                     (set-script [ :login :quiz ])
+                     (set-login-script :quiz)
                      )))))
 
-(defn set-script [value]
-  (Meteor.users.update (Meteor.userId) { :$set { "profile.script" value}}))
 
-
-(defn in-script []
-  (> (get (get-script) :length) 0))
 
 (on-client
-  (Template.registerHelper :inScript (fn [] (in-script))))
+  (Template.registerHelper :inScript (fn [] (get-login-script))))
 
-(defn get-script []
-  (get (get (Meteor.user) :profile) :script))
+
+(defn get-login-script []
+  (get (get (Meteor.user) :profile) :loginScript))
+
+(defn set-login-script [value]
+  (Meteor.users.update (Meteor.userId) { :$set { "profile.loginScript" value}}))
 
 (comment
   (click :button :.answer)
   "click button, touch button, click .answer, touch .answer")
 
-(defn click [& rest]
-  (.join (_.map rest (fn [selector] (+ "click " selector ", touch " selector))) ", "))
 
 (on-client
   (defm-event :scriptLoginAfterQuiz "click button" []
-    (set-script [:login :profile]))
+    (set-login-script :profile))
 
   (defm-event :profile "click #finish" []
-    (set-script [:login :invite])
+    (set-login-script :invite)
     (Router.go "/profile"))
 
   (defm-event :scriptLoginFinish (click :button) []
-    (set-script [])
+    (set-login-script false)
     (Router.go "/"))
 
   (defm-event :invite (click :#next) []
-    (set-script [:login :finish]))
+    (set-login-script :finish))
   )
 
 (defn script-login-route []
-  (def script (.-script (.-profile (Meteor.user))))
   (def self this)
 
-  (def phase (or (get script 1) :init))
+  (def phase (get-login-script))
 
   (if (== phase :init)
     (this.render :scriptLoginInit))
@@ -532,14 +508,12 @@
   (if (== phase :quiz)
     (do
       (Meteor.subscribe :feedback (Meteor.user-id))
-      (if (self.ready)
-        (if (Feedback.find-one {:from (Meteor.user-id)})
-          (self.render :quiz 
-                       { :data 
-                        { :feedback (Feedback.find-one {:from (Meteor.user-id)})
-                         :personId (Meteor.userId)
-                         }})
-          (self.render :loading))
+      (if (and (self.ready) (Feedback.find-one {:from (Meteor.user-id)}))
+        (self.render :quiz 
+                     { :data 
+                      { :feedback (Feedback.find-one {:from (Meteor.user-id)})
+                       :person (Meteor.user)
+                       }})
         (self.render :loading)
         )))
 
@@ -563,4 +537,39 @@
   (if (== phase :finish)
     (this.render :scriptLoginFinish)))
 
+
+(on-client
+  (route "/invitation/:_id"
+         (Session.set-persistent :invite :quiz)
+         (Session.set-persistent :invitation-id this.params._id)
+         (Router.go "/script-invitation")
+         )
+
+  (route "/script-invitation"
+         (def self this)
+         (this.layout "ScriptLayout")
+         (def phase (Session.get :invite))
+
+         (if (== phase :quiz)
+           (do
+             (Meteor.subscribe :invitation (Session.get :invitation-id))
+             (if (and (self.ready) (Feedback.find-one {})) 
+               (self.render :quiz { :data { :feedback (Feedback.find-one {}) :person (Meteor.users.find-one {}) }})
+               (self.render :loading)
+               )))
+
+         (if (== phase :finish)
+           (this.render :scriptInvitationFinish)
+           (Router.go "/"))
+
+         )
+
+  (defm-event :scriptInvitationFinish (click "button") []
+    (Session.set-persistent :invite false)
+    (Session.clear :invitation-id)) )
+
+(publish :invitation [id]
+         (def fb (Feedback.find-one id))
+         [(Feedback.find id) (Meteor.users.find { :_id fb.to } { :fields { :profile 1 }})]
+         )
 

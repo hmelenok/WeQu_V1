@@ -41,7 +41,6 @@
 </template>
 
 <template name="profile">
-  {{>menuProfile}}
   <section>
     <img src="{{profile.pictureUrl}}"/>
     <br>
@@ -49,6 +48,9 @@
   </section>
   <section>
       {{> polygon my.categories}}
+
+  </section>
+  <section>
     {{#if inScript}}
     <button id="finish"> next </button>
     {{/if}}
@@ -123,8 +125,8 @@
 
 <template name='quiz'>
   <section>
-    <img src="{{person.pictureUrl}}" class="avatar"><br>
-    {{person.firstName}} {{person.lastName}}<br>
+    <img src="{{person.profile.pictureUrl}}" class="avatar"><br>
+    {{person.profile.firstName}} {{person.profile.lastName}}<br>
     <!--<button>next person</button>-->
   </section>
   <section>
@@ -257,6 +259,13 @@ loading
 <section>
     Well Done!<br>
     <button>finish</button>
+</section>
+</template>
+
+<template name="scriptInvitationFinish">
+<section>
+    Well Done!<br>
+    <button>download app</button>
 </section>
 </template>
 
