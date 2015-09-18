@@ -201,7 +201,7 @@
   (def template (_.template (Assets.getText "emails/invite.txt")))
   (Email.send 
     { :to email 
-     :from "delivery@wequo.com"
+     :from "support@wequ.co"
      :subject "please evaluate my skills"
      :text (template {:from name 
                       :link (Meteor.absoluteUrl (+ "invitation/" rec._id )) })
@@ -549,7 +549,6 @@
          (def self this)
          (this.layout "ScriptLayout")
          (def phase (Session.get :invite))
-
          (if (== phase :quiz)
            (do
              (Meteor.subscribe :invitation (Session.get :invitation-id))
@@ -559,14 +558,14 @@
                )))
 
          (if (== phase :finish)
-           (this.render :scriptInvitationFinish)
-           (Router.go "/"))
+           (this.render :scriptInvitationFinish))
 
          )
 
   (defm-event :scriptInvitationFinish (click "button") []
     (Session.set-persistent :invite false)
-    (Session.clear :invitation-id)) )
+    (Session.clear :invitation-id)
+    (Router.go "/")))
 
 (publish :invitation [id]
          (def fb (Feedback.find-one id))

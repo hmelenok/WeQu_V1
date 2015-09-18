@@ -4,4 +4,4 @@ Hi,
 <%= link %>
 
 --
-WeQuo team
+WeQu team
