@@ -81,8 +81,12 @@
                 (fn [] ~@body) {:name ~path}))
 
 
+(comment
+  (click :button :.answer)
+  "click button, touch button, click .answer, touch .answer")
+
 (defn click [& rest]
-  (.join (_.map rest (fn [selector] (+ "click " selector ", touch " selector))) ", "))
+  (.join (_.map rest (fn [selector] (+ "click " selector ", touch " selector ", touchend " selector))) ", "))
 
 (Router.configure { layoutTemplate :ApplicationLayout})
 
@@ -171,7 +175,7 @@
 
   (def invite-status (new ReactiveVar :default))
 
-  (defm-event :invite "click button" [event template]
+  (defm-event :invite (click :button) [event template]
     (invite-status.set :sending)
     (def email (.val (template.$ "input[name=email]")))
 
@@ -218,10 +222,10 @@
   (route "/admin"
          (this.render "admin"))
 
-  (defm-event :admin "click #import" []
+  (defm-event :admin (click :#import) []
     (Meteor.call :import))
 
-  (defm-event :admin "click #reset" []
+  (defm-event :admin (click :#reset) []
     (set-login-script :init)))
 
 
@@ -476,9 +480,6 @@
 (defn set-login-script [value]
   (Meteor.users.update (Meteor.userId) { :$set { "profile.loginScript" value}}))
 
-(comment
-  (click :button :.answer)
-  "click button, touch button, click .answer, touch .answer")
 
 
 (on-client
