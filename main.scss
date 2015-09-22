@@ -222,7 +222,8 @@ li.answer:nth-child(even) {
   margin-top: -1px;
   padding: 10px;
   
-  min-width: 30%;
+  //min-width: 30%;
+  max-width: 20%;
   border: 1px solid black;
   
   text-align: center;
