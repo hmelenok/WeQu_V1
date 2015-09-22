@@ -44,8 +44,8 @@
   {{#if inScript}}
     <section class="feed">
       {{> radar score=myscore color="grey"}}
-      {{> maxSkills max=top3}}
-      {{> maxSkills max=weak3}}
+      {{> threeSkills data=top3}}
+      {{> threeSkills data=weak3}}
       dumb skills
       <a href="/invite">invite people</a>
       <section>
@@ -58,18 +58,18 @@
     {{> menuProfile}}
     <section class="feed">
       {{> radar score=myscore color="grey"}}
-      {{> maxSkills max=top3}}
-      {{> maxSkills max=weak3}}
+      {{> threeSkills data=top3}}
+      {{> threeSkills data=weak3}}
     </section>
   {{/if}}
 </template>
 
-<template name="maxSkills">
+<template name="threeSkills">
   <ul class="maxContainer">
-    {{#each max}}
+    {{#each data}}
       <li class="max">
-        <img src="/img/{{max.skill}}.png">
-        {{max.skill}}
+        <img src="/img/{{skill}}.png">
+        {{text}}
       </li>
     {{/each}}
   </ul>

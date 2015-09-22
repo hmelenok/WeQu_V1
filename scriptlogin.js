@@ -31,9 +31,16 @@ if(Meteor.isClient){
                 Meteor.subscribe('feedback', Meteor.userId());
                 if(this.ready() && Feedback.findOne({ 'from': Meteor.userId() })) {
                     var myfeedback = Feedback.findOne({ 'from': Meteor.userId() });
+                    var score = calculateScore(myfeedback.qset);
+
+                    var keys = _.sortBy(_.keys(score), function(key) { return score[key] })
+                    var top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
+                    var weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
                     this.render('profile', {
                         'data': {
-                            'myscore': calculateScore(myfeedback.qset),
+                            'myscore': score,
+                            'top3' : top3,
+                            'weak3' : weak3,
                             'profile': Meteor.user().profile
                         }
                     }) 
