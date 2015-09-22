@@ -33,6 +33,12 @@ Router.route('/profile/written-feedback', function () {
     });
 }, { 'name': '/profile/written-feedback' });
 
+Router.route('/profile/skills', function () {
+    return this.render('profileSkills', {
+        'data': function () { return Meteor.user(); }
+    });
+}, { 'name': '/profile/skills' });
+
 dataForRadar =  function dataForRadar(score) {
     var radius = 150;
     var vertices = _.keys(framework)['length'];

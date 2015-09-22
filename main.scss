@@ -149,3 +149,91 @@ section {
     //border: 1px solid red;
   }
 }
+
+.answers {
+  padding: 0px; 
+  
+  min-height: 20vh;
+  width: 100vw;
+  
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+  @include justify-content(center);
+  @include align-items(stretch);
+  
+  @include flex-grow(1);
+  @include flex-shrink(1);
+  @include flex-basis(auto);
+}
+
+.answer {
+  margin: 0px;
+  margin-top: -1px;
+  padding: 10px;
+  
+  min-width: 40%;
+  border: 1px solid black;
+  
+  text-align: center;
+  
+  @include flexbox;
+  @include flex-direction(column);
+  @include flex-wrap(nowrap);
+  @include justify-content(center);
+  @include align-items(center);
+  
+  @include flex-grow(1);
+  @include flex-shrink(0);
+  @include flex-basis(40vw);
+}
+
+li.answer:nth-child(odd) {
+    border: none;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+li.answer:nth-child(even) {
+    border: none;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.maxContainer {
+  padding: 0px; 
+  
+  min-height: 20vh;
+  width: 100vw;
+  
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+  @include justify-content(center);
+  @include align-items(stretch);
+  
+  @include flex-grow(1);
+  @include flex-shrink(1);
+  @include flex-basis(auto);
+}
+
+.max {
+  margin: 0px;
+  margin-top: -1px;
+  padding: 10px;
+  
+  min-width: 30%;
+  border: 1px solid black;
+  
+  text-align: center;
+  
+  @include flexbox;
+  @include flex-direction(column);
+  @include flex-wrap(nowrap);
+  @include justify-content(center);
+  @include align-items(center);
+  
+  @include flex-grow(1);
+  @include flex-shrink(0);
+  @include flex-basis(30vw);
+}

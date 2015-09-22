@@ -32,15 +32,50 @@
 </template>
 
 <template name="ApplicationLayout">
-{{> menu}}
-{{> yield}}
+  {{> menu}}
+  {{> yield}}
 </template>
 
 <template name="ScriptLayout">
-{{> yield}}
+  {{> yield}}
 </template>
 
 <template name="profile">
+  {{#if inScript}}
+    <section class="feed">
+      {{> radar score=myscore color="grey"}}
+      {{> maxSkills max=top3}}
+      {{> maxSkills max=weak3}}
+      dumb skills
+      <a href="/invite">invite people</a>
+      <section>
+        <img src="/img/skills_dumb.png" style="width:100%; opacity:0.5">
+      </section>
+      <a href="/invite">invite people</a>
+      <button id="finish"> next </button>
+    </section>
+  {{else}}
+    {{> menuProfile}}
+    <section class="feed">
+      {{> radar score=myscore color="grey"}}
+      {{> maxSkills max=top3}}
+      {{> maxSkills max=weak3}}
+    </section>
+  {{/if}}
+</template>
+
+<template name="maxSkills">
+  <ul class="maxContainer">
+    {{#each max}}
+      <li class="max">
+        <img src="/img/{{max.skill}}.png">
+        {{max.skill}}
+      </li>
+    {{/each}}
+  </ul>
+</template>
+
+<!--<template name="profile">
   <section>
     <img src="{{profile.pictureUrl}}"/>
     <br>
@@ -73,7 +108,7 @@
     <button id="finish"> next </button>
     {{/if}}
   </section>
-</template>
+</template>-->
 
 <template name="radar">
       <svg height="300" width="300">
@@ -82,10 +117,32 @@
       </svg>
 </template>
 
+<template name="profileSkills">
+  {{> menuProfile}}
+  <section class="feed">
+    Skill Categories
+    {{#if enoughData}}
+      {{> skillCategories}}
+    {{else}}
+      dumb skills
+      <a href="/invite">invite people</a>
+      <section>
+        <img src="/img/skills_dumb.png" style="width:100%; opacity:0.5">
+      </section>
+      <a href="/invite">invite people</a>
+    {{/if}}
+  </section>
+</template>
+
 <template name="skillCategories">
-  {{#each skills}}
-    <h3>{{this.category}}</h3>
-    {{> skillSet this.skillSet}}
+  {{#each categories}}
+    <h3>{{name}}</h3>
+    {{#each skills}}
+        <div class="skillElement">
+          <div class="title">{{name}}</div>
+          <div class="bar" style="width:{{value}}px"></div>
+        </div>
+    {{/each}}
   {{/each}}
 </template>
 

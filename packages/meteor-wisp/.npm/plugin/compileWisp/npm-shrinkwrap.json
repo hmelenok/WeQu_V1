@@ -1,0 +1,65 @@
+{
+  "dependencies": {
+    "wisp": {
+      "version": "0.10.0",
+      "dependencies": {
+        "escodegen": {
+          "version": "git://github.com/Constellation/escodegen.git#5dabbc5441b396febd0afb9252a9afdfa7051657",
+          "dependencies": {
+            "estraverse": {
+              "version": "1.9.3"
+            },
+            "esutils": {
+              "version": "2.0.2"
+            },
+            "esprima": {
+              "version": "1.2.5"
+            },
+            "optionator": {
+              "version": "0.5.0",
+              "dependencies": {
+                "prelude-ls": {
+                  "version": "1.1.2"
+                },
+                "deep-is": {
+                  "version": "0.1.3"
+                },
+                "wordwrap": {
+                  "version": "0.0.3"
+                },
+                "type-check": {
+                  "version": "0.3.1"
+                },
+                "levn": {
+                  "version": "0.2.5"
+                },
+                "fast-levenshtein": {
+                  "version": "1.0.7"
+                }
+              }
+            },
+            "source-map": {
+              "version": "0.2.0",
+              "dependencies": {
+                "amdefine": {
+                  "version": "1.0.0"
+                }
+              }
+            }
+          }
+        },
+        "base64-encode": {
+          "version": "1.0.1"
+        },
+        "commander": {
+          "version": "2.8.1",
+          "dependencies": {
+            "graceful-readlink": {
+              "version": "1.0.1"
+            }
+          }
+        }
+      }
+    }
+  }
+}
