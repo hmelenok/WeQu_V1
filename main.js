@@ -30,7 +30,6 @@ if (Meteor.isClient) {
 
 
 
-    quizzy =  _.template('What is more true about <%= name %>?');
 
     Template.registerHelper("case", function(){
         var pair =_.chain(this).pairs().first().value();
