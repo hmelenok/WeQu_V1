@@ -10,7 +10,6 @@ pauli:accounts-linkedin
 iron:router
 accounts-ui
 reactive-var
-meteor-wisp
 fourseven:scss
 email
 u2622:persistent-session

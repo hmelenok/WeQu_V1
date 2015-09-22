@@ -47,9 +47,27 @@
     {{profile.firstName}} {{profile.lastName}}
   </section>
   <section>
-      {{> polygon my.categories}}
-
+    <div height="300px" style="background-image: url('/img/skills.png'); background-size: cover; background-position: center">
+      {{> radar score=myscore color="grey"}}
+      {{#if enoughData}}
+          {{> radar score=otherscore color="lime"}}
+      {{/if}}
+    </div>
   </section>
+
+  {{#if enoughData}}
+  <section>
+      {{#each categories}}
+        <h3>{{name}}</h3>
+        {{#each skills}}
+            <div class="skillElement">
+              <div class="title">{{name}}</div>
+              <div class="bar" style="width:{{value}}px"></div>
+            </div>
+        {{/each}}
+      {{/each}}
+  </section>
+  {{/if}}
   <section>
     {{#if inScript}}
     <button id="finish"> next </button>
@@ -57,14 +75,11 @@
   </section>
 </template>
 
-<template name="polygon">
-
-    <div height="300px" style="background-image: url('/img/skills.png'); background-size: cover; background-position: center">
+<template name="radar">
       <svg height="300" width="300">
-        <polygon points="{{self_mgmt}} {{problem_solving}} {{team_work}} {{communication}} {{leadership}} {{value}}"
-                 fill=lime fill-opacity="0.25" stroke="purple" stroke-width="1" />
+        <polygon points="{{points.self_mgmt}} {{points.problem_solving}} {{points.team_work}} {{points.communication}} {{points.leadership}} {{points.value}}"
+        fill={{color}} fill-opacity="0.25" stroke="purple" stroke-width="1" />
       </svg>
-    </div>
 </template>
 
 <template name="skillCategories">
@@ -72,22 +87,6 @@
     <h3>{{this.category}}</h3>
     {{> skillSet this.skillSet}}
   {{/each}}
-</template>
-
-<template name="skillSet">
-  {{#each this}}
-    <div class="skillElement">
-      <div class="title">{{skill}}</div>
-      <div class="bar" style="width:{{value}}px"></div>
-    </div>
-  {{/each}}
-</template>
-
-<template name="profileSkills">
-  {{>menuProfile}}
-  <section class="feed">
-    {{> skillCategories skills=skills}}
-  </section>
 </template>
 
 <template name="profileWrittenFeedback">
