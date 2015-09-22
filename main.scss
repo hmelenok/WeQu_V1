@@ -37,7 +37,8 @@ html, body {
 
 .menuBar {
   min-height: 50px;
-  border: 1px solid grey;
+  //border: 1px solid grey;
+  background-color: #303030;
   
   @include flexbox;
   @include flex-direction(row);
@@ -47,7 +48,11 @@ html, body {
 
   @include flex-grow(0);
   @include flex-shrink(1);
-  @include flex-basis(auto); 
+  @include flex-basis(auto);
+  
+  img {
+    width: 40px;
+  } 
 }
 
 section {

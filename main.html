@@ -15,10 +15,10 @@
 
 <template name="menu">
   <div class="menuBar">
-    <a href="/quiz">Vote</a>
-    <a href="/invite">People</a>
-    <a href="/feed">Feed</a>
-    <a href="/profile">Profile</a>
+    <a href="/quiz"><img src="/img/icon_vote.png"></a>
+    <a href="/invite"><img src="/img/icon_invite.png"></a>
+    <a href="/feed"><img src="/img/icon_feed.png"></a>
+    <a href="/profile"><img src="/img/icon_profile.png"></a>
     <a href="/admin">Admin</a>
   </div>
 </template>
@@ -112,7 +112,7 @@
 
 <template name="radar">
         <polygon points="{{points.self_mgmt}} {{points.problem_solving}} {{points.team_work}} {{points.communication}} {{points.leadership}} {{points.value}}"
-        fill={{color}} fill-opacity="0.25" stroke="purple" stroke-width="1" />
+        fill={{color}} fill-opacity="0.5" stroke="#fff" stroke-width="1" />
 </template>
 
 <template name="profileSkills">
