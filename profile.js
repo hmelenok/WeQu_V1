@@ -7,10 +7,17 @@ Router.route('/profile', function () {
 
         var otherFeedback = Feedback.find({ '_id': { '$ne': Meteor.userId() } }).fetch();
         var joinedQset = _.reduce(otherFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
-        data.otherscore = calculateScore(joinedQset);
 
         var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
+        data.otherscore = calculateScore(joinedQset);
         data.enoughData = (validAnswers.length > 30);
+
+        var allFeedback = Feedback.find({to: Meteor.userId()}).fetch();
+        joinedQset = _.reduce(allFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
+        var totalScore = calculateScore(joinedQset);
+        var keys = _.sortBy(_.keys(totalScore), function(key) { return totalScore[key] })
+        data.top3 = _.first(keys, 3);
+        data.weak3 = _.last(keys, 3);
 
         data.categories = _.map(_.keys(framework), function(category) {
             return {
@@ -20,6 +27,7 @@ Router.route('/profile', function () {
                 })
             }
         })
+        console.log("data", data);
 
         this.render('profile', { data : data});  
     } else {
