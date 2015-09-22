@@ -46,18 +46,16 @@
       {{> radar score=myscore color="grey"}}
       {{> threeSkills data=top3}}
       {{> threeSkills data=weak3}}
-      dumb skills
-      <a href="/invite">invite people</a>
-      <section>
-        <img src="/img/skills_dumb.png" style="width:100%; opacity:0.5">
-      </section>
-      <a href="/invite">invite people</a>
+      {{> skillsPreview}}
       <button id="finish"> next </button>
     </section>
   {{else}}
     {{> menuProfile}}
     <section class="feed">
-      {{> radar score=myscore color="grey"}}
+      <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
+        {{> radar score=myscore color="grey"}}
+        {{> radar score=otherscore color="lime"}}
+      </svg>
       Top 3 skills
       {{> threeSkills data=top3}}
       Weak 3 skills
@@ -70,7 +68,7 @@
   <ul class="maxContainer">
     {{#each data}}
       <li class="max">
-        <img src="/img/{{skill}}.png">
+        <img src="/img/skills/{{skill}}.png" style="width:50px">
         {{text}}
       </li>
     {{/each}}
@@ -113,27 +111,27 @@
 </template>-->
 
 <template name="radar">
-      <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
         <polygon points="{{points.self_mgmt}} {{points.problem_solving}} {{points.team_work}} {{points.communication}} {{points.leadership}} {{points.value}}"
         fill={{color}} fill-opacity="0.25" stroke="purple" stroke-width="1" />
-      </svg>
 </template>
 
 <template name="profileSkills">
   {{> menuProfile}}
   <section class="feed">
-    Skill Categories
+    <h3>Skill Categories</h3>
     {{#if enoughData}}
       {{> skillCategories}}
     {{else}}
-      dumb skills
-      <a href="/invite">invite people</a>
-      <section>
-        <img src="/img/skills_dumb.png" style="width:100%; opacity:0.5">
-      </section>
-      <a href="/invite">invite people</a>
+      {{> skillsPreview}}
     {{/if}}
   </section>
+</template>
+
+<template name="skillsPreview">
+  <h3>dumb skills</h3>
+  <a href="/invite">invite people</a>
+  <img src="/img/skills_dumb.png" style="width:100%; height:auto; opacity:0.5">
+  <a href="/invite">invite people</a>
 </template>
 
 <template name="skillCategories">

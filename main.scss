@@ -51,7 +51,7 @@ html, body {
 }
 
 section {
-  padding: 20px;
+  //padding: 20px;
   
   @include flex-grow(1);
   @include flex-shrink(1);
@@ -68,12 +68,19 @@ section {
   @extend section;
   
   overflow-y: auto;
-
+  overflow-x: hidden;
   @include justify-content(flex-start);
+  
+  > * {
+    border: 1px solid red;
+    @include flex-grow(0);
+    @include flex-shrink(0);
+    @include flex-basis(auto); 
+  }
 
   .feedElement {
     width: 100%;
-    padding: 10px 0;
+    //padding: 10px 0;
 
     @include flexbox;
     @include flex-direction(row);
@@ -205,6 +212,7 @@ li.answer:nth-child(even) {
   
   min-height: 20vh;
   width: 100vw;
+  border: 1px solid red;
   
   @include flexbox;
   @include flex-direction(row);
@@ -223,7 +231,7 @@ li.answer:nth-child(even) {
   padding: 10px;
   
   //min-width: 30%;
-  max-width: 20%;
+  //max-width: 20%;
   border: 1px solid black;
   
   text-align: center;
@@ -235,6 +243,6 @@ li.answer:nth-child(even) {
   @include align-items(center);
   
   @include flex-grow(1);
-  @include flex-shrink(0);
-  @include flex-basis(30vw);
+  @include flex-shrink(1);
+  @include flex-basis(25vw);
 }
