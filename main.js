@@ -5,14 +5,6 @@ if (Meteor.isClient) {
         Meteor.userId() ? this.next() : this.render('login');
     }, { 'except': [ '/invitation/:_id', '/script-invitation' ] });
 
-    if (Meteor.isServer) {
-        Accounts.onCreateUser(function (options, user) {
-            user.profile = options.profile || {};
-            user.profile.loginScript = 'init';
-            console.log('onUserCreated', user.profile);
-            return user;
-        });
-    }
 
     Router.onBeforeAction(function () {
         getLoginScript() ? Router.go('/script-login') : void 0;
@@ -66,15 +58,23 @@ if (Meteor.isClient) {
 Connections = new Mongo.Collection("connections");
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-      Meteor.publish("connections", function(){
-          //make linkedin api call
-          if(this.userId) {
-              //make api call
-              //this.added("connections", 1, {firstName : "Ilya Ovdin"});
-          } 
-          this.ready();
-      });
-    // code to run on server at startup
-  });
+    Meteor.startup(function () {
+        Meteor.publish("connections", function(){
+            //make linkedin api call
+            if(this.userId) {
+                //make api call
+                //this.added("connections", 1, {firstName : "Ilya Ovdin"});
+            } 
+            this.ready();
+        });
+        // code to run on server at startup
+    });
+
+    Accounts.onCreateUser(function (options, user) {
+        user.profile = options.profile || {};
+        user.profile.loginScript = 'init';
+        user.profile.gradient = Math.floor(Math.random() * 5) + 1;
+        console.log('onUserCreated', user.profile);
+        return user;
+    });
 }
