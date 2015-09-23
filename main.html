@@ -52,6 +52,10 @@
       <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
         {{> radar score=myscore color="white"}}
       </svg>
+      <div class="radarAgenda">
+        <div><img src="/img/myradar.png"></div>
+        <div><img src="/img/othersradar.png" class="t50"></div>
+      </div>
       <h3>Top 3 skills</h3>
       {{> threeSkills data=top3}}
       <h3>Weak 3 skills</h3>
@@ -68,6 +72,10 @@
         {{> radar score=myscore color="white"}}
         {{> radar score=otherscore color="#E96956"}}
       </svg>
+      <div class="radarAgenda">
+        <div><img src="/img/myradar.png"></div>
+        <div><img src="/img/othersradar.png" class="{{#if otherscore.self_mgmt}} {{else}}t50{{/if}}"></div>
+      </div>
       <h3>Top 3 skills</h3>
       {{> threeSkills data=top3}}
       <h3>Weak 3 skills</h3>
@@ -140,7 +148,6 @@
 </template>
 
 <template name="skillsPreview">
-  <h3>dumb skills</h3>
   <img src="/img/skills_dumb.png" style="width:100%; height:auto; opacity:0.5">
 </template>
 
@@ -210,7 +217,7 @@
 
       {{else}}
         <div class="question">
-          <h3>{{question.text}}</h3>
+          <h2>{{question.text}}</h2>
           {{#unless self}}
           <div class="h5 t50">You are answering anonymously</div>
           {{/unless}}
@@ -277,7 +284,7 @@ Evaluate me
         error sending email
         {{/case}}
         <input name="email" placeholder="email address"/>
-        <button id="invite">invite</button>
+        <button id="invite">Invite</button>
         {{#if inScript}}
         <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
         {{/if}}
@@ -327,28 +334,30 @@ Evaluate me
 
 <template name="scriptLoginAfterQuiz">
   <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
-    <h3 style="width:65%">
+    <h2 style="width:65%">
       Well done!<br>
       Check out your soft skills 
-    </h3>
+    </h2>
     <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
   </section>
 </template>
 
 <template name="scriptLoginFinish">
 <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
-    <h3>
+    <h2>
       Well done!<br>
       Now answer questions for iovdin@gmail.com
-    </h3>
+    </h2>
     <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
 </section>
 </template>
 
 <template name="scriptInvitationFinish">
 <section>
+  <h2>
     Well Done!<br>
     <button class="next">download app</button>
+  </h2>
 </section>
 </template>
 
