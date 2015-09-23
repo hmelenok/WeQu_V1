@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5 {
 
 h2, .h2 {font-size: $h2}
 h3, .h3 {font-size: $h3}
+h4, .h4 {font-size: $h4}
 h5, .h5 {font-size: $h5}
 
 .t50 {opacity: 0.5}
@@ -167,6 +168,7 @@ section {
   .feedElement {
     width: 90%;
     padding: 10px 20px;
+    font-size: $h4;
 
     @include flexbox;
     @include flex-direction(row);
@@ -221,20 +223,21 @@ section {
   }
   .title {
     width: 125px;
-    font-size: 13px;
+    font-size: $h5;
     text-align: right;
   }
   .underBar {
     margin-left: 10px;
-    height: 10px;
-    border: 1px solid grey;
+    height: 9px;
+    border: 1px solid #CECCCC;
+    box-sizing: border-box;
     border-radius: 5px;
     background-color: white;
   }
   .bar {
-    height: 10px;
+    height: 8px;
     background-color: #4475AE;
-    border-radius: 4px;
+    border-radius: 3px;
   }
   .value {background-color: #DF6959;}
   .problem_solving {background-color: #379350;}
