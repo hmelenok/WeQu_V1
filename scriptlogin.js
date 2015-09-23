@@ -19,7 +19,7 @@ if(Meteor.isClient){
                     this.render('quiz', {
                         'data': {
                             'feedback': Feedback.findOne({ 'from': Meteor.userId() }),
-                            'person': Meteor.user()
+                            'person': Meteor.user().profile
                         }
                     })                         
                 } else {

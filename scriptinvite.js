@@ -16,25 +16,29 @@ if (Meteor.isClient) {
                     this.render('quiz', {
                         'data': {
                             'feedback': Feedback.findOne({}),
-                            'person': Meteor.users.findOne({})
+                            'person': Meteor.users.findOne({}).profile
                         }
                     })
                 } else {
                     this.render('loading');
                 }  
-                break;
+                return;
             }
 
             case 'finish' : {
                 this.render('scriptInvitationFinish')
-                break;
+                return;
+            }
+            default: {
+                Router.go("/");
+                return;
             }
         }
 
     }, { 'name': '/script-invitation' });
 
     Template['scriptInvitationFinish'].events({
-        "click .next" : function () {
+        "click button" : function () {
             Session.setPersistent('invite', false);
             Session.clear('invitation-id');
             return Router.go('/');

@@ -188,10 +188,10 @@
 </template>
 
 <template name='quiz'>
-  <section class="vote gradient1">
+<section class="vote gradient{{person.gradient}}">
     <section>
-      <img src="{{person.profile.pictureUrl}}" class="avatar"><br>
-      {{person.profile.firstName}} {{person.profile.lastName}}<br>
+      <img src="{{person.pictureUrl}}" class="avatar"><br>
+      {{person.firstName}} {{person.lastName}}<br>
       <!--<button>next person</button>-->
     </section>
     <section>
@@ -204,7 +204,9 @@
       {{else}}
         <div class="question">
           {{question.text}}
-          <div class="h5 t50">You are answering anounymos</div>
+          {{#unless self}}
+          <div class="h5 t50">You are answering anonymously</div>
+          {{/unless}}
         </div>
         <ul class="answers">
           {{#each question.answers}}
@@ -337,7 +339,7 @@ Evaluate me
 <template name="scriptInvitationFinish">
 <section>
     Well Done!<br>
-    <button>download app</button>
+    <button class="next">download app</button>
 </section>
 </template>
 
