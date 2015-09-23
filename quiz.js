@@ -1,5 +1,6 @@
 if(Meteor.isClient) {
     Router.route('/quiz', function () {
+        route.set("quiz");
         return this.render('loading');
     }, { 'name': '/quiz' });
 

@@ -1,5 +1,5 @@
-if (Meteor.isClient) {
-
+if (Meteor.isClient) {  
+  
     Router.configure({ layoutTemplate: 'ApplicationLayout' });
     Router.onBeforeAction(function () {
         Meteor.userId() ? this.next() : this.render('login');
@@ -12,17 +12,30 @@ if (Meteor.isClient) {
         return this.next();
     }, { 'except': [ '/script-login', '/admin', '/script-invitation', '/invitation/:_id' ] });
 
+    route = new ReactiveVar("quiz");
+  
     Router.route('/', function () {
+        route.set('profile');
         return Router.go('/profile');
     }, { 'name': '/' });
 
     Router.route('/feed', function () {
+        route.set('feed')
         return this.render('feed');
     }, { 'name': '/feed' });
 
-
-
-
+    Template.menu.helpers ({  
+      route: function(status) {
+        return status == route.get();
+      }
+    });
+  
+    Template.menuProfile.helpers ({  
+      route: function(status) {
+        return status == route.get();
+      }
+    });
+  
     Template.registerHelper("case", function(){
         var pair =_.chain(this).pairs().first().value();
 

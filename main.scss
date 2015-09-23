@@ -34,6 +34,7 @@ html, body {
 .h5 {font-size: 12px}
 
 .t50 {opacity: 0.5}
+.t100 {opacity: 1.0}
 
 .whiteText {
   color: white; 
@@ -94,7 +95,7 @@ input {
   @include align-items(center);
 
   @include flex-grow(0);
-  @include flex-shrink(1);
+  @include flex-shrink(0);
   @include flex-basis(auto);
   
   img {
@@ -104,6 +105,7 @@ input {
   a {
     color: #fff;
     text-decoration: none;
+    //opacity: 0.5;
   }
 }
 
@@ -127,6 +129,11 @@ section {
 }
 
 .gradient1 {background: linear-gradient(#3C3C3C, #345BB5)}
+.gradient2 {background: linear-gradient(#3C3C3C, #349548)}
+.gradient3 {background: linear-gradient(#3C3C3C, #C96E0B)}
+.gradient4 {background: linear-gradient(#3C3C3C, #E96956)}
+.gradient5 {background: linear-gradient(#3C3C3C, #9964B8)}
+.gradient6 {background: linear-gradient(#3C3C3C, #2BAADB)}
 
 .feed {
   @extend section;
@@ -185,9 +192,9 @@ section {
 }
 
 .skillElement {
-  width: 100%;
+  width: 90%;
   min-height: 15px;
-  padding: 5px 0;
+  padding: 5px 10px;
   
   @include flexbox;
   @include flex-direction(row);
@@ -200,12 +207,27 @@ section {
   }
   .title {
     width: 125px;
+    font-size: 13px;
+    text-align: right;
   }
-  .bar {
+  .underBar {
     margin-left: 10px;
     height: 10px;
-    background-color: aqua;
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: white;
   }
+  .bar {
+    height: 10px;
+    background-color: #4475AE;
+    border-radius: 4px;
+  }
+  .category1 {background-color: #DF6959;}
+  .category2 {background-color: #379350;}
+  .category3 {background-color: #81609A;}
+  .category4 {background-color: #B96B2E;}
+  .category5 {background-color: #4475AE;}
+  .category6 {background-color: #32A2C8;}
 }
 
 .statusBar {

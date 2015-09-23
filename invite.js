@@ -1,5 +1,6 @@
 if(Meteor.isClient) {
     Router.route('/invite', function () {
+        route.set('invite');
         this.wait(Meteor.subscribe('connections'));
         this.ready() ? this.render('invite') : this.render('loading');
     }, { 'name': '/invite' });
