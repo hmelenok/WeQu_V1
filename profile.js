@@ -1,11 +1,11 @@
 Router.route('/profile', function () {
     this.wait(Meteor.subscribe('feedback'));
-    if(this.ready() && Feedback.findOne({ 'from': Meteor.userId() })){
-        var myfeedback = Feedback.findOne({ 'from': Meteor.userId() });
+    if(this.ready() && Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() })){
+        var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
         var data = { profile : Meteor.user().profile }
         data.myscore = calculateScore(myfeedback.qset) 
 
-        var otherFeedback = Feedback.find({ '_id': { '$ne': Meteor.userId() } }).fetch();
+        var otherFeedback = Feedback.find({ 'from': { '$ne': Meteor.userId() }, 'to' : Meteor.userId() }).fetch();
         var joinedQset = _.reduce(otherFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
 
         var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
@@ -19,21 +19,38 @@ Router.route('/profile', function () {
         data.top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
         data.weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
 
-        data.categories = _.map(_.keys(framework), function(category) {
-            return {
-                name : i18n[category],
-                skills : _.map(framework[category], function(skill){
-                    return {name : i18n[skill], value: Math.round(data.otherscore[skill] * 100) }
-                })
-            }
-        })
-        console.log("data", data);
-
         this.render('profile', { data : data});  
     } else {
         this.render('loading');
     }
 }, { 'name': '/profile' });
+
+Router.route('/profile/skills', function () {
+    this.wait(Meteor.subscribe('feedback'));
+    if(this.ready()){
+        var data = { profile : Meteor.user().profile }
+        var otherFeedback = Feedback.find({ 'from': { '$ne': Meteor.userId() }, 'to' : Meteor.userId() }).fetch();
+        var joinedQset = _.reduce(otherFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
+
+        var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
+        var otherscore = calculateScore(joinedQset);
+        data.enoughData = (validAnswers.length > 15);
+
+        data.categories = _.map(_.keys(framework), function(category) {
+            return {
+                name : i18n[category],
+                skills : _.map(framework[category], function(skill){
+                    return {name : i18n[skill], value: Math.round(otherscore[skill] * 100) }
+                })
+            }
+        })
+
+        this.render('profileSkills', { data : data});  
+
+    } else {
+        this.render('loading');
+    }
+}, { 'name': '/profile/skills' });
 
 Router.route('/profile/written-feedback', function () {
     return this.render('profileWrittenFeedback', {
@@ -41,11 +58,6 @@ Router.route('/profile/written-feedback', function () {
     });
 }, { 'name': '/profile/written-feedback' });
 
-Router.route('/profile/skills', function () {
-    return this.render('profileSkills', {
-        'data': function () { return Meteor.user(); }
-    });
-}, { 'name': '/profile/skills' });
 
 dataForRadar =  function dataForRadar(score) {
     var radius = 150;
@@ -75,10 +87,8 @@ if (Meteor.isClient){
 }
 if(Meteor.isServer) {
     Meteor.startup(function () {
-        Meteor.publish('feedback', function (from) {
-            var query = { 'to': this.userId };
-            from ? query.from = from : void 0;
-            return Feedback.find(query);
+        Meteor.publish('feedback', function () {
+            return Feedback.find({$or : [ {from : this.userId}, {to : this.userId} ]});
         });
     });
 }

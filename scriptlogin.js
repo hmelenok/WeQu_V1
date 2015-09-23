@@ -29,8 +29,8 @@ if(Meteor.isClient){
             }
             case 'profile' : {
                 Meteor.subscribe('feedback', Meteor.userId());
-                if(this.ready() && Feedback.findOne({ 'from': Meteor.userId() })) {
-                    var myfeedback = Feedback.findOne({ 'from': Meteor.userId() });
+                if(this.ready() && Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() })) {
+                    var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
                     var score = calculateScore(myfeedback.qset);
 
                     var keys = _.sortBy(_.keys(score), function(key) { return score[key] })
