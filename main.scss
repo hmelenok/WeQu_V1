@@ -125,7 +125,6 @@ section {
 
 .vote {
   color: #fff;
-
 }
 
 .gradient {background: linear-gradient(#180C00, #3C3C3C)}
@@ -138,6 +137,8 @@ section {
 
 .feed {
   @extend section;
+  
+  padding: 20px 0;
   
   overflow-y: auto;
   overflow-x: hidden;
@@ -152,8 +153,8 @@ section {
   }
 
   .feedElement {
-    width: 100%;
-    //padding: 10px 0;
+    width: 90%;
+    padding: 10px 20px;
 
     @include flexbox;
     @include flex-direction(row);
@@ -177,17 +178,17 @@ section {
     }
     > div.what {
       //border: 1px solid green;
-      padding-left: 10px;
+      padding-left: 20px;
 
       @include flex-grow(1);
       @include flex-shrink(1);
       @include flex-basis(auto);
 
-      @include flexbox;
+/*      @include flexbox;
       @include flex-direction(row);
       @include flex-wrap(nowrap);
       @include justify-content(flex-start);
-      @include align-items(center);
+      @include align-items(center);*/
     }
   }
 }
@@ -327,6 +328,7 @@ li.answer:nth-child(even) {
   //max-width: 20%;
   //border: 1px solid black;
   
+  font-size: 13px;
   text-align: center;
   
   @include flexbox;
@@ -338,4 +340,9 @@ li.answer:nth-child(even) {
   @include flex-grow(1);
   @include flex-shrink(1);
   @include flex-basis(25%);
+  
+  img {
+    width: 80px;
+    margin-bottom: 10px;
+  }
 }

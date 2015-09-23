@@ -25,9 +25,9 @@
 
 <template name="menuProfile">
   <div class="menuBar">
-    <a href="/quiz"><img src="/img/back.png" style="width:20px;"></a>
-    <div>{{profile.firstName}} {{profile.lastName}}</div>
-    <div><img src="/img/back.png" style="width:20px; visibility: hidden"></div>
+    <a href="/quiz"><img src="/img/back.png" style="width:18px;"></a>
+    <div><b>{{profile.firstName}} {{profile.lastName}}</b></div>
+    <div><img src="/img/back.png" style="width:18px; visibility: hidden"></div>
   </div>
   <div class="menuBar">
     <a href="/profile" class="{{#if route 'profile'}}t100{{else}}t50{{/if}}">Overview</a>
@@ -48,6 +48,7 @@
 <template name="profile">
   {{#if inScript}}
     <section class="feed">
+      <h3>Soft Skill Overview</h3>
       <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
         {{> radar score=myscore color="white"}}
       </svg>
@@ -62,13 +63,14 @@
   {{else}}
     {{> menuProfile}}
     <section class="feed">
+      <h3>Soft Skill Overview</h3>
       <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
         {{> radar score=myscore color="white"}}
         {{> radar score=otherscore color="#E96956"}}
       </svg>
-      Top 3 skills
+      <h3>Top 3 skills</h3>
       {{> threeSkills data=top3}}
-      Weak 3 skills
+      <h3>Weak 3 skills</h3>
       {{> threeSkills data=weak3}}
     </section>
   {{/if}}
@@ -78,7 +80,7 @@
   <ul class="maxContainer">
     {{#each data}}
       <li class="max">
-        <img src="/img/skills/{{skill}}.png" style="width:65px">
+        <img src="/img/skills/{{skill}}.png">
         {{text}}
       </li>
     {{/each}}
@@ -167,7 +169,7 @@
         <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
       </div>
       <div class="what">
-        Ivan Pashchenko wrote<br>
+        <b>Ivan Pashchenko</b> wrote<br>
         Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
       </div>
     </div>
@@ -176,7 +178,7 @@
         <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
       </div>
       <div class="what">
-        Ivan Pashchenko wrote<br>
+        <b>Ivan Pashchenko</b> wrote<br>
         Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
       </div>
     </div>
@@ -185,7 +187,7 @@
         <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
       </div>
       <div class="what">
-        Ivan Pashchenko wrote<br>
+        <b>Ivan Pashchenko</b> wrote<br>
         Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
       </div>
     </div>
@@ -290,7 +292,7 @@ Evaluate me
         <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
       </div>
       <div class="what">
-        Ivan Pashchenko voted Empathy.
+        <b>Ivan Pashchenko</b> voted Empathy.
       </div>
     </div>
     <div class="feedElement">
@@ -298,7 +300,7 @@ Evaluate me
         <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
       </div>
       <div class="what">
-        Ivan Pashchenko wrote:<br>
+        <b>Ivan Pashchenko</b> wrote:<br>
         Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
       </div>
     </div>    
@@ -307,7 +309,7 @@ Evaluate me
         <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
       </div>
       <div class="what">
-        Ivan Pashchenko voted Empathy      
+        <b>Ivan Pashchenko</b> voted Empathy      
       </div>
     </div>
   </section>
