@@ -40,8 +40,9 @@ Router.route('/profile/skills', function () {
         data.categories = _.map(_.keys(framework), function(category) {
             return {
                 name : i18n[category],
+                category : category,
                 skills : _.map(framework[category], function(skill){
-                    return {name : i18n[skill], value: Math.round(otherscore[skill] * 100) }
+                    return {name : i18n[skill], value: Math.round(otherscore[skill] * 100, skill: skill) }
                 })
             }
         })
