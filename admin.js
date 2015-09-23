@@ -5,10 +5,11 @@ if (Meteor.isClient) {
 
     Template['admin'].events({
         "click #import" : function () {
-            return Meteor.call('import');
+            Meteor.call('import');
         },
         'click #reset' : function () {
-            return setLoginScript('init');
+            setLoginScript('init');
+            Meteor.call("reset")
         },
         'click #logout' : function(){
             Meteor.logout();
@@ -46,7 +47,14 @@ if(Meteor.isServer) {
         return !Answers.findOne({}) ? importQuestions() : void 0;
     });
 
-    Meteor.methods({ import : function(){
-        importQuestions();
-    }})
+    Meteor.methods({ 
+        import : importQuestions,
+        reset : function(){
+            if(Meteor.userId()) {
+                Feedback.remove({from : Meteor.userId()});
+                Feedback.remove({to : Meteor.userId()});
+                Meteor.users.remove({_id : Meteor.userId()});
+            }
+        }
+    })
 }
