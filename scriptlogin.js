@@ -84,7 +84,7 @@ setLoginScript =  function setLoginScript(value) {
 
 if(Meteor.isClient){
     Template['scriptLoginAfterQuiz'].events({ 
-        "click button" : function () {
+        "click #next" : function () {
             setLoginScript('profile');
         }
     });
@@ -95,7 +95,7 @@ if(Meteor.isClient){
         }
     });
     Template['scriptLoginFinish'].events({
-        'click button' : function () {
+        'click #next' : function () {
             setLoginScript(false);
             return Router.go('/');
         }

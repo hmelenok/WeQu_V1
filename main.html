@@ -19,7 +19,7 @@
     <a href="/invite"><img src="/img/icon_invite.png"></a>
     <a href="/feed"><img src="/img/icon_feed.png"></a>
     <a href="/profile"><img src="/img/icon_profile.png"></a>
-    <a href="/admin">Admin</a>
+    <a href="/admin">A</a>
   </div>
 </template>
 
@@ -27,7 +27,7 @@
   <div class="menuBar">
     <a href="/profile">Overview</a>
     <a href="/profile/skills">Skills</a>
-    <a href="/profile/written-feedback">Wr_FB</a>
+    <a href="/profile/written-feedback">Feedback</a>
   </div>
 </template>
 
@@ -43,11 +43,16 @@
 <template name="profile">
   {{#if inScript}}
     <section class="feed">
-      {{> radar score=myscore color="grey"}}
+      <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
+        {{> radar score=myscore color="grey"}}
+      </svg>
+      <h3>Top 3 skills</h3>
       {{> threeSkills data=top3}}
+      <h3>Weak 3 skills</h3>
       {{> threeSkills data=weak3}}
+      <button id="finish">Invite people</button>
       {{> skillsPreview}}
-      <button id="finish"> next </button>
+      <button id="finish">Invite people</button>
     </section>
   {{else}}
     {{> menuProfile}}
@@ -68,7 +73,7 @@
   <ul class="maxContainer">
     {{#each data}}
       <li class="max">
-        <img src="/img/skills/{{skill}}.png" style="width:50px">
+        <img src="/img/skills/{{skill}}.png" style="width:65px">
         {{text}}
       </li>
     {{/each}}
@@ -129,9 +134,7 @@
 
 <template name="skillsPreview">
   <h3>dumb skills</h3>
-  <a href="/invite">invite people</a>
   <img src="/img/skills_dumb.png" style="width:100%; height:auto; opacity:0.5">
-  <a href="/invite">invite people</a>
 </template>
 
 <template name="skillCategories">
@@ -180,36 +183,39 @@
 </template>
 
 <template name='quiz'>
-  <section>
-    <img src="{{person.profile.pictureUrl}}" class="avatar"><br>
-    {{person.profile.firstName}} {{person.profile.lastName}}<br>
-    <!--<button>next person</button>-->
-  </section>
-  <section>
-    {{#if writtenFeedback}}
-      <div class="question">
-        Why do you think so?
-      </div>
-      <textarea rows="3" style="width:100%">Wrote your feedback here</textarea>
+  <section class="vote gradient1">
+    <section>
+      <img src="{{person.profile.pictureUrl}}" class="avatar"><br>
+      {{person.profile.firstName}} {{person.profile.lastName}}<br>
+      <!--<button>next person</button>-->
+    </section>
+    <section>
+      {{#if writtenFeedback}}
+        <div class="question">
+          Why do you think so?
+        </div>
+        <textarea rows="3" style="width:100%">Wrote your feedback here</textarea>
 
-    {{else}}
-      <div class="question">
-        {{question.text}}
+      {{else}}
+        <div class="question">
+          {{question.text}}
+          <div class="h5 t50">You are answering anounymos</div>
+        </div>
+        <ul class="answers">
+          {{#each question.answers}}
+            <li class="answer" id="{{_id}}">{{text}}</li>
+          {{/each}}
+        </ul>
+      {{/if}}
+      {{#if writtenFeedback}}
+      <div class="statusBar">
+        <a href="" class="skip">Skip</a>
+        <a href="" class="writeAnswer">Answer</a>
+        <!--TODO: <div>Answered {{answered}} out of 30</div>-->
+        <div><a href="" class="skip">Skip</a></div>
       </div>
-      <ul class="answers">
-        {{#each question.answers}}
-          <li class="answer" id="{{_id}}">{{text}}</li>
-        {{/each}}
-      </ul>
-    {{/if}}
-    {{#if writtenFeedback}}
-    <div class="statusBar">
-      <a href="" class="skip">Skip</a>
-      <a href="" class="writeAnswer">Answer</a>
-      <!--TODO: <div>Answered {{answered}} out of 30</div>-->
-      <div><a href="" class="skip">Skip</a></div>
-    </div>
-    {{/if}}
+      {{/if}}
+    </section>
   </section>
 </template>
 
@@ -237,9 +243,8 @@ Evaluate me
     </div>
   </section>
 {{/if}}
-  <section>
-
-    invite people<br>
+  <section class="gradient1 whiteText alignCenter">
+    <h3>Invite people to get<br> their feedback</h3>
     <!--<ul>
     {{#each connections}}
     <li>{{firstName}}</li>
@@ -258,7 +263,7 @@ Evaluate me
     <input name="email" placeholder="email address"/>
     <button id="invite">invite</button>
     {{#if inScript}}
-    <button id="next"> next </button>
+    <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
     {{/if}}
   </section>
 </template>
@@ -294,27 +299,32 @@ Evaluate me
 </template>
 
 <template name="loading">
-<section>
-loading
-</section>
+  <section class="gradient1 whiteText alignCenter">
+    loading...
+  </section>
 </template>
 
 <template name="scriptLoginInit">
-{{>loading}}
+  {{>loading}}
 </template>
 
 <template name="scriptLoginAfterQuiz">
-<section>
-    Well Done!<br>
-    Check you profile
-    <button>next</button>
-</section>
+  <section class="gradient1 whiteText alignCenter">
+    <h3 style="width:65%">
+      Well done!<br>
+      Check out your soft skills 
+    </h3>
+    <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
+  </section>
 </template>
 
 <template name="scriptLoginFinish">
-<section>
-    Well Done!<br>
-    <button>finish</button>
+<section class="gradient1 whiteText alignCenter">
+    <h3>
+      Well done!<br>
+      Now answer questions for iovdin@gmail.com
+    </h3>
+    <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
 </section>
 </template>
 

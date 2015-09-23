@@ -34,7 +34,7 @@ if (Meteor.isClient) {
     }, { 'name': '/script-invitation' });
 
     Template['scriptInvitationFinish'].events({
-        "click button" : function () {
+        "click .next" : function () {
             Session.setPersistent('invite', false);
             Session.clear('invitation-id');
             return Router.go('/');

@@ -12,8 +12,11 @@ html, body {
   margin: 0; 
   padding: 0;
   height: 100%;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  
+  position:relative;
+  overflow-y: hidden;
+  //overflow-y: scroll;
+  //-webkit-overflow-scrolling: touch;
   
   font-family: Raleway, sans-serif;
   
@@ -28,6 +31,45 @@ html, body {
   @include flex-basis(auto);
 }
 
+.h5 {font-size: 12px}
+
+.t50 {opacity: 0.5}
+
+.whiteText {
+  color: white; 
+  
+  button {
+    background: none;
+    border: 1px solid white;
+  }
+}
+
+.alignCenter {text-align: center}
+
+button {
+  width: 80%;
+  padding: 15px 0;
+  margin: 20px 0;
+  
+  background: #345BB5;
+  color: white;
+  border: none;
+  font-size: 18px;
+}
+
+input {
+  width: 80%;
+  
+  background: none;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  
+  border: none;
+  border-bottom: 2px solid white;
+  border-radius: 0px;
+}
+
 .avatar {
   height: 120px;
   @include clip-path(circle(50% at center));
@@ -40,6 +82,7 @@ html, body {
 
 .menuBar {
   min-height: 50px;
+  padding-top: 5px;
   //border: 1px solid grey;
   background-color: #303030;
   
@@ -77,15 +120,23 @@ section {
   @include align-items(center);
 }
 
+.vote {
+  color: #fff;
+
+}
+
+.gradient1 {background: linear-gradient(#3C3C3C, #345BB5)}
+
 .feed {
   @extend section;
   
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   @include justify-content(flex-start);
   
   > * {
-    border: 1px solid red;
+    //border: 1px solid red;
     @include flex-grow(0);
     @include flex-shrink(0);
     @include flex-basis(auto); 
@@ -208,24 +259,29 @@ section {
   @include flex-basis(40vw);
 }
 
+.answer:active {
+  background-color: rgba(255,255,255,0.3);
+}
+
 li.answer:nth-child(odd) {
     border: none;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
   }
 li.answer:nth-child(even) {
     border: none;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    border-left: 1px solid white;
 }
 
 .maxContainer {
-  padding: 0px; 
+  padding: 5% 0;
+  margin: 0px;
   
-  min-height: 20vh;
-  width: 100vw;
-  border: 1px solid red;
+  //min-height: 20vh;
+  width: 90%;
+  //border: 1px solid red;
   
   @include flexbox;
   @include flex-direction(row);
@@ -234,28 +290,28 @@ li.answer:nth-child(even) {
   @include align-items(stretch);
   
   @include flex-grow(1);
-  @include flex-shrink(1);
+  @include flex-shrink(0);
   @include flex-basis(auto);
 }
 
 .max {
   margin: 0px;
   margin-top: -1px;
-  padding: 10px;
+  //padding: 10px;
   
   //min-width: 30%;
   //max-width: 20%;
-  border: 1px solid black;
+  //border: 1px solid black;
   
   text-align: center;
   
   @include flexbox;
   @include flex-direction(column);
   @include flex-wrap(nowrap);
-  @include justify-content(center);
+  @include justify-content(flex-start);
   @include align-items(center);
   
   @include flex-grow(1);
   @include flex-shrink(1);
-  @include flex-basis(25vw);
+  @include flex-basis(25%);
 }
