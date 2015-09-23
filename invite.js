@@ -33,8 +33,7 @@ if(Meteor.isServer)  {
             }, {
                 'from': email,
                 'to': Meteor.userId(),
-                'qset': qset,
-                'score': initialScore
+                'qset': qset
             });
             var rec = Feedback.findOne({
                 'from': email,
