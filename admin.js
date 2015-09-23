@@ -9,6 +9,10 @@ if (Meteor.isClient) {
         },
         'click #reset' : function () {
             return setLoginScript('init');
+        },
+        'click #logout' : function(){
+            Meteor.logout();
+            Router.go("/");
         }
     })
 }
