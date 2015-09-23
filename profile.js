@@ -18,7 +18,8 @@ Router.route('/profile', function () {
         var keys = _.sortBy(_.keys(totalScore), function(key) { return totalScore[key] })
         data.top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
         data.weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
-
+        
+        this.layout('ScriptLayout');
         this.render('profile', { data : data});  
     } else {
         this.render('loading');
@@ -44,7 +45,7 @@ Router.route('/profile/skills', function () {
                 })
             }
         })
-
+        this.layout('ScriptLayout');
         this.render('profileSkills', { data : data});  
 
     } else {
@@ -53,6 +54,7 @@ Router.route('/profile/skills', function () {
 }, { 'name': '/profile/skills' });
 
 Router.route('/profile/written-feedback', function () {
+    this.layout('ScriptLayout');
     return this.render('profileWrittenFeedback', {
         'data': function () { return Meteor.user(); }
     });

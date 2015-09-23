@@ -25,6 +25,11 @@
 
 <template name="menuProfile">
   <div class="menuBar">
+    <a href="/quiz">back</a>
+    <div>Ivan Pashchenko</div>
+    <div> </div>
+  </div>
+  <div class="menuBar">
     <a href="/profile">Overview</a>
     <a href="/profile/skills">Skills</a>
     <a href="/profile/written-feedback">Feedback</a>
@@ -32,12 +37,12 @@
 </template>
 
 <template name="ApplicationLayout">
-  {{> menu}}
-  {{> yield}}
+    {{> menu}}
+    {{> yield}}
 </template>
 
 <template name="ScriptLayout">
-  {{> yield}}
+    {{> yield}}
 </template>
 
 <template name="profile">

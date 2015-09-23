@@ -9,14 +9,14 @@
 }
 
 html, body {
-  margin: 0; 
-  padding: 0;
-  height: 100%;
-  
-  position:relative;
+  position: relative;
   overflow-y: hidden;
   //overflow-y: scroll;
   //-webkit-overflow-scrolling: touch;
+  
+  margin: 0; 
+  padding: 0;
+  height: 100%;
   
   font-family: Raleway, sans-serif;
   
@@ -84,6 +84,7 @@ input {
   min-height: 50px;
   padding-top: 5px;
   //border: 1px solid grey;
+  color: white;
   background-color: #303030;
   
   @include flexbox;
