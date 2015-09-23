@@ -198,7 +198,7 @@
 <section class="vote gradient{{person.gradient}}">
     <section>
       <img src="{{person.pictureUrl}}" class="avatar"><br>
-      {{person.firstName}} {{person.lastName}}<br>
+      {{person.firstName}}&nbsp;{{person.lastName}}<br>
       <!--<button>next person</button>-->
     </section>
     <section>
@@ -210,7 +210,7 @@
 
       {{else}}
         <div class="question">
-          {{question.text}}
+          <h3>{{question.text}}</h3>
           {{#unless self}}
           <div class="h5 t50">You are answering anonymously</div>
           {{/unless}}

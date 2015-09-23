@@ -25,7 +25,7 @@ if(Meteor.isClient) {
         }
     });
     Template['quiz'].events({
-        "click .answer, click .skip, click .writeAnswer" : function (event, template) {
+        "click .answer, click .skip, click .writeAnswer, touchend .answer, touchend .skip, touchend .writeAnswer" : function (event, template) {
             var feedback = template.data.feedback;
             var question = currentQuestion(feedback.qset);
             var buttonType = event.target.getAttribute('class');
