@@ -2,10 +2,10 @@
 @import "https://fonts.googleapis.com/css?family=Raleway:400,700";
 
 $h1: 30px;
-$h2: 20px;
-$h3: 16px;  
-$h4: 14px;
-$h5: 12px;
+$h2: 5vmin;
+$h3: 4vmin;  
+$h4: 3.5vmin;
+$h5: 3vmin;
 
 @mixin clip-path($clip) {
   -webkit-clip-path: $clip;
@@ -20,11 +20,14 @@ html, body {
   //overflow-y: scroll;
   //-webkit-overflow-scrolling: touch;
   
+  cursor: pointer;
+  
   margin: 0; 
   padding: 0;
   height: 100%;
   
   font-family: Raleway, sans-serif;
+  font-size: $h3;
   
   @include flexbox;
   @include flex-direction(column);
@@ -39,6 +42,7 @@ html, body {
 
 h1, h2, h3, h4, h5 {
   font-weight: normal;
+  text-align: center;
 }
 
 h2, .h2 {font-size: $h2}
@@ -134,6 +138,25 @@ section {
   @include flex-wrap(nowrap);
   @include justify-content(center);
   @include align-items(center);
+}
+
+.person {
+  //border: 1px solid red;
+  
+  @include flex-direction(row);
+  
+  * {
+    //border: 1px solid red;
+  }
+  
+  div {
+    text-align: center;
+  }
+  
+  img {
+    width: 20px;
+    margin: 0 30px;
+  }
 }
 
 .vote {

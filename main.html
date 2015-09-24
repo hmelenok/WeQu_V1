@@ -60,9 +60,9 @@
       {{> threeSkills data=top3}}
       <h3>Weak 3 skills</h3>
       {{> threeSkills data=weak3}}
-      <button id="finish">Invite people</button>
+      <button id="finish">Next — Invite people</button>
       {{> skillsPreview}}
-      <button id="finish">Invite people</button>
+      <button id="finish">Next — Invite people</button>
     </section>
   {{else}}
     {{> menuProfile}}
@@ -210,15 +210,13 @@ You have no one to evaluate
 
 <template name='quiz'>
 <section class="vote gradient{{person.gradient}}">
-    <section>
-      <img src="{{person.pictureUrl}}" class="avatar"><br>
-        {{#if prevPerson}}
-        <a id="prevPerson"> prev </a>
-        {{/if}}
-      {{person.firstName}}&nbsp;{{person.lastName}}<br>
-        {{#if nextPerson}}
-        <a id="nextPerson"> next </a>
-        {{/if}}
+    <section class="person">
+        <a id="prevPerson" style="visibility:{{#if prevPerson}}visible{{else}}hidden{{/if}}"><img src="/img/left.png"></a>
+        <div class="h4">
+          <img src="{{person.pictureUrl}}" class="avatar"><br>
+          {{person.firstName}}&nbsp;{{person.lastName}}
+        </div>
+        <a id="nextPerson" style="visibility:{{#if nextPerson}}visible{{else}}hidden{{/if}}"><img src="/img/right.png"></a>
       <!--<button>next person</button>-->
     </section>
     {{#if feedback}}
@@ -233,7 +231,7 @@ You have no one to evaluate
         <div class="question">
           <h2>{{question.text}}</h2>
           {{#unless self}}
-          <div class="h5 t50">You are answering anonymously</div>
+          <div class="h5 t50 alignCenter">You are answering anonymously</div>
           {{/unless}}
         </div>
         <ul class="answers">
