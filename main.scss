@@ -1,6 +1,12 @@
 @import "lib/flexbox.scss";
 @import "https://fonts.googleapis.com/css?family=Raleway:400,700";
 
+$h1: 30px;
+$h2: 20px;
+$h3: 16px;  
+$h4: 14px;
+$h5: 12px;
+
 @mixin clip-path($clip) {
   -webkit-clip-path: $clip;
   -moz-clip-path: $clip;
@@ -31,7 +37,14 @@ html, body {
   @include flex-basis(auto);
 }
 
-.h5 {font-size: 12px}
+h1, h2, h3, h4, h5 {
+  font-weight: normal;
+}
+
+h2, .h2 {font-size: $h2}
+h3, .h3 {font-size: $h3}
+h4, .h4 {font-size: $h4}
+h5, .h5 {font-size: $h5}
 
 .t50 {opacity: 0.5}
 .t100 {opacity: 1.0}
@@ -155,6 +168,7 @@ section {
   .feedElement {
     width: 90%;
     padding: 10px 20px;
+    font-size: $h4;
 
     @include flexbox;
     @include flex-direction(row);
@@ -209,20 +223,21 @@ section {
   }
   .title {
     width: 125px;
-    font-size: 13px;
+    font-size: $h5;
     text-align: right;
   }
   .underBar {
     margin-left: 10px;
-    height: 10px;
-    border: 1px solid grey;
+    height: 9px;
+    border: 1px solid #CECCCC;
+    box-sizing: border-box;
     border-radius: 5px;
     background-color: white;
   }
   .bar {
-    height: 10px;
+    height: 8px;
     background-color: #4475AE;
-    border-radius: 4px;
+    border-radius: 3px;
   }
   .value {background-color: #DF6959;}
   .problem_solving {background-color: #379350;}
@@ -344,5 +359,30 @@ li.answer:nth-child(even) {
   img {
     width: 80px;
     margin-bottom: 10px;
+  }
+}
+
+.radarAgenda {
+  width: 100%;
+  padding: 20px 0;
+  //border: 1px solid red;
+  
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(nowrap);
+  @include justify-content(center);
+  @include align-items(space-between);
+  
+  > * {
+    //border: 1px solid red;
+    text-align: center;
+    
+    @include flex-grow(1);
+    @include flex-shrink(1);
+    @include flex-basis(40%); 
+  }
+  
+  img {
+    height: 24px;
   }
 }

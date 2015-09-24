@@ -83,8 +83,8 @@ if(Meteor.isClient) {
         }
     });
     var answering = false;
-    Template.quiz.events({
-        "click .answer, click .skip, click .writeAnswer" : function (event, template) {
+    Template['quiz'].events({
+        "click .answer, click .skip, click .writeAnswer, touchend .answer, touchend .skip, touchend .writeAnswer" : function (event, template) {
             if(answering){
                 return;
             }
