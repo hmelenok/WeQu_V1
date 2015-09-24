@@ -107,28 +107,6 @@ if(Meteor.isClient){
     });
 }
 
-genQuestionSet =  function genQuestionSet(name, answers) {
-    var questionText = quizzy({ 'name': name });
-    var answers = _.shuffle(answers);
-    var questionSet = [];
-    (function loop() {
-        var recur = loop;
-        do {
-            recur = answers.length > 2 && questionSet.length < 30 ? (function () {
-                questionSet.push({
-                    'text': questionText,
-                    'answers': [
-                        answers.pop(),
-                        answers.pop()
-                    ]
-                });
-                return loop;
-            })() : void 0;
-        } while (recur === loop);
-        return recur;
-    }.call(this));
-    return questionSet;
-};
 if(Meteor.isServer){
     Meteor.methods({
         'gen-question-set' : function (userId) {
@@ -140,7 +118,7 @@ if(Meteor.isServer){
             } else if(user && user.profile){
                 name = user.profile.firstName + ' ' + user.profile.lastName;
             }
-            qset = genQuestionSet(name, Answers.find({}).fetch());
+            var qset = genQuestionSet(name, Answers.find({}).fetch());
             Feedback.upsert({
                 'from': Meteor.userId(),
                 'to': userId
