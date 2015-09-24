@@ -28,6 +28,7 @@ html, body {
   
   font-family: Raleway, sans-serif;
   font-size: $h3;
+  //text-align: center;
   
   @include flexbox;
   @include flex-direction(column);
@@ -79,6 +80,7 @@ button, .button {
 
 input {
   width: 80%;
+  padding: 5px 0;
   
   background: none;
   color: white;
@@ -130,6 +132,8 @@ input {
 
 section {
   //padding: 20px;
+  //border: 1px solid red;
+  min-width: 100vw;
   
   @include flex-grow(1);
   @include flex-shrink(1);
@@ -146,6 +150,7 @@ section {
   //border: 1px solid red;
   
   @include flex-direction(row);
+  @include align-items(center);
   
   * {
     //border: 1px solid red;
@@ -229,6 +234,22 @@ section {
       @include justify-content(flex-start);
       @include align-items(center);*/
     }
+  }
+}
+
+.friend {
+  width: 90%;
+  padding: 10px 20px;
+  font-size: $h4;
+  
+  @include flexbox;
+  @include flex-direction(row);
+  @include flex-wrap(nowrap);
+  @include justify-content(flex-start);
+  @include align-items(center);
+  
+  img {
+    margin: 0 10px;
   }
 }
 
@@ -341,11 +362,11 @@ li.answer:nth-child(even) {
 }
 
 .maxContainer {
-  padding: 5% 0;
+  padding: 5% 10px;
   margin: 0px;
   
   //min-height: 20vh;
-  width: 90%;
+  //width: 90%;
   //border: 1px solid red;
   
   @include flexbox;
