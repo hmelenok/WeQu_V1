@@ -17,7 +17,7 @@ if(Meteor.isClient) {
             return [feedback.from, feedback.to];
         }).flatten().uniq().without(Meteor.userId()).difference(passed).sortBy().value();
 
-        if(quizPersonIndex.get() >= friends.length) {
+        if(quizPersonIndex.get() >= friends.length && friends.length > 0) {
             quizPersonIndex.set(friends.length - 1);
         }
         if(friends.length == 0) {
@@ -112,9 +112,8 @@ if(Meteor.isClient) {
                     console.log('feedback error', err);
                 }
                 answering = false;
-                if(currentQuestion(feedback.qset)) {
-                    questionDep.changed()
-                } else {
+                questionDep.changed()
+                if(!currentQuestion(feedback.qset)) {
                     getLoginScript() ? setLoginScript('after-quiz') : void 0;
                     Session.get('invite') ? Session.setPersistent('invite', 'finish') : void 0;
                 } 
