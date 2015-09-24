@@ -12,16 +12,16 @@ if (Meteor.isClient) {
         switch(Session.get('invite')) {
             case 'quiz': {
                 Meteor.subscribe('invitation', Session.get('invitation-id'));
-                if(this.ready() && Feedback.findOne({})){
-                    this.render('quiz', {
-                        'data': {
-                            'feedback': Feedback.findOne({}),
-                            'person': Meteor.users.findOne({}).profile
-                        }
-                    })
-                } else {
+                if(!this.ready() || !Feedback.findOne({})){
                     this.render('loading');
-                }  
+                    return;
+                }
+                this.render('quiz', {
+                    'data': {
+                        'feedback': Feedback.findOne({}),
+                        'person': Meteor.users.findOne({}).profile
+                    }
+                })
                 return;
             }
 

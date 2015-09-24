@@ -1,7 +1,50 @@
 if(Meteor.isClient) {
-    Router.route('/quiz', function () {
+    quizPersonIndex = new ReactiveVar(0)
+    Router.route('/quiz', function(){
         route.set("quiz");
-        return this.render('loading');
+        this.wait(Meteor.subscribe('feedback'));
+        if(!this.ready()) {
+            this.render('loading');
+            return;
+        }
+        var feedbacks = Feedback.find().fetch()
+        var passed = _.chain(feedbacks).map(function(feedback){
+            var question = currentQuestion(feedback.qset);
+            // do not show friends that you've evaluated 
+            if(!question && feedback.from == Meteor.userId()) return feedback.to; 
+        }).compact().value()
+        var friends =  _.chain(feedbacks).map(function(feedback){
+            return [feedback.from, feedback.to];
+        }).flatten().uniq().without(Meteor.userId()).difference(passed).sortBy().value();
+
+        if(quizPersonIndex.get() >= friends.length) {
+            quizPersonIndex.set(friends.length - 1);
+        }
+        if(friends.length == 0) {
+            this.render('quizNothing');
+            return;
+        } 
+
+        answering = false;
+        var userId = friends[quizPersonIndex.get()];
+        var data = { feedback : Feedback.findOne({to: userId }) }
+
+        if(!data.feedback) {
+            Meteor.call('gen-question-set', userId, function (err, result) {
+                questionDep.changed();
+                console.log('gen-question-set', err);
+            });
+        }
+        var user = Meteor.users.findOne({_id : userId});
+        if(user){
+            data.person = user.profile;
+        } else {
+            data.person = { _id: userId, firstName : userId, gradient: 1}
+        }
+        data.nextPerson = (quizPersonIndex.get() < friends.length - 1);
+        data.prevPerson = (quizPersonIndex.get() > 0)
+
+        this.render('quiz', {data : data});
     }, { 'name': '/quiz' });
 
     var questionDep =  new Tracker.Dependency();
@@ -11,7 +54,8 @@ if(Meteor.isClient) {
             return !_.has(question, 'answer') || !_.has(question, 'written');
         });
     };
-    Template['quiz'].helpers({
+
+    Template.quiz.helpers({
         'writtenFeedback' : function () {
             var question = currentQuestion(this.feedback.qset);
             !(this.feedback.to == this.feedback.from) && question && _.has(question, 'answer') && !_.has(question, 'written');
@@ -22,10 +66,29 @@ if(Meteor.isClient) {
         },
         'question' : function () {
             return currentQuestion(this.feedback.qset);
+        },
+        'questionNum' : function(){
+            questionDep.depend();
+            var idx = 0
+            _.find(this.feedback.qset, function (question) {
+                idx++;
+                return !_.has(question, 'answer') || !_.has(question, 'written');
+            });
+            return idx;
+
+        }, 
+        'questionsTotal' : function(){
+            questionDep.depend();
+            return this.feedback.qset.length;
         }
     });
-    Template['quiz'].events({
+    var answering = false;
+    Template.quiz.events({
         "click .answer, click .skip, click .writeAnswer" : function (event, template) {
+            if(answering){
+                return;
+            }
+            answering = true
             var feedback = template.data.feedback;
             var question = currentQuestion(feedback.qset);
             var buttonType = event.target.getAttribute('class');
@@ -45,7 +108,10 @@ if(Meteor.isClient) {
             }
 
             Meteor.call('feedback', feedback._id, feedback.qset, function (err, result) {
-                console.log('feedback', err, result);
+                if(err) {
+                    console.log('feedback error', err);
+                }
+                answering = false;
                 if(currentQuestion(feedback.qset)) {
                     questionDep.changed()
                 } else {
@@ -53,6 +119,12 @@ if(Meteor.isClient) {
                     Session.get('invite') ? Session.setPersistent('invite', 'finish') : void 0;
                 } 
             });
+        },
+        "click #nextPerson" : function(){
+            quizPersonIndex.set(quizPersonIndex.get() + 1);
+        },
+        "click #prevPerson" : function(){
+            quizPersonIndex.set(quizPersonIndex.get() - 1);
         }
     });
 }

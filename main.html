@@ -194,13 +194,27 @@
   </section>
 </template>
 
+<template name="quizNothing">
+<section class="vote gradient{{currentUser.profile.gradient}}">
+You have no one to evaluate
+<a href="/invite">Please invite someone </a>
+</section>
+</template>
+
 <template name='quiz'>
 <section class="vote gradient{{person.gradient}}">
     <section>
       <img src="{{person.pictureUrl}}" class="avatar"><br>
+        {{#if prevPerson}}
+        <a id="prevPerson"> prev </a>
+        {{/if}}
       {{person.firstName}} {{person.lastName}}<br>
+        {{#if nextPerson}}
+        <a id="nextPerson"> next </a>
+        {{/if}}
       <!--<button>next person</button>-->
     </section>
+    {{#if feedback}}
     <section>
       {{#if writtenFeedback}}
         <div class="question">
@@ -221,15 +235,16 @@
           {{/each}}
         </ul>
       {{/if}}
+      <div>Question {{questionNum}} of {{questionsTotal}}</div>
       {{#if writtenFeedback}}
       <div class="statusBar">
         <a href="" class="skip">Skip</a>
         <a href="" class="writeAnswer">Answer</a>
-        <!--TODO: <div>Answered {{answered}} out of 30</div>-->
         <div><a href="" class="skip">Skip</a></div>
       </div>
       {{/if}}
     </section>
+    {{/if}}
   </section>
 </template>
 

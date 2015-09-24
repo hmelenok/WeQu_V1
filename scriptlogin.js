@@ -14,7 +14,7 @@ if(Meteor.isClient){
                 break;
             }
             case 'quiz': {
-                Meteor.subscribe('feedback', Meteor.userId());
+                Meteor.subscribe('feedback');
                 if(this.ready() && Feedback.findOne({ 'from': Meteor.userId() })){
                     this.render('quiz', {
                         'data': {
@@ -28,7 +28,7 @@ if(Meteor.isClient){
                 break;
             }
             case 'profile' : {
-                Meteor.subscribe('feedback', Meteor.userId());
+                Meteor.subscribe('feedback');
                 if(this.ready() && Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() })) {
                     var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
                     var score = calculateScore(myfeedback.qset);
@@ -133,8 +133,13 @@ if(Meteor.isServer){
     Meteor.methods({
         'gen-question-set' : function (userId) {
             check(Meteor.userId(), String);
-            var profile = Meteor.user().profile;
-            var name = userId == Meteor.userId() ? 'you' : profile.firstName + ' ' + profile.lastName;
+            var user = Meteor.users.findOne({_id : userId});
+            var name = userId;
+            if(userId == Meteor.userId()) {
+                name = 'you';
+            } else if(user && user.profile){
+                name = user.profile.firstName + ' ' + user.profile.lastName;
+            }
             qset = genQuestionSet(name, Answers.find({}).fetch());
             Feedback.upsert({
                 'from': Meteor.userId(),
