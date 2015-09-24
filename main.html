@@ -202,21 +202,21 @@
 </template>
 
 <template name="quizNothing">
-<section class="vote gradient{{currentUser.profile.gradient}}">
-You have no one to evaluate
-<a href="/invite">Please invite someone </a>
+<section class="whiteText gradient{{currentUser.profile.gradient}}">
+  <h3>You have no one to evaluate</h3>
+  <a href="/invite" class="button">Invite people</a>
 </section>
 </template>
 
 <template name='quiz'>
 <section class="vote gradient{{person.gradient}}">
     <section class="person">
-        <a id="prevPerson" style="visibility:{{#if prevPerson}}visible{{else}}hidden{{/if}}"><img src="/img/left.png"></a>
+        <a id="prevPerson" class="nav" style="visibility:{{#if prevPerson}}visible{{else}}hidden{{/if}}"><img src="/img/left.png"></a>
         <div class="h4">
           <img src="{{person.pictureUrl}}" class="avatar"><br>
           {{person.firstName}}&nbsp;{{person.lastName}}
         </div>
-        <a id="nextPerson" style="visibility:{{#if nextPerson}}visible{{else}}hidden{{/if}}"><img src="/img/right.png"></a>
+        <a id="nextPerson" class="nav" style="visibility:{{#if nextPerson}}visible{{else}}hidden{{/if}}"><img src="/img/right.png"></a>
       <!--<button>next person</button>-->
     </section>
     {{#if feedback}}
