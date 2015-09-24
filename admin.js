@@ -3,6 +3,8 @@ if (Meteor.isClient) {
         return this.render('admin');
     }, { 'name': '/admin' });
 
+    //TODO: admin auth
+
     Template['admin'].events({
         "click #import" : function () {
             Meteor.call('import');
@@ -14,8 +16,16 @@ if (Meteor.isClient) {
         'click #logout' : function(){
             Meteor.logout();
             Router.go("/");
-        }
-    })
+        },
+        'click #login' : function(){
+            Meteor.call("loginTestUser", function(err, result){
+                console.log("loginTestUser", err, result);
+                Meteor.loginWithPassword(result, result, function(err, result){
+                    console.log("loginWithPassword", err, result)
+                });
+            });
+        } 
+    });
 }
 
 if(Meteor.isServer) {
@@ -55,6 +65,16 @@ if(Meteor.isServer) {
                 Feedback.remove({to : Meteor.userId()});
                 Meteor.users.remove({_id : Meteor.userId()});
             }
+        },
+        loginTestUser : function(){
+            var username = "test" + Math.round(Math.random() * 10000000);
+            Accounts.createUser({ 
+                username: username, 
+                                email: username + "@email.test", 
+                                password: username, 
+                                profile: { firstName : username, lastName : ""}});
+            return username;
+
         }
     })
 }
