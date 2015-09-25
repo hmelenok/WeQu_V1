@@ -36,11 +36,7 @@ if(Meteor.isClient) {
             });
         }
         var user = Meteor.users.findOne({_id : userId});
-        if(user){
-            data.person = user.profile;
-        } else {
-            data.person = { _id: userId, firstName : userId, gradient: 1}
-        }
+        data.person = user.profile;
         data.nextPerson = (quizPersonIndex.get() < friends.length - 1);
         data.prevPerson = (quizPersonIndex.get() > 0)
 
@@ -114,8 +110,15 @@ if(Meteor.isClient) {
                 answering = false;
                 questionDep.changed()
                 if(!currentQuestion(feedback.qset)) {
-                    getLoginScript() ? setLoginScript('after-quiz') : void 0;
-                    Session.get('invite') ? Session.setPersistent('invite', 'finish') : void 0;
+                    if(Session.get('invite')){
+                        Session.setPersistent('invite', 'finish');
+                        /*if(Meteor.user().profile.pictureUrl) {
+                        } else {
+                            Session.setPersistent('invite', 'filldata');
+                        }*/
+                    } else if(getLoginScript()) {
+                        setLoginScript('after-quiz');
+                    }
                 } 
             });
         },

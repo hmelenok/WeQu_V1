@@ -26,7 +26,7 @@
 <template name="menuProfile">
   <div class="menuBar">
     <a href="/quiz"><img src="/img/back.png" style="width:18px;"></a>
-    <div><b>{{profile.firstName}} {{profile.lastName}}</b></div>
+    <div><b>{{username profile}}</b></div>
     <div><img src="/img/back.png" style="width:18px; visibility: hidden"></div>
   </div>
   <div class="menuBar">
@@ -98,41 +98,6 @@
     {{/each}}
   </ul>
 </template>
-
-<!--<template name="profile">
-  <section>
-    <img src="{{profile.pictureUrl}}"/>
-    <br>
-    {{profile.firstName}} {{profile.lastName}}
-  </section>
-  <section>
-    <div height="300px" style="background-image: url('/img/skills.png'); background-size: cover; background-position: center">
-      {{> radar score=myscore color="grey"}}
-      {{#if enoughData}}
-          {{> radar score=otherscore color="lime"}}
-      {{/if}}
-    </div>
-  </section>
-
-  {{#if enoughData}}
-  <section>
-      {{#each categories}}
-        <h3>{{name}}</h3>
-        {{#each skills}}
-            <div class="skillElement">
-              <div class="title">{{name}}</div>
-              <div class="bar" style="width:{{value}}px"></div>
-            </div>
-        {{/each}}
-      {{/each}}
-  </section>
-  {{/if}}
-  <section>
-    {{#if inScript}}
-    <button id="finish"> next </button>
-    {{/if}}
-  </section>
-</template>-->
 
 <template name="radar">
         <polygon points="{{points.self_mgmt}} {{points.problem_solving}} {{points.team_work}} {{points.communication}} {{points.leadership}} {{points.value}}"
@@ -218,7 +183,7 @@
         <a id="prevPerson" class="nav" style="visibility:{{#if prevPerson}}visible{{else}}hidden{{/if}}"><img src="/img/left.png"></a>
         <div class="h4">
           <img src="{{person.pictureUrl}}" class="avatar"><br>
-          {{person.firstName}}&nbsp;{{person.lastName}}
+          {{username person}}
         </div>
         <a id="nextPerson" class="nav" style="visibility:{{#if nextPerson}}visible{{else}}hidden{{/if}}"><img src="/img/right.png"></a>
       <!--<button>next person</button>-->
@@ -349,6 +314,7 @@ Evaluate me
   {{>loading}}
 </template>
 
+
 <template name="scriptLoginAfterQuiz">
   <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
     <h2 style="width:65%">
@@ -359,6 +325,15 @@ Evaluate me
   </section>
 </template>
 
+<template name="scriptLoginFail">
+  <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
+    <h2 style="width:65%">
+        Something went wrong with initial setup 
+        <button> restart </button>
+    </h2>
+  </section>
+</template>
+
 <template name="scriptLoginFinish">
 <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
     <h2>
@@ -366,6 +341,18 @@ Evaluate me
       Now answer questions for iovdin@gmail.com
     </h2>
     <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
+</section>
+</template>
+
+<template name="scriptInviteInit">
+  {{>loading}}
+</template>
+
+<template name="scriptInvitationFillData">
+<section>
+  <h2>
+    <button class="next">download app</button>
+  </h2>
 </section>
 </template>
 

@@ -1,7 +1,7 @@
 if(Meteor.isClient){
     Router.route('/script-login', function () {
         this.layout('ScriptLayout');
-        if(! Meteor.user()){
+        if(! Meteor.user()) {
             this.render('loading')
             return;
         }
@@ -14,39 +14,48 @@ if(Meteor.isClient){
                 break;
             }
             case 'quiz': {
-                Meteor.subscribe('feedback');
-                if(this.ready() && Feedback.findOne({ 'from': Meteor.userId() })){
-                    this.render('quiz', {
-                        'data': {
-                            'feedback': Feedback.findOne({ 'from': Meteor.userId() }),
-                            'person': Meteor.user().profile
-                        }
-                    })                         
-                } else {
+                this.wait(Meteor.subscribe('feedback'));
+                if(!this.ready()){
                     this.render('loading');
+                    return;
                 }
+                var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
+                if(!myfeedback) {
+                    this.render('scriptLoginFail');
+                    return;
+                }
+                this.render('quiz', {
+                    'data': {
+                        'feedback': myfeedback,
+                        'person': Meteor.user().profile
+                    }
+                })                         
                 break;
             }
             case 'profile' : {
-                Meteor.subscribe('feedback');
-                if(this.ready() && Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() })) {
-                    var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
-                    var score = calculateScore(myfeedback.qset);
-
-                    var keys = _.sortBy(_.keys(score), function(key) { return score[key] })
-                    var top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
-                    var weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
-                    this.render('profile', {
-                        'data': {
-                            'myscore': score,
-                            'top3' : top3,
-                            'weak3' : weak3,
-                            'profile': Meteor.user().profile
-                        }
-                    }) 
-                } else { 
-                    this.render('loading')
+                this.wait(Meteor.subscribe('feedback'));
+                if(!this.ready()) {
+                    this.render("loading");
+                    return
                 }
+                var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
+                if(!myfeedback) {
+                    this.render('scriptLoginFail');
+                    return;
+                }
+                var score = calculateScore(myfeedback.qset);
+
+                var keys = _.sortBy(_.keys(score), function(key) { return score[key] })
+                var top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
+                var weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
+                this.render('profile', {
+                    'data': {
+                        'myscore': score,
+                        'top3' : top3,
+                        'weak3' : weak3,
+                        'profile': Meteor.user().profile
+                    }
+                }) 
                 break;
             }
 
@@ -92,6 +101,15 @@ if(Meteor.isClient){
         "click #finish" : function(){
             setLoginScript('invite');
             Router.go('/profile');
+        }
+    });
+
+    Template.scriptLoginFail.events({
+        "click button" : function(){
+            Meteor.call("reset", function(){
+                setLoginScript('init');
+                Router.go("/");
+            })
         }
     });
     Template['scriptLoginFinish'].events({

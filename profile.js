@@ -1,6 +1,6 @@
 Router.route('/profile', function () {
     this.wait(Meteor.subscribe('feedback'));
-    if(this.ready() && Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() })){
+    if(this.ready()){
         var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
         var data = { profile : Meteor.user().profile }
         data.myscore = calculateScore(myfeedback.qset) 
@@ -94,7 +94,10 @@ if (Meteor.isClient){
 if(Meteor.isServer) {
     Meteor.startup(function () {
         Meteor.publish('feedback', function () {
-            return Feedback.find({$or : [ {from : this.userId}, {to : this.userId} ]});
+            var fb = Feedback.find({$or : [ {from : this.userId}, {to : this.userId} ]});
+            var users = fb.map(function(fb){ return [fb.to, fb.from] });
+            users = _.uniq(_.flatten(users));
+            return [fb, Meteor.users.find({_id : {$in : users}}, {profile : 1})];
         });
     });
 }

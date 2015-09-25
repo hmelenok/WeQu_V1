@@ -11,7 +11,9 @@ if (Meteor.isClient) {
         },
         'click #reset' : function () {
             setLoginScript('init');
-            Meteor.call("reset")
+            Meteor.call("reset", function(err, result){
+                Router.go('/');
+            })
         },
         'click #logout' : function(){
             Meteor.logout();
@@ -61,7 +63,7 @@ if(Meteor.isServer) {
         import : importQuestions,
         reset : function(){
             if(Meteor.userId()) {
-                Feedback.remove({from : Meteor.userId()});
+                //Feedback.remove({from : Meteor.userId()});
                 Feedback.remove({to : Meteor.userId()});
                 Meteor.users.remove({_id : Meteor.userId()});
             }

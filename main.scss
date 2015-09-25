@@ -314,7 +314,13 @@ section {
   
   min-height: 20vh;
   width: 100vw;
-  
+
+  -webkit-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  -o-user-select: none;
+  user-select: none;
+
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(wrap);

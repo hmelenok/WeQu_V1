@@ -5,10 +5,12 @@ if (Meteor.isClient) {
         Meteor.userId() ? this.next() : this.render('login');
     }, { 'except': [ '/invitation/:_id', '/script-invitation', '/admin'] });
 
-
     Router.onBeforeAction(function () {
-        getLoginScript() ? Router.go('/script-login') : void 0;
-        Session.get('invite') ? Router.go('/script-invitation') : void 0;
+        if(Session.get('invite')) {
+            Router.go('/script-invitation');
+        } else if(getLoginScript()) {
+            Router.go('/script-login')
+        }
         return this.next();
     }, { 'except': [ '/script-login', '/admin', '/script-invitation', '/invitation/:_id' ] });
 
@@ -36,6 +38,7 @@ if (Meteor.isClient) {
       }
     });
   
+    Template.registerHelper("username", getUserName);
     Template.registerHelper("case", function(){
         var pair =_.chain(this).pairs().first().value();
 
@@ -87,7 +90,7 @@ if (Meteor.isServer) {
         user.profile = options.profile || {};
         user.profile.loginScript = 'init';
         user.profile.gradient = Math.floor(Math.random() * 5) + 1;
-        console.log('onUserCreated', user.profile);
+        console.log('onUserCreated', user);
         return user;
     });
 }
