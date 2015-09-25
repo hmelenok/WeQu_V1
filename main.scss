@@ -161,9 +161,9 @@ section {
     text-align: center;
   }
   
-  img.nav {
-    width: 20px;
-    margin: 0 30px;
+  .nav {
+    width: $h2;
+    margin: 0 15vw;
   }
 }
 
@@ -178,6 +178,12 @@ section {
 .gradient4 {background: linear-gradient(#3C3C3C, #E96956)}
 .gradient5 {background: linear-gradient(#3C3C3C, #9964B8)}
 .gradient6 {background: linear-gradient(#3C3C3C, #2BAADB)}
+
+.anonymity {
+  width: $h2;
+  margin-bottom: -$h2/4;
+  margin-right: $h2/3;
+}
 
 .feed {
   @extend section;
