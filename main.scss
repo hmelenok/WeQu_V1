@@ -28,6 +28,7 @@ html, body {
   
   font-family: Raleway, sans-serif;
   font-size: $h3;
+  line-height: 1.5;
   //text-align: center;
   
   @include flexbox;
@@ -240,7 +241,8 @@ section {
 .friend {
   width: 90%;
   padding: 10px 20px;
-  font-size: $h4;
+  font-size: $h3;
+  //border: 1px solid red;
   
   @include flexbox;
   @include flex-direction(row);
@@ -366,7 +368,7 @@ li.answer:nth-child(even) {
   margin: 0px;
   
   //min-height: 20vh;
-  //width: 90%;
+  width: 90%;
   //border: 1px solid red;
   
   @include flexbox;
