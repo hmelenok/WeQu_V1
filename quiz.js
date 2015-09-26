@@ -36,7 +36,7 @@ if(Meteor.isClient) {
             });
         }
         var user = Meteor.users.findOne({_id : userId});
-        data.person = user.profile;
+        if(user) data.person = user.profile;
         data.nextPerson = (quizPersonIndex.get() < friends.length - 1);
         data.prevPerson = (quizPersonIndex.get() > 0)
 
