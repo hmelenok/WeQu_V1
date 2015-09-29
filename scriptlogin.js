@@ -45,7 +45,7 @@ if(Meteor.isClient){
                 }
                 var score = calculateScore(myfeedback.qset);
 
-                var keys = _.sortBy(_.keys(score), function(key) { return score[key] })
+                var keys = _.sortBy(_.difference(_.keys(score), _.keys(framework)), function(key) { return score[key] })
                 var top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
                 var weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
                 this.render('profile', {
@@ -131,12 +131,13 @@ if(Meteor.isServer){
             check(Meteor.userId(), String);
             var user = Meteor.users.findOne({_id : userId});
             var name = userId;
+            var qset;
             if(userId == Meteor.userId()) {
-                name = 'you';
+                qset = genInitialQuestionSet("You", qdata.type1you, 12);
             } else if(user && user.profile){
-                name = user.profile.firstName + ' ' + user.profile.lastName;
+                qset = genQuizQuestionSet(getUserName(user.profile));
             }
-            var qset = genQuestionSet(name, Answers.find({}).fetch());
+
             Feedback.upsert({
                 'from': Meteor.userId(),
                 'to': userId

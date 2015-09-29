@@ -31,32 +31,49 @@ if (Meteor.isClient) {
 }
 
 if(Meteor.isServer) {
+
+    qdata = { type1you : [], type1others : [], type3 : [] };
+    splitLine = function splitLine(line){
+        return line.split(",").map(function(el){
+            if(el.charAt(0) == '\"'){
+                return el.substr(1, el.length - 2);
+            }
+            return el;
+        })
+    }
+
     importQuestions = function importQuestions() {
-        var qs = Assets.getText('questions.csv');
-        Answers.remove({});
-        Feedback.remove({});
-        var lines = qs.split('\r\n');
-        return function loop() {
-            var recur = loop;
-            var iø1 = 0;
-            do {
-                recur = iø1 < lines.length ? (function () {
-                    var l = lines[iø1].split(',');
-                    var q = {
-                        '_id': String(iø1),
-                        'category': l[0],
-                        'skill': l[1],
-                        'text': l[2]
-                    };
-                    Answers.insert(q);
-                    return loop[0] = iø1 + 1, loop;
-                })() : void 0;
-            } while (iø1 = loop[0], recur === loop);
-            return recur;
-        }.call(this);
+        var qs = Assets.getText('questionset - type1you.csv');
+        var lines = Papa.parse(qs).data;
+        var i; 
+        for (i = 1; i < lines.length; i++) {
+            var l =  lines[i];
+            qdata.type1you.push({_id: String(i), skill: l[0], text: l[1]});
+        }
+
+        qs = Assets.getText('questionset - type1others.csv');
+        lines = Papa.parse(qs).data;
+        for (i = 1; i < lines.length; i++) {
+            var l =  lines[i];
+            qdata.type1others.push({_id: String(i), skill: l[0], text: l[1]});
+        }
+        qs = Assets.getText('questionset - type3.csv');
+        lines = Papa.parse(qs).data;
+        var question;
+        for (i = 1; i < lines.length; i++) {
+            var l =  lines[i];
+            if(l[0]) {
+                qdata.type3.push(question);
+                question = { text : l[0], answers : [ {_id: String(i), text: l[1], skill: l[2]} ] };
+            } else if(question){
+                question.answers.push({_id: String(i), text: l[1], skill: l[2]});
+            } 
+        }
+        qdata.type3.push(question);
     };
+
     Meteor.startup(function () {
-        return !Answers.findOne({}) ? importQuestions() : void 0;
+        importQuestions();
     });
 
     Meteor.methods({ 

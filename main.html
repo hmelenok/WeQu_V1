@@ -271,10 +271,17 @@
     {{else}}
         <!--TODO-->
       <section class="feed">
+          {{#each users}}
         <div class="friend">
-          <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
-          Ivan Pashchenko
+            {{#if profile.pictureUrl}}
+            <img src="{{profile.pictureUrl}}" class="avatarSmall"><br>
+            {{else}}
+            <img src="/img/avatar.png" class="avatarSmall">
+            {{/if}}
+
+            {{username profile}}
         </div>
+        {{/each}}
       </section>
     {{/if}}
   </section>

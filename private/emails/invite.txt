@@ -1,7 +1,7 @@
 Hi,
 
-<%= from %> wants you to evaluate his/her soft skills
-<%= link %>
+[from] wants you to evaluate his/her soft skills
+[link]
 
 --
 WeQu team

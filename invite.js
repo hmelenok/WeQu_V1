@@ -1,8 +1,15 @@
 if(Meteor.isClient) {
     Router.route('/invite', function () {
         route.set('invite');
-        this.wait(Meteor.subscribe('connections'));
-        this.ready() ? this.render('invite') : this.render('loading');
+        this.wait(Meteor.subscribe('feedback'));
+        if (!this.ready()){
+            this.render('loading');
+            return;
+        }
+
+        var users = Feedback.find({to: Meteor.userId(), invite: true }).map(function(fb){ return fb.from });
+
+        this.render('invite', {data : { users : Meteor.users.find({_id : {$in : users}}, {profile : 1}) }})
     }, { 'name': '/invite' });
 
     inviteStatus = new ReactiveVar('default');
@@ -26,8 +33,10 @@ if(Meteor.isServer)  {
     Meteor.methods({
         'inviteLogin' : function(token){
            var feedback = Feedback.findOne({_id : token}) 
+           console.log("feedback", !!feedback);
            if(!feedback) return;
            var user = Meteor.users.findOne({_id : feedback.from});
+           console.log("user", !!user);
            if(!user) return;
            return user.username;
            //TODO: change password to login only once with token
@@ -40,7 +49,7 @@ if(Meteor.isServer)  {
             }
             var profile = Meteor.user().profile;
             var name = getUserName(profile);
-            qset = genQuestionSet(name, Answers.find({}).fetch());
+            qset = genInitialQuestionSet(name, qdata.type1others, 10);
             var user = Meteor.users.findOne({$or : [ {"emails.address" : email }, { "profile.emailAddress" : email }]});
             var _id = Random.secret()
             var userId;
@@ -60,7 +69,7 @@ if(Meteor.isServer)  {
                 return;
             }
 
-            Feedback.insert({_id : _id, from : userId, to: Meteor.userId(), qset : qset });
+            Feedback.insert({_id: _id, from : userId, to: Meteor.userId(), qset : qset, invite : true });
 
             var template = _.template(Assets.getText('emails/invite.txt'));
             Email.send({

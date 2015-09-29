@@ -1,4 +1,6 @@
 Router.route('/profile', function () {
+    route.set("profile");
+    this.layout('ScriptLayout');
     this.wait(Meteor.subscribe('feedback'));
     if(this.ready()){
         var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
@@ -10,17 +12,18 @@ Router.route('/profile', function () {
 
         var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
         data.otherscore = calculateScore(joinedQset);
+
         data.enoughData = (validAnswers.length > 30);
+
+        console.log(data.otherscore, otherFeedback);
 
         var allFeedback = Feedback.find({to: Meteor.userId()}).fetch();
         joinedQset = _.reduce(allFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
         var totalScore = calculateScore(joinedQset);
-        var keys = _.sortBy(_.keys(totalScore), function(key) { return totalScore[key] })
+        var keys = _.sortBy(_.difference(_.keys(totalScore), _.keys(framework)), function(key) { return totalScore[key] })
         data.top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
         data.weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
         
-        route.set("profile");
-        this.layout('ScriptLayout');
         this.render('profile', { data : data});  
     } else {
         this.render('loading');
@@ -29,6 +32,7 @@ Router.route('/profile', function () {
 
 Router.route('/profile/skills', function () {
     route.set("skills");
+    this.layout('ScriptLayout');
     this.wait(Meteor.subscribe('feedback'));
     if(this.ready()){
         var data = { profile : Meteor.user().profile }
@@ -48,7 +52,6 @@ Router.route('/profile/skills', function () {
                 })
             }
         })
-        this.layout('ScriptLayout');
         this.render('profileSkills', { data : data});  
 
     } else {
