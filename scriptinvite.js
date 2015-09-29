@@ -64,8 +64,6 @@ if (Meteor.isClient) {
 
     Template.scriptInvitationFillData.events({
         "click button" : function(){
-            console.log("login with linkedin");
-            console.log("Accounts", Accounts);
             Meteor.loginWithLinkedin({}, function(err){
                 console.log("login with linkedin", err)
             });

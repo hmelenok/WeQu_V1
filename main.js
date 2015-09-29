@@ -37,6 +37,13 @@ if (Meteor.isClient) {
         return status == route.get();
       }
     });
+    Template.login.events({
+        "click button" : function(){
+            Meteor.loginWithLinkedin(function(err){
+                console.log("login", err);
+            })
+        }
+    })
   
     Template.registerHelper("username", getUserName);
     Template.registerHelper("case", function(){
