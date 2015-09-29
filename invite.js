@@ -75,8 +75,8 @@ if(Meteor.isServer)  {
             var template = _.template(Assets.getText('emails/invite.txt'));
             Email.send({
                 'to': email,
-                'from': 'support@wequ.co',
-                'subject': 'please evaluate my skills',
+                'from': 'WeQu <info@wequ.co>',
+                'subject': _.template("[to], let your opinion matter to [from]!")({ to: toName, from:name }),
                 'text': template({
                     'from': name,
                     'to' : toName,
