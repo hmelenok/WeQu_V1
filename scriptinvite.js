@@ -31,7 +31,12 @@ if (Meteor.isClient) {
                 return;
             }
             case 'filldata':{
-                this.render('scriptInvitationFillData');
+                if(Meteor.user()){
+                    this.render('scriptInvitationFillData');
+                } else {
+                    this.render("loading");
+                }
+
                 return;
             }
 
@@ -42,10 +47,30 @@ if (Meteor.isClient) {
         }
 
         Session.setPersistent('invite', false);
-        Session.clear('invitation-id');
+        if(Session.get("invitation-id"))
+            Session.clear('invitation-id');
         Router.go("/");
 
     }, { 'name': '/script-invitation' });
+
+    Template.scriptInvitationFillData.onCreated(function(){
+        var user = Meteor.user()
+        Session.setPersistent('invite', "finish");
+        //TODO:
+        /*if(user && user.profile && user.profile.firstName && user.profile.pictureUrl) {
+            Session.setPersistent('invite', "finish");
+        }*/
+    });
+
+    Template.scriptInvitationFillData.events({
+        "click button" : function(){
+            console.log("login with linkedin");
+            console.log("Accounts", Accounts);
+            Meteor.loginWithLinkedin({}, function(err){
+                console.log("login with linkedin", err)
+            });
+        }
+    });
 
     Template['scriptInvitationFinish'].events({
         "click button" : function () {

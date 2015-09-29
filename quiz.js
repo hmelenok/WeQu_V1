@@ -111,11 +111,7 @@ if(Meteor.isClient) {
                 questionDep.changed()
                 if(!currentQuestion(feedback.qset)) {
                     if(Session.get('invite')){
-                        Session.setPersistent('invite', 'finish');
-                        /*if(Meteor.user().profile.pictureUrl) {
-                        } else {
-                            Session.setPersistent('invite', 'filldata');
-                        }*/
+                        Session.setPersistent('invite', 'filldata');
                     } else if(getLoginScript()) {
                         setLoginScript('after-quiz');
                     }

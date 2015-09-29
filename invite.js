@@ -16,7 +16,8 @@ if(Meteor.isClient) {
     Template.invite.events( { "click button" : function (event, template) {
         inviteStatus.set('sending');
         var email = template.$('input[name=email]').val();
-        Meteor.call('invite', email, function (err, result) {
+        var name = template.$('input[name=name]').val();
+        Meteor.call('invite', name, email, function (err, result) {
             if(err){
                 console.log("error", err);
                 inviteStatus.set('error');
@@ -33,17 +34,17 @@ if(Meteor.isServer)  {
     Meteor.methods({
         'inviteLogin' : function(token){
            var feedback = Feedback.findOne({_id : token}) 
-           console.log("feedback", !!feedback);
            if(!feedback) return;
            var user = Meteor.users.findOne({_id : feedback.from});
-           console.log("user", !!user);
            if(!user) return;
            return user.username;
            //TODO: change password to login only once with token
            //TODO: update email verified
         },
-        'invite' : function (email) {
+        'invite' : function (toName, email) {
             check(Meteor.userId(), String);
+            check(toName, String);
+
             if(!validateEmail(email)) {
                 throw (new Meteor.Error("invalid_email"));
             }
@@ -58,7 +59,7 @@ if(Meteor.isServer)  {
                     username: Random.id(), 
                     email: email, 
                     password: _id,
-                    profile : { emailAddress : email }
+                    profile : { emailAddress : email, name: toName }
                 });
             } else {
                 userId = user._id;
@@ -66,7 +67,7 @@ if(Meteor.isServer)  {
 
             var feedback = Feedback.findOne({ 'from': userId, 'to': Meteor.userId() });
             if(feedback){
-                return;
+                throw Meteor.Error("exists");
             }
 
             Feedback.insert({_id: _id, from : userId, to: Meteor.userId(), qset : qset, invite : true });
@@ -78,6 +79,7 @@ if(Meteor.isServer)  {
                 'subject': 'please evaluate my skills',
                 'text': template({
                     'from': name,
+                    'to' : toName,
                     'link': Meteor.absoluteUrl('invitation/' + _id)
                 })
             });

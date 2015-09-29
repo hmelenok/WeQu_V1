@@ -12,10 +12,7 @@ Router.route('/profile', function () {
 
         var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
         data.otherscore = calculateScore(joinedQset);
-
         data.enoughData = (validAnswers.length > 30);
-
-        console.log(data.otherscore, otherFeedback);
 
         var allFeedback = Feedback.find({to: Meteor.userId()}).fetch();
         joinedQset = _.reduce(allFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
