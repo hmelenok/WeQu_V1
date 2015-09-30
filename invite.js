@@ -23,9 +23,11 @@ if(Meteor.isClient) {
                 inviteStatus.set('error');
                 return;
             }
+            inviteStatus.set('sent');
             setInterval(function () {
                 return inviteStatus.set('default');
-            }, 1000);
+            }, 2000);
+          
             console.log(err, result);
         });
     }})
