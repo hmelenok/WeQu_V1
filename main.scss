@@ -66,6 +66,16 @@ h5, .h5 {font-size: $h5}
   }
 }
 
+.loginLinkedin {
+  margin-bottom: $h1/7;
+  
+  img {
+    width: $h1;
+    margin-bottom: -$h1/4;
+    margin-right: $h1/3;
+  }
+}
+
 .alignCenter {text-align: center}
 
 button, .button {
