@@ -49,7 +49,7 @@ Router.route('/profile/skills', function () {
                 })
             }
         })
-        this.render('profileSkills', { data : data});  
+        this.render('profileSkills', { data : data });
 
     } else {
         this.render('loading');
@@ -95,9 +95,12 @@ if(Meteor.isServer) {
     Meteor.startup(function () {
         Meteor.publish('feedback', function () {
             var fb = Feedback.find({$or : [ {from : this.userId}, {to : this.userId} ]});
-            var users = fb.map(function(fb){ return [fb.to, fb.from] });
-            users = _.uniq(_.flatten(users));
-            return [fb, Meteor.users.find({_id : {$in : users}}, {profile : 1})];
+            //var userList = fb.map(function(fb){ return [fb.to, fb.from] });
+            //userList = _.uniq(_.flatten(users));
+            //console.log("userList", userList);
+            //var users = Meteor.users.find({_id : {$in : userList}}, {profile : 1});
+            var users = Meteor.users.find({}, {profile : 1})
+            return [fb, users];
         });
     });
 }

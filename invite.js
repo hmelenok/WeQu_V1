@@ -43,7 +43,9 @@ if(Meteor.isServer)  {
         },
         'invite' : function (toName, email) {
             check(Meteor.userId(), String);
-            check(toName, String);
+            if(!toName){
+                throw (new Meteor.Error("empty_name"));
+            }
 
             if(!validateEmail(email)) {
                 throw (new Meteor.Error("invalid_email"));
