@@ -46,8 +46,8 @@ if(Meteor.isClient){
                 var score = calculateScore(myfeedback.qset);
 
                 var keys = _.sortBy(_.difference(_.keys(score), _.keys(framework)), function(key) { return score[key] })
-                var top3 = _.map(_.first(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
-                var weak3 = _.map(_.last(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
+                var top3 = _.map(_.last(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
+                var weak3 = _.map(_.first(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
                 this.render('profile', {
                     'data': {
                         'myscore': score,
