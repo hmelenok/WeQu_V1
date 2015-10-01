@@ -218,13 +218,13 @@
         </ul>
       {{/if}}
       <div>Question {{questionNum}} of {{questionsTotal}}</div>
-      {{#if writtenFeedback}}
+      {{#unless self}}
       <div class="statusBar">
-        <a href="" class="skip">Skip</a>
-        <a href="" class="writeAnswer">Answer</a>
+        <!--<a href="" class="skip">Skip</a>-->
+        <!--<a href="" class="writeAnswer">Answer</a>-->
         <div><a href="" class="skip">Skip</a></div>
       </div>
-      {{/if}}
+      {{/unless}}
     </section>
     {{/if}}
   </section>

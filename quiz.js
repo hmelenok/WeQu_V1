@@ -47,7 +47,7 @@ if(Meteor.isClient) {
     var currentQuestion = function currentQuestion(questions) {
         questionDep.depend();
         return _.find(questions, function (question) {
-            return !_.has(question, 'answer') || !_.has(question, 'written');
+            return !_.has(question, 'answer');// || !_.has(question, 'written');
         });
     };
 
