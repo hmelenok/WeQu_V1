@@ -30,6 +30,9 @@ if(Meteor.isClient) {
             setInterval(function () {
                 return inviteStatus.set('default');
             }, 3000);
+            if(getLoginScript()){
+              return setLoginScript('finish');
+            }
             console.log(err, result);
         });
     }})

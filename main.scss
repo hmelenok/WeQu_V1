@@ -54,8 +54,21 @@ h3, .h3 {font-size: $h3}
 h4, .h4 {font-size: $h4}
 h5, .h5 {font-size: $h5}
 
+img + h3 {
+  margin-top: $h4;
+  margin-bottom: 0;
+}
+
+h3 + h5 {
+  margin-top: 0;
+  margin-bottom: $h4;
+}
+
 .t50 {opacity: 0.5}
 .t100 {opacity: 1.0}
+
+.m0 {margin: 0}
+.ptb_h1 {padding: $h1 0}
 
 .whiteText {
   color: white; 
@@ -64,6 +77,27 @@ h5, .h5 {font-size: $h5}
     background: none;
     border: 1px solid white;
   }
+}
+
+.alignCenter {text-align: center}
+
+button, .button {
+  width: 80%;
+  padding: 18px 0;
+  margin: 20px 0;
+  
+  background: #345BB5;
+  color: white;
+  border: none;
+  font-size: $h3;
+  text-decoration: none;
+  text-align: center;
+}
+
+.nextSmall {
+  height: $h2;
+  margin-bottom: -$h2/5;
+  margin-left: $h2/2;
 }
 
 .loginLinkedin {
@@ -76,24 +110,10 @@ h5, .h5 {font-size: $h5}
   }
 }
 
-.alignCenter {text-align: center}
-
-button, .button {
-  width: 80%;
-  padding: 15px 0;
-  margin: 20px 0;
-  
-  background: #345BB5;
-  color: white;
-  border: none;
-  font-size: $h3;
-  text-decoration: none;
-  text-align: center;
-}
-
 input {
   width: 80%;
   padding: 5px 0;
+  margin: $h5 0;
   
   background: none;
   color: white;
@@ -168,17 +188,19 @@ section {
   @include flex-direction(row);
   @include align-items(center);
   
-  * {
-    //border: 1px solid red;
-  }
-  
   div {
     text-align: center;
+    @include flex-grow(1);
+    @include flex-shrink(1);
+    @include flex-basis(auto); 
+  
+    //border: 1px solid red;
   }
   
   .nav {
     width: $h2;
-    margin: 0 15vw;
+    //margin: 0 15vw;
+    //border: 1px solid red;
   }
 }
 
@@ -318,15 +340,22 @@ section {
 
 .statusBar {
   width: 100%;
+  padding-bottom: $h3;
+  //border: 1px solid lime;
   
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(nowrap);
-  @include justify-content(space-between);
+  @include justify-content(space-around);
   @include align-items(center);
   
   > div {
     //border: 1px solid red;
+  }
+  
+  .skip {
+    color: white;
+    text-decoration: none;
   }
 }
 
@@ -459,5 +488,23 @@ li.answer:nth-child(even) {
   
   img {
     height: 24px;
+  }
+}
+
+.titleIcon {
+  height: $h1;
+}
+
+.bgGrey {
+  background-color: #F7F7F7;
+}
+
+.sendingStatus {
+  margin-bottom: $h1/2;
+  
+  img {
+    height: $h1*3/2;
+    margin-bottom: -$h1/2;
+    margin-right: $h3;
   }
 }

@@ -115,7 +115,7 @@ if(Meteor.isClient){
     Template['scriptLoginFinish'].events({
         'click #next' : function () {
             setLoginScript(false);
-            return Router.go('/');
+            return Router.go('/quiz');
         }
     });
     Template['invite'].events({

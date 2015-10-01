@@ -51,42 +51,66 @@
 <template name="profile">
   {{#if inScript}}
     <section class="feed">
-      <h3>Soft Skill Overview</h3>
-      <div class="alignCenter">
+      <section class="bgGrey ptb_h1">
+        <img src="{{currentUser.profile.pictureUrl}}" class="avatar">
+        <div><b>{{username profile}}</b></div>
+      </section>
+      <section class="ptb_h1">
+        <img src="/img/icon_overview.png" class="titleIcon">
+        <h3>Soft Skill Overview</h3>
+        <h5>Your soft skill profile based on self-answered questions</h5>
         <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
           {{> radar score=myscore color="white"}}
         </svg>
-      </div>
-      <div class="radarAgenda">
-        <div><img src="/img/myradar.png"></div>
-        <div><img src="/img/othersradar.png" class="t50"></div>
-      </div>
-      <h3>Top 3 skills</h3>
-      {{> threeSkills data=top3}}
-      <h3>Weak 3 skills</h3>
-      {{> threeSkills data=weak3}}
-      <button id="finish">Next — Invite people</button>
-      {{> skillsPreview}}
-      <button id="finish">Next — Invite people</button>
+        <div class="radarAgenda">
+          <div><img src="/img/myradar.png"></div>
+          <div><img src="/img/othersradar.png" class="t50"></div>
+        </div>
+      </section>
+      <section class="bgGrey ptb_h1">
+        <img src="/img/icon_top3.png" class="titleIcon">
+        <h3>Your top 3 strengths</h3>
+        {{> threeSkills data=top3}}
+        <h3>Your 3 weaknesses</h3>
+        {{> threeSkills data=weak3}}
+      </section>
+      <section class="ptb_h1">
+        <img src="/img/icon_makethemost.png" class="titleIcon">
+        <h3>Make the most out of WeQu</h3>
+        <h5>Use WeQu to know how people around you perceive<br> your soft skills. Start inviting people to give you feedback.<br> Your journey just begins!</h5>
+      </section>
+      <section class="bgGrey ptb_h1">
+        <img src="/img/icon_track.png" class="titleIcon">
+        <h3>Track your soft skills</h3>
+        <h5>Gain insights on your skills with an extra depth</h5>
+        {{> skillsPreview}}
+      </section>
+      <button id="finish">Invite people <img src="/img/next_small.png" class="nextSmall"></button>
     </section>
   {{else}}
     {{> menuProfile}}
     <section class="feed">
-      <h3>Soft Skill Overview</h3>
-      <div class="alignCenter">
+      <section class="ptb_h1">
+        <img src="/img/icon_overview.png" class="titleIcon">
+        <h3>Soft Skill Overview</h3>
+        <h5></h5>
         <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
           {{> radar score=myscore color="white"}}
           {{> radar score=otherscore color="#E96956"}}
         </svg>
-      </div>
-      <div class="radarAgenda">
-        <div><img src="/img/myradar.png"></div>
-        <div><img src="/img/othersradar.png" class="{{#if otherscore.self_mgmt}} {{else}}t50{{/if}}"></div>
-      </div>
-      <h3>Top 3 skills</h3>
-      {{> threeSkills data=top3}}
-      <h3>Weak 3 skills</h3>
-      {{> threeSkills data=weak3}}
+        <div class="radarAgenda">
+          <div><img src="/img/myradar.png"></div>
+          <div><img src="/img/othersradar.png" class="t50"></div>
+        </div>
+      </section>
+      <section class="bgGrey ptb_h1">
+        <img src="/img/icon_top3.png" class="titleIcon">
+        <h3>Your top 3 strengths</h3>
+        <h5></h5>
+        {{> threeSkills data=top3}}
+        <h3>Your 3 weaknesses</h3>
+        {{> threeSkills data=weak3}}
+      </section>
     </section>
   {{/if}}
 </template>
@@ -115,12 +139,13 @@
       {{> skillCategories}}
     {{else}}
       {{> skillsPreview}}
+      <a href="/invite" class="button">Invite people</a>
     {{/if}}
   </section>
 </template>
 
 <template name="skillsPreview">
-  <img src="/img/skills_dumb.png" style="width:100%; height:auto; opacity:0.5">
+  <img src="/img/skills_dumb.png" style="width:100%; height:auto;">
 </template>
 
 <template name="skillCategories">
@@ -183,18 +208,21 @@
 <template name='quiz'>
   <section class="vote gradient{{person.gradient}}">
     <section class="person">
-        <a id="prevPerson" style="visibility:{{#if prevPerson}}visible{{else}}hidden{{/if}}"><img src="/img/left.png" class="nav"></a>
+        <div>
+          <a id="prevPerson" style="visibility:{{#if prevPerson}}visible{{else}}hidden{{/if}}"><img src="/img/left.png" class="nav"></a>
+        </div>
         <div class="h4">
           {{#if person.pictureUrl}}
-            <img src="{{person.pictureUrl}}" class="avatar"><br>
+            <img src="{{person.pictureUrl}}" class="avatar">
           {{else}}
             <img src="/img/avatar.png" class="avatar">
           {{/if}}
           <br>
           {{username person}}
         </div>
-        <a id="nextPerson" style="visibility:{{#if nextPerson}}visible{{else}}hidden{{/if}}"><img src="/img/right.png" class="nav"></a>
-      <!--<button>next person</button>-->
+        <div>
+          <a id="nextPerson" style="visibility:{{#if nextPerson}}visible{{else}}hidden{{/if}}"><img src="/img/right.png" class="nav"></a>
+        </div>
     </section>
     {{#if feedback}}
     <section>
@@ -217,14 +245,14 @@
           {{/each}}
         </ul>
       {{/if}}
-      <div>Question {{questionNum}} of {{questionsTotal}}</div>
-      {{#unless self}}
       <div class="statusBar">
+        <div>Question {{questionNum}} of {{questionsTotal}}</div>
+        {{#unless self}}
         <!--<a href="" class="skip">Skip</a>-->
         <!--<a href="" class="writeAnswer">Answer</a>-->
-        <div><a href="" class="skip">Skip</a></div>
+        <div><a href="" class="skip">Skip this question</a></div>
+        {{/unless}}
       </div>
-      {{/unless}}
     </section>
     {{/if}}
   </section>
@@ -249,43 +277,37 @@
         {{#case inviteStatus='default'}}
           <h3>Invite people to get<br> their feedback</h3>
         {{/case}}
-        <!--<ul>
-        {{#each connections}}
-        <li>{{firstName}}</li>
-        {{/each}}
-        </ul>-->
         {{#case inviteStatus='sending'}}
-        sending...
+          <span class="sendingStatus"><img src="/img/status_sending.png">sending...</span>
         {{/case}}
         {{#case inviteStatus='sent'}}
-        sent!
+          <span class="sendingStatus"><img src="/img/status_sent.png">sent!</span>
         {{/case}}
         {{#case inviteStatus='error'}}
-        error sending email
+          <span class="sendingStatus"><img src="/img/status_error.png">error sending email</span>
         {{/case}}
         <div>
           <input name="name" placeholder="name"/>
           <input name="email" placeholder="email"/>
           <button id="invite">Invite</button>
         </div>
-        {{#if inScript}}
+        <!--{{#if inScript}}
         <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
-        {{/if}}
+        {{/if}}-->
       </section>
     {{#if inScript}}
     {{else}}
-        <!--TODO-->
-      <section class="feed">
-          {{#each users}}
-        <div class="friend">
+      <!--TODO-->
+      <section style="max-height:40vh" class="feed">
+        {{#each users}}
+          <div class="friend">
             {{#if profile.pictureUrl}}
             <img src="{{profile.pictureUrl}}" class="avatarSmall"><br>
             {{else}}
             <img src="/img/avatar.png" class="avatarSmall">
             {{/if}}
-
             {{username profile}}
-        </div>
+          </div>
         {{/each}}
       </section>
     {{/if}}
@@ -356,7 +378,7 @@
 <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
     <h2>
       Well done!<br>
-      Now answer questions for iovdin@gmail.com
+      Now answer questions<br>about this person
     </h2>
     <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
 </section>
