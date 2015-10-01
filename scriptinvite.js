@@ -53,19 +53,44 @@ if (Meteor.isClient) {
 
     }, { 'name': '/script-invitation' });
 
+    Accounts.onLogin(function(){
+        var token = Session.get("mergeToken");
+        var invitationId = Session.get('invitation-id');
+        if(!token || !invitationId) {
+            return;
+        }
+        if(token) Session.clear("mergeToken")
+        Meteor.call("mergeAccounts", token, function(err, result){
+            if(err){
+                return;
+            }
+            Session.setPersistent('invite', "finish");
+        });
+    });
+
+    Accounts.onLoginFailure(function(){
+        var token = Session.get("mergeToken");
+        if(token){
+            Session.clear("mergeToken");
+        }
+    });
+
     Template.scriptInvitationFillData.onCreated(function(){
         var user = Meteor.user()
-        Session.setPersistent('invite', "finish");
-        //TODO:
-        /*if(user && user.profile && user.profile.firstName && user.profile.pictureUrl) {
+        if(user && user.profile && user.profile.firstName && user.profile.pictureUrl) {
             Session.setPersistent('invite', "finish");
-        }*/
+        }
     });
 
     Template.scriptInvitationFillData.events({
         "click button" : function(){
-            Meteor.loginWithLinkedin({}, function(err){
-                console.log("login with linkedin", err)
+            Meteor.call("getMergeToken", function(err, token){
+                console.log("getMergeToken", err, token);
+                if(err){
+                    return;
+                }
+                Session.setPersistent("mergeToken", token)
+                Meteor.loginWithLinkedin({});
             });
         }
     });
@@ -91,6 +116,29 @@ if (Meteor.isClient) {
 }
 
 if(Meteor.isServer) {
+    Meteor.methods({
+        "getMergeToken" : function(){
+            if(!Meteor.userId()) {
+                throw new Meteor.Error("not_logged_in");
+            }
+
+            var token = Random.secret();
+            Meteor.users.update({_id : Meteor.userId}, {$set : { "services.merge.token" : token }});
+            return token;
+        },
+        "mergeAccounts" : function(token){
+            if(!Meteor.userId()) {
+                throw new Meteor.Error("not_logged_in");
+            }
+            var oldUser = Meteor.users.findOne({"services.merge.token" : token});
+            if(!oldUser){
+                throw new Meteor.Error("invalid_token");
+            }
+            var curUser = _.clone(Meteor.user())
+            Feedback.update({from: oldUser._id}, {$set : { from : curUser._id}});
+            Feedback.update({to: oldUser._id}, {$set : { to : curUser._id}});
+        }
+    });
     Meteor.startup(function () {
         Meteor.publish('invitation', function (id) {
             var fb = Feedback.findOne(id);
