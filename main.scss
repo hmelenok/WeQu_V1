@@ -101,7 +101,8 @@ button, .button {
 }
 
 .loginLinkedin {
-  margin-bottom: $h1/7;
+  padding-top: $h4;
+  padding-bottom: $h4*5/4; 
   
   img {
     width: $h1;
