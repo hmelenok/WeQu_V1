@@ -331,6 +331,10 @@ section {
     background-color: #4475AE;
     border-radius: 3px;
   }
+  .score {
+    font-size: $h5;
+    margin-left: $h5;
+  }
   .value {background-color: #DF6959;}
   .problem_solving {background-color: #379350;}
   .self_mgmt {background-color: #81609A;}
