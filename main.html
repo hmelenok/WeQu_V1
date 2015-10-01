@@ -20,7 +20,7 @@
   <div class="menuBar">
     <a href="/quiz" class="{{#if route 'quiz'}}t100{{else}}t50{{/if}}"><img src="/img/icon_vote.png"></a>
     <a href="/invite" class="{{#if route 'invite'}}t100{{else}}t50{{/if}}"><img src="/img/icon_invite.png"></a>
-    <a href="/feed" class="{{#if route 'feed'}}t100{{else}}t50{{/if}}"><img src="/img/icon_feed.png"></a>
+    <!--<a href="/feed" class="{{#if route 'feed'}}t100{{else}}t50{{/if}}"><img src="/img/icon_feed.png"></a>-->
     <a href="/profile" class="{{#if route 'profile'}}t100{{else}}t50{{/if}}"><img src="/img/icon_profile.png" ></a>
     <a href="/admin">A</a>
   </div>
@@ -35,7 +35,7 @@
   <div class="menuBar">
     <a href="/profile" class="{{#if route 'profile'}}t100{{else}}t50{{/if}}">Overview</a>
     <a href="/profile/skills" class="{{#if route 'skills'}}t100{{else}}t50{{/if}}">Skills</a>
-    <a href="/profile/written-feedback" class="{{#if route 'feedback'}}t100{{else}}t50{{/if}}">Feedback</a>
+    <!--<a href="/profile/written-feedback" class="{{#if route 'feedback'}}t100{{else}}t50{{/if}}">Feedback</a>-->
   </div>
 </template>
 
@@ -246,7 +246,9 @@
 <template name="invite">
   <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
     <section style="min-height:40vh">
-        <h3>Invite people to get<br> their feedback</h3>
+        {{#case inviteStatus='default'}}
+          <h3>Invite people to get<br> their feedback</h3>
+        {{/case}}
         <!--<ul>
         {{#each connections}}
         <li>{{firstName}}</li>

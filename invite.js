@@ -22,12 +22,14 @@ if(Meteor.isClient) {
                 console.log("error", err);
                 inviteStatus.set('error');
                 return;
+            } else {
+              template.$('input[name=name]').val('')
+              template.$('input[name=email]').val('');
             }
             inviteStatus.set('sent');
             setInterval(function () {
                 return inviteStatus.set('default');
-            }, 2000);
-          
+            }, 3000);
             console.log(err, result);
         });
     }})
