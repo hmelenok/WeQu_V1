@@ -271,44 +271,39 @@
 </template>
 
 <template name="invite">
-  <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
-    <section style="min-height:40vh">
-        {{#case inviteStatus='default'}}
-          <h3>Invite people to get<br> their feedback</h3>
-        {{/case}}
-        {{#case inviteStatus='sending'}}
-          <span class="sendingStatus"><img src="/img/status_sending.png">sending...</span>
-        {{/case}}
-        {{#case inviteStatus='sent'}}
-          <span class="sendingStatus"><img src="/img/status_sent.png">sent!</span>
-        {{/case}}
-        {{#case inviteStatus='error'}}
-          <span class="sendingStatus"><img src="/img/status_error.png">error sending email</span>
-        {{/case}}
-        <div>
-          <input name="name" placeholder="name"/>
-          <input name="email" placeholder="email"/>
-          <button id="invite">Invite</button>
-        </div>
-        <!--{{#if inScript}}
-        <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
-        {{/if}}-->
-      </section>
+  <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter feed">
+    {{#case inviteStatus='default'}}
+      <h3>Invite people to get<br> their feedback</h3>
+    {{/case}}
+    {{#case inviteStatus='sending'}}
+      <span class="sendingStatus"><img src="/img/status_sending.png">sending...</span>
+    {{/case}}
+    {{#case inviteStatus='sent'}}
+      <span class="sendingStatus"><img src="/img/status_sent.png">sent!</span>
+    {{/case}}
+    {{#case inviteStatus='error'}}
+      <span class="sendingStatus"><img src="/img/status_error.png">error sending email</span>
+    {{/case}}
+    <div>
+      <input name="name" placeholder="name"/>
+      <input name="email" placeholder="email"/>
+      <button id="invite">Invite</button>
+    </div>
+    <!--{{#if inScript}}
+    <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
+    {{/if}}-->
     {{#if inScript}}
     {{else}}
-      <!--TODO-->
-      <section style="max-height:40vh" class="feed">
-        {{#each users}}
-          <div class="friend">
-            {{#if profile.pictureUrl}}
-            <img src="{{profile.pictureUrl}}" class="avatarSmall"><br>
-            {{else}}
-            <img src="/img/avatar.png" class="avatarSmall">
-            {{/if}}
-            {{username profile}}
-          </div>
-        {{/each}}
-      </section>
+      {{#each users}}
+        <div class="friend">
+          {{#if profile.pictureUrl}}
+          <img src="{{profile.pictureUrl}}" class="avatarSmall"><br>
+          {{else}}
+          <img src="/img/avatar.png" class="avatarSmall">
+          {{/if}}
+          {{username profile}}
+        </div>
+      {{/each}}
     {{/if}}
   </section>
 </template>
