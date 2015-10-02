@@ -68,7 +68,7 @@ if(Meteor.isClient) {
             var idx = 0
             _.find(this.feedback.qset, function (question) {
                 idx++;
-                return !_.has(question, 'answer') || !_.has(question, 'written');
+                return !_.has(question, 'answer');
             });
             return idx;
 
