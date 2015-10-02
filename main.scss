@@ -438,7 +438,7 @@ li.answer:nth-child(even) {
   @include justify-content(center);
   @include align-items(stretch);
   
-  @include flex-grow(1);
+  @include flex-grow(0);
   @include flex-shrink(0);
   @include flex-basis(auto);
 }

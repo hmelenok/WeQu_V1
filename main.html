@@ -388,19 +388,21 @@
 </template>
 
 <template name="scriptInvitationFillData">
-  <section>
-    <h2>
-        person: {{username person}}<br>
-        top3:
-        {{#each top3}}
-        {{this.text}}<br>
-        {{/each}}
-        picture: 
-        {{person.pictureUrl}}
-      <button class="next loginLinkedin">
+  <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
+    <section>
+      <h2>Well done {{currentUser.profile.name}}!</h2>
+      <h2>
+        You have discovered that<br>
+        {{username person}}'s top strengths are
+      </h2>
+      <!--person: {{username person}}<br>-->
+      {{> threeSkills data=top3}}
+      <h2>Which strength do you have?</h2>
+      <!--<button class="next loginLinkedin">
           <img src="/img/icon_linkedin.png"> Login with LinkedIn
-      </button>
-    </h2>
+      </button>-->
+    </section>
+    {{> login}}
   </section>
 </template>
 
