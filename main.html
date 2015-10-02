@@ -390,6 +390,13 @@
 <template name="scriptInvitationFillData">
   <section>
     <h2>
+        person: {{username person}}<br>
+        top3:
+        {{#each top3}}
+        {{this.text}}<br>
+        {{/each}}
+        picture: 
+        {{person.pictureUrl}}
       <button class="next loginLinkedin">
           <img src="/img/icon_linkedin.png"> Login with LinkedIn
       </button>

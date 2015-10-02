@@ -10,13 +10,13 @@ if (Meteor.isClient) {
     Router.route('/script-invitation', function () {
         this.layout('ScriptLayout');
 
+        var invitationId = Session.get('invitation-id')
         switch(Session.get('invite')) {
             case 'init': {
                 this.render("scriptInviteInit")
                 return;
             }
             case 'quiz': {
-                var invitationId = Session.get('invitation-id')
                 this.wait(Meteor.subscribe('invitation', invitationId));
                 if(!this.ready()){
                     this.render('loading');
@@ -31,12 +31,18 @@ if (Meteor.isClient) {
                 return;
             }
             case 'filldata':{
-                if(Meteor.user()){
-                    this.render('scriptInvitationFillData');
-                } else {
+                this.wait(Meteor.subscribe('invitation', invitationId));
+                if(!Meteor.user() || !this.ready()){
                     this.render("loading");
+                    return;
                 }
+                var fb =  Feedback.findOne({_id : invitationId});
+                var score = calculateScore(fb.qset);
+                var keys = _.sortBy(_.difference(_.keys(score), _.keys(framework)), function(key) { return score[key] })
+                var top3 = _.map(_.last(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
 
+                var user = Meteor.users.findOne({_id : fb.to});
+                this.render('scriptInvitationFillData', { data: { top3: top3, person: user.profile } });
                 return;
             }
 
