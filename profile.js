@@ -37,15 +37,20 @@ Router.route('/profile/skills', function () {
         var joinedQset = _.reduce(otherFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
 
         var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
-        var otherscore = calculateScore(joinedQset);
+        var otherscore = calculateScore(joinedQset, true);
         data.enoughData = (validAnswers.length > 15);
+        console.log("otherscore", otherscore);
 
         data.categories = _.map(_.keys(framework), function(category) {
             return {
                 name : i18n[category],
                 category : category,
                 skills : _.map(framework[category], function(skill){
-                    return {name : i18n[skill], value: Math.round(otherscore[skill] * 100), skill: skill, category: category }
+                    var data = {name : i18n[skill], value: 0, scored: otherscore.scored[skill], total: otherscore.total[skill], skill: skill, category: category }
+                    if(otherscore.total[skill] > 0) {
+                        data.value = Math.round(otherscore.scored[skill] * 100 / otherscore.total[skill]);
+                    }
+                    return data;
                 })
             }
         })
