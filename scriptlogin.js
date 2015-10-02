@@ -145,7 +145,7 @@ if(Meteor.isServer){
                 'from': Meteor.userId(),
                 'to': userId,
                 'qset': qset,
-                'score': initialScore
+                'done': false,
             });
             return qset;
         }

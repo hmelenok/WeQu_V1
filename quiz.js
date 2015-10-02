@@ -8,14 +8,14 @@ if(Meteor.isClient) {
             return;
         }
         var feedbacks = Feedback.find().fetch()
-        var passed = _.chain(feedbacks).map(function(feedback){
+        /*var passed = _.chain(feedbacks).map(function(feedback){
             var question = currentQuestion(feedback.qset);
             // do not show friends that you've evaluated 
             if(!question && feedback.from == Meteor.userId()) return feedback.to; 
-        }).compact().value()
+        }).compact().value()*/
         var friends =  _.chain(feedbacks).map(function(feedback){
             return [feedback.from, feedback.to];
-        }).flatten().uniq().without(Meteor.userId()).difference(passed).sortBy().value();
+        }).flatten().uniq().sortBy().value();
 
         if(quizPersonIndex.get() >= friends.length && friends.length > 0) {
             quizPersonIndex.set(friends.length - 1);
@@ -27,7 +27,7 @@ if(Meteor.isClient) {
 
         answering = false;
         var userId = friends[quizPersonIndex.get()];
-        var data = { feedback : Feedback.findOne({to: userId }) }
+        var data = { feedback : Feedback.findOne({to: userId, done: false }) }
 
         if(!data.feedback) {
             Meteor.call('gen-question-set', userId, function (err, result) {
@@ -114,7 +114,8 @@ if(Meteor.isClient) {
                         Session.setPersistent('invite', 'filldata');
                     } else if(getLoginScript()) {
                         setLoginScript('after-quiz');
-                    }
+                    } 
+
                 } 
             });
         },
@@ -130,8 +131,20 @@ if(Meteor.isClient) {
 if(Meteor.isServer) {
     Meteor.methods({
         'feedback' : function (id, qset) {
-            var selector = { '_id': id };
-            return Feedback.update(selector, { '$set': { 'qset': qset } });
+            var done = !_.find(qset, function (question) { return !_.has(question, 'answer'); });
+            Feedback.update({ '_id': id }, { '$set': { 'qset': qset, done: done } });
+            var fb = Feedback.findOne({_id : id});
+            if(!fb || !done){
+                return;
+            }
+
+            if(fb.from == fb.to) {
+                qset = genInitialQuestionSet("You", qdata.type1you, 12);
+            } else {
+                var user = Meteor.users.findOne({ _id: fb.to });
+                qset = genQuizQuestionSet(getUserName(user.profile));
+            }
+            Feedback.insert({from: fb.from, to: fb.to, qset: qset, done : false})
         }
     });
 }

@@ -79,7 +79,7 @@ if(Meteor.isServer)  {
                 throw Meteor.Error("exists");
             }
 
-            Feedback.insert({_id: _id, from : userId, to: Meteor.userId(), qset : qset, invite : true });
+            Feedback.insert({_id: _id, from : userId, to: Meteor.userId(), qset : qset, invite : true, done: false });
 
             var template = _.template(Assets.getText('emails/invite.txt'));
             Email.send({

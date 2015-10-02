@@ -1,22 +1,24 @@
+joinFeedbacks = function joinFeedbacks(feedbacks) {
+    return _.reduce(feedbacks, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
+}
 Router.route('/profile', function () {
     route.set("profile");
     this.layout('ScriptLayout');
     this.wait(Meteor.subscribe('feedback'));
     if(this.ready()){
-        var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
-        var data = { profile : Meteor.user().profile }
-        data.myscore = calculateScore(myfeedback.qset) 
+        var myfeedback = Feedback.find({ 'from': Meteor.userId(), 'to' : Meteor.userId() }).fetch();
+        var data = { profile : Meteor.user().profile };
+        data.myscore = calculateScore(joinFeedbacks(myfeedback));
 
         var otherFeedback = Feedback.find({ 'from': { '$ne': Meteor.userId() }, 'to' : Meteor.userId() }).fetch();
-        var joinedQset = _.reduce(otherFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
+        var qset = joinFeedbacks(otherFeedback);
 
-        var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
-        data.otherscore = calculateScore(joinedQset);
+        var validAnswers = _.filter(qset, function(question) { return question.answer });
+        data.otherscore = calculateScore(qset);
         data.enoughData = (validAnswers.length > 30);
 
         var allFeedback = Feedback.find({to: Meteor.userId()}).fetch();
-        joinedQset = _.reduce(allFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
-        var totalScore = calculateScore(joinedQset);
+        var totalScore = calculateScore(joinFeedbacks(allFeedback));
         var keys = _.sortBy(_.difference(_.keys(totalScore), _.keys(framework)), function(key) { return totalScore[key] })
         data.top3 = _.map(_.last(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
         data.weak3 = _.map(_.first(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
@@ -34,12 +36,11 @@ Router.route('/profile/skills', function () {
     if(this.ready()){
         var data = { profile : Meteor.user().profile }
         var otherFeedback = Feedback.find({ 'from': { '$ne': Meteor.userId() }, 'to' : Meteor.userId() }).fetch();
-        var joinedQset = _.reduce(otherFeedback, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
+        var joinedQset = joinFeedbacks(otherFeedback);
 
         var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
         var otherscore = calculateScore(joinedQset, true);
         data.enoughData = (validAnswers.length > 15);
-        console.log("otherscore", otherscore);
 
         data.categories = _.map(_.keys(framework), function(category) {
             return {
