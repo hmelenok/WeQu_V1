@@ -11,6 +11,15 @@ if (Meteor.isClient) {
             Router.go('/')
             return;
         }
+        //for registered user redirect to quiz page
+        //TODO: redirect to the user quiz
+        if(feedback){
+            var user = Meteor.user.findOne({_id : feedback.from});
+            if(user && user.profile && user.profile.pictureUrl) {
+                Router.go('/')
+                return;
+            }
+        }
         Session.setPersistent('invite', 'init');
         Session.setPersistent('invitation-id', this.params._id);
         Router.go('/script-invitation');
@@ -33,10 +42,21 @@ if (Meteor.isClient) {
                     return;
                 }
                 var data = { feedback: Feedback.findOne({_id : invitationId}) };
-                if(!data.feedback) break;
+                if(!data.feedback) {
+                    this.render("error", {data : { message: "No such invitation " + invitationId}});
+                    setTimeout(function(){
+                        finishInviteScript();
+                    }, 3000)
+                    return;
+                }
                 var user = Meteor.users.findOne({_id : data.feedback.to});
-
-                if(!user) break;
+                if(!user) {
+                    this.render("error", {data : { message: "No such user"}});
+                    setTimeout(function(){
+                        finishInviteScript();
+                    }, 3000)
+                    return;
+                }
 
                 data.person = user.profile;
                 this.render('quiz', { 'data': data });
@@ -59,9 +79,23 @@ if (Meteor.isClient) {
             }
         }
 
-        this.render("error", {data : { message: "Unkonwn invitation script state"}});
+        this.render("error", {data : { message: "Unkonwn invitation script state: " + Session.get("invite")}});
+        setTimeout(function(){
+            finishInviteScript();
+        }, 3000)
+
+
     }, { 'name': '/script-invitation' });
 
+    function finishInviteScript(){
+        if(Session.get('invite')) {
+            Session.clear('invite');
+        }
+        if(Session.get('invitation-id')){
+            Session.clear('invitation-id');
+        }
+        Router.go('/');
+    }
     Accounts.onLogin(function(){
         var token = Session.get("mergeToken");
         var invitationId = Session.get('invitation-id');
@@ -74,13 +108,7 @@ if (Meteor.isClient) {
                 console.log("failed to merge accounts", err)
                 return;
             }
-            if(Session.get('invite')) {
-                Session.clear('invite');
-            }
-            if(Session.get('invitation-id')){
-                Session.clear('invitation-id');
-            }
-            Router.go('/');
+            finishInviteScript();
         });
     });
 
