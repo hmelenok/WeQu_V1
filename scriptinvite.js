@@ -25,7 +25,9 @@ if (Meteor.isClient) {
                 var data = { feedback: Feedback.findOne({_id : invitationId}) };
                 if(!data.feedback) break;
                 var user = Meteor.users.findOne({_id : data.feedback.to});
+
                 if(!user) break;
+
                 data.person = user.profile;
                 this.render('quiz', { 'data': data });
                 return;
@@ -45,18 +47,9 @@ if (Meteor.isClient) {
                 this.render('scriptInvitationFillData', { data: { top3: top3, person: user.profile } });
                 return;
             }
-
-            case 'finish' : {
-                this.render('scriptInvitationFinish')
-                return;
-            }
         }
 
-        Session.setPersistent('invite', false);
-        if(Session.get("invitation-id"))
-            Session.clear('invitation-id');
-        Router.go("/");
-
+        this.render("error", {data : { message: "Unkonwn invitation script state"}});
     }, { 'name': '/script-invitation' });
 
     Accounts.onLogin(function(){
@@ -68,9 +61,16 @@ if (Meteor.isClient) {
         if(token) Session.clear("mergeToken")
         Meteor.call("mergeAccounts", token, function(err, result){
             if(err){
+                console.log("failed to merge accounts", err)
                 return;
             }
-            Session.setPersistent('invite', "finish");
+            if(Session.get('invite')) {
+                Session.clear('invite');
+            }
+            if(Session.get('invitation-id')){
+                Session.clear('invitation-id');
+            }
+            Router.go('/');
         });
     });
 
@@ -91,21 +91,12 @@ if (Meteor.isClient) {
     Template.scriptInvitationFillData.events({
         "click button" : function(){
             Meteor.call("getMergeToken", function(err, token){
-                console.log("getMergeToken", err, token);
                 if(err){
                     return;
                 }
                 Session.setPersistent("mergeToken", token)
                 Meteor.loginWithLinkedin({});
             });
-        }
-    });
-
-    Template['scriptInvitationFinish'].events({
-        "click button" : function () {
-            Session.setPersistent('invite', false);
-            Session.clear('invitation-id');
-            return Router.go('/');
         }
     });
 
@@ -141,8 +132,8 @@ if(Meteor.isServer) {
                 throw new Meteor.Error("invalid_token");
             }
             var curUser = _.clone(Meteor.user())
-            Feedback.update({from: oldUser._id}, {$set : { from : curUser._id}});
-            Feedback.update({to: oldUser._id}, {$set : { to : curUser._id}});
+            Feedback.update({from: oldUser._id}, {$set : { from : curUser._id}}, {multi : true});
+            Feedback.update({to: oldUser._id}, {$set : { to : curUser._id}}, {multi : true});
         }
     });
     Meteor.startup(function () {
