@@ -1,6 +1,16 @@
 
 if (Meteor.isClient) {
     Router.route('/invitation/:_id', function () {
+        this.wait(Meteor.subscribe('invitation', this.params._id));
+        if(!this.ready()){
+            this.render('loading');
+            return;
+        }
+        var feedback = Feedback.findOne({_id : this.params._id});
+        if(feedback && feedback.done) {
+            Router.go('/')
+            return;
+        }
         Session.setPersistent('invite', 'init');
         Session.setPersistent('invitation-id', this.params._id);
         Router.go('/script-invitation');
