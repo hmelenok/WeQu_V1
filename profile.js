@@ -72,7 +72,8 @@ Router.route('/profile/written-feedback', function () {
 
 
 dataForRadar =  function dataForRadar(score) {
-    var radius = 150;
+    var radius = 120;
+    var center = 150;
     var vertices = _.keys(framework)['length'];
     var i = 0;
     return _.object(_.map([
@@ -88,7 +89,7 @@ dataForRadar =  function dataForRadar(score) {
         i = 1 + i;
         return [
             key,
-            Math.round(radius + Math.cos(angle) * radius * len) + ',' + Math.round(radius + Math.sin(angle) * radius * len)
+            Math.round(center + Math.cos(angle) * radius * len) + ',' + Math.round(center + Math.sin(angle) * radius * len)
         ];
     }));
 };
