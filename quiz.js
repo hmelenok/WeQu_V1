@@ -1,5 +1,5 @@
 if(Meteor.isClient) {
-    quizPersonIndex = new ReactiveVar(0)
+    quizPerson = new ReactiveVar()
     Router.route('/quiz', function(){
         route.set("quiz");
         this.wait(Meteor.subscribe('feedback'));
@@ -17,17 +17,19 @@ if(Meteor.isClient) {
             return [feedback.from, feedback.to];
         }).flatten().uniq().sortBy().value();
 
-        if(quizPersonIndex.get() >= friends.length && friends.length > 0) {
-            quizPersonIndex.set(friends.length - 1);
-        }
         if(friends.length == 0) {
             this.render('quizNothing');
             return;
         } 
 
+        if(friends.indexOf(quizPerson.get()) < 0) {
+            quizPerson.set(friends[0]);
+        }
+
         answering = false;
-        var userId = friends[quizPersonIndex.get()];
+        var userId = quizPerson.get();
         var data = { feedback : Feedback.findOne({to: userId, from: Meteor.userId(), done: false }) }
+        data.friends = friends;
 
         if(!data.feedback) {
             Meteor.call('gen-question-set', userId, function (err, result) {
@@ -37,8 +39,8 @@ if(Meteor.isClient) {
         }
         var user = Meteor.users.findOne({_id : userId});
         if(user) data.person = user.profile;
-        data.nextPerson = (quizPersonIndex.get() < friends.length - 1);
-        data.prevPerson = (quizPersonIndex.get() > 0)
+        data.nextPerson = (friends.indexOf(quizPerson.get()) < friends.length - 1);
+        data.prevPerson = (friends.indexOf(quizPerson.get()) > 0)
 
         this.render('quiz', {data : data});
     }, { 'name': '/quiz' });
@@ -119,11 +121,19 @@ if(Meteor.isClient) {
                 } 
             });
         },
-        "click #nextPerson" : function(){
-            quizPersonIndex.set(quizPersonIndex.get() + 1);
+        "click #nextPerson" : function(event, template){
+            var friends = template.data.friends;
+            var idx = friends.indexOf(quizPerson.get())
+            if(idx >= 0 && idx < friends.length - 1){
+                quizPerson.set(friends[idx + 1]);
+            }
         },
-        "click #prevPerson" : function(){
-            quizPersonIndex.set(quizPersonIndex.get() - 1);
+        "click #prevPerson" : function(event, template){
+            var friends = template.data.friends;
+            var idx = friends.indexOf(quizPerson.get())
+            if(idx >= 1 && idx < friends.length){
+                quizPerson.set(friends[idx - 1]);
+            }
         }
     });
 }

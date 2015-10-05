@@ -17,21 +17,23 @@ if(Meteor.isClient) {
         inviteStatus.set('sending');
         var email = template.$('input[name=email]').val();
         var name = template.$('input[name=name]').val();
-        Meteor.call('invite', name, email, function (err, result) {
+        Meteor.call('invite', name, email, function (err, userId) {
             if(err){
                 console.log("error", err);
                 inviteStatus.set('error');
                 return;
-            } else {
-              template.$('input[name=name]').val('')
-              template.$('input[name=email]').val('');
-            }
+            } 
+
+            template.$('input[name=name]').val('')
+            template.$('input[name=email]').val('');
             inviteStatus.set('sent');
+
             setInterval(function () {
                 return inviteStatus.set('default');
             }, 3000);
             if(getLoginScript()){
-              return setLoginScript('finish');
+                quizPerson.set(userId);
+                return setLoginScript('finish');
             }
             console.log(err, result);
         });
@@ -92,7 +94,7 @@ if(Meteor.isServer)  {
                     'link': Meteor.absoluteUrl('invitation/' + _id)
                 })
             });
-            return email;
+            return userId;
         }
     })
 }
