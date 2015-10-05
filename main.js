@@ -17,8 +17,7 @@ if (Meteor.isClient) {
     route = new ReactiveVar("quiz");
   
     Router.route('/', function () {
-        route.set('/quiz');
-        return Router.go('/profile');
+        Router.go('/quiz');
     }, { 'name': '/' });
 
     Router.route('/feed', function () {
