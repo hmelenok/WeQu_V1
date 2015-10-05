@@ -76,7 +76,7 @@ if(Meteor.isServer)  {
 
             var feedback = Feedback.findOne({ 'from': userId, 'to': Meteor.userId() });
             if(feedback){
-                throw Meteor.Error("exists");
+                throw new Meteor.Error("exists");
             }
 
             Feedback.insert({_id: _id, from : userId, to: Meteor.userId(), qset : qset, invite : true, done: false });

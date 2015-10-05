@@ -19,7 +19,7 @@ if(Meteor.isClient){
                     this.render('loading');
                     return;
                 }
-                var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
+                var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId(), done: false });
                 if(!myfeedback) {
                     this.render('scriptLoginFail');
                     return;
@@ -38,24 +38,16 @@ if(Meteor.isClient){
                     this.render("loading");
                     return
                 }
-                var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId() });
+                var myfeedback = Feedback.findOne({ 'from': Meteor.userId(), 'to' : Meteor.userId(), done: true});
                 if(!myfeedback) {
                     this.render('scriptLoginFail');
                     return;
                 }
-                var score = calculateScore(myfeedback.qset);
+                var data = calculateTopWeak([myfeedback]);
+                data.myscore = calculateScore(myfeedback.qset);
+                data.profile = Meteor.user().profile;
 
-                var keys = _.sortBy(_.difference(_.keys(score), _.keys(framework)), function(key) { return score[key] })
-                var top3 = _.map(_.last(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
-                var weak3 = _.map(_.first(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
-                this.render('profile', {
-                    'data': {
-                        'myscore': score,
-                        'top3' : top3,
-                        'weak3' : weak3,
-                        'profile': Meteor.user().profile
-                    }
-                }) 
+                this.render('profile', { 'data': data });
                 break;
             }
 

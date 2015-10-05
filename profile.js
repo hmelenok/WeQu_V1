@@ -1,6 +1,3 @@
-joinFeedbacks = function joinFeedbacks(feedbacks) {
-    return _.reduce(feedbacks, function(memo, feedback) { return memo.concat(feedback.qset); }, [] );
-}
 Router.route('/profile', function () {
     route.set("profile");
     this.layout('ScriptLayout');
@@ -17,12 +14,7 @@ Router.route('/profile', function () {
         data.otherscore = calculateScore(qset);
         data.enoughData = (validAnswers.length > 30);
 
-        var allFeedback = Feedback.find({to: Meteor.userId()}).fetch();
-        var totalScore = calculateScore(joinFeedbacks(allFeedback));
-        var keys = _.sortBy(_.difference(_.keys(totalScore), _.keys(framework)), function(key) { return totalScore[key] })
-        data.top3 = _.map(_.last(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
-        data.weak3 = _.map(_.first(keys, 3), function(skill){return { skill: skill, text: i18n[skill] } });
-        
+        _.extend(data, calculateTopWeak(Feedback.find({to: Meteor.userId()}).fetch()))
         this.render('profile', { data : data});  
     } else {
         this.render('loading');

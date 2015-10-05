@@ -68,13 +68,11 @@ if (Meteor.isClient) {
                     this.render("loading");
                     return;
                 }
-                var fb =  Feedback.findOne({_id : invitationId});
-                var score = calculateScore(fb.qset);
-                var keys = _.sortBy(_.difference(_.keys(score), _.keys(framework)), function(key) { return score[key] })
-                var top3 = _.map(_.last(keys, 3), function(skill){ return { skill: skill, text: i18n[skill] } });
+                var feedback = Feedback.findOne({_id : invitationId})
+                var data = calculateTopWeak([feedback]);
+                data.person = Meteor.users.findOne({_id : feedback.to}).profile;
 
-                var user = Meteor.users.findOne({_id : fb.to});
-                this.render('scriptInvitationFillData', { data: { top3: top3, person: user.profile } });
+                this.render('scriptInvitationFillData', { data: data });
                 return;
             }
         }
