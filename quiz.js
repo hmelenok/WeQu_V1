@@ -27,7 +27,7 @@ if(Meteor.isClient) {
 
         answering = false;
         var userId = friends[quizPersonIndex.get()];
-        var data = { feedback : Feedback.findOne({to: userId, done: false }) }
+        var data = { feedback : Feedback.findOne({to: userId, from: Meteor.userId(), done: false }) }
 
         if(!data.feedback) {
             Meteor.call('gen-question-set', userId, function (err, result) {
