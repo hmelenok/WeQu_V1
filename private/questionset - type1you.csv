@@ -1,46 +1,56 @@
-skill,answer
-business_focused,You have a good intuition for what a customer wants and needs
-business_focused,You are keen to make more money
-people_focused,You care for people around you 
-people_focused,You are keen to find out what matters to people
-trustful,People would lend your house without worrying
-authenticity,You are always saying own feeling in a tactful way
-creative,You are the type generates 100 ideas in a minute
-conceptual_thinking,You see easily how things can work together
-manage_conflict,You often succeed to get people talking to each other even if they don’t like to do so
-negotiation,You enjoy bargaining on a market
-negotiation,You are always looking for the better deals when buying something
-self_learning,"You are always busy reading, practicing something new"
-initiative,You are not afraid of starting up something new by your own
-stress_tolerance,You know what triggers you stresses
-stress_tolerance,Being late or being shout at do not change your mood that much
-persistence,"When playing a game, you would not give up till you win"
-persistence,"When committed, you would not stop for convenience "
-positive,"You see the glass half full, almost never half empty"
-accept_critics,"When you are criticized, you listen and say thank you"
-facilitation,You bring people together and let them talk each others
-facilitation,In a team you easily make sure that everyone is informed and that everything is organised
-facilitation,In a meeting you would make sure that everything run smoothly
-strategic,You can easily come up with multiple options to decide the best decision to take
-delegation,You know how to keep yourself less busy by letting others do the job for you
-delegation,You love it when others do what needs to be done without you in talking
-coaching,You like to help children play football
-coaching,You tend to ask questions more than making statements
-coaching,You love to see other people’s success
-empathy,You easily notice other people’s feeling
-empathy,You show true interest in others by asking questions 
-listening,You make other people feel heard
-presentation,"You like to be on stage, get the audience informed and entertained"
-sociability,You easily talk to strangers
-efficient,You get things done without wasting time or energy
-empathy,"Hearing about the painof friends, you feel with them"
-persistence,You are able to endure in hard times
-creative,You always come up with new ways of handling issues
-trustful,You always stand by your own words and promises
-assertive,You have no problem with saying what you want at any situations
-creative,Often you surprise people with totally unexpected ideas
-initiative,You like to initiate a weekend plan for your friends
-listening,You ask good questions not only interested in saying what you want to say
-accept_critics,When you made a mistake you are able to accept it and apologise 
-postive ,You are a person remains calm and unaffected even tough you are trapped in a traffic for one hour
-accept_critics,You are not too stubborn to change after being criticized
+skill,answer,Revised
+business_focused,You have a good intuition for what a customer wants and needs,[name] has good intuition for what the customer wants and needs
+business_focused,You are keen to make more money,works hard to earn more money
+people_focused,You care for people around you ,cares for people
+people_focused,You are keen to find out what matters to people,[name] likes to know what opther people care about
+trustful,People would lend your house without worrying,People would give [name] the keys to their house without any worry
+authenticity,You are always saying own feeling in a tactful way,[name] always expresses his/her feelings in a tactful way
+creative,You are the type generates 100 ideas in a minute,[name] igenerates 100 ideas in a minute
+conceptual_thinking,You see easily how things can work together,[name] easily recognize how things work together
+manage_conflict,You often succeed to get people talking to each other even if they don’t like to do so,helps people meet and talk to one another
+negotiation,You enjoy bargaining on a market,????
+negotiation,You are always looking for the better deals when buying something,Knows how to get a bargain when shopping
+self_learning,"You are always busy reading, practicing something new",is always reading or practicing something new
+initiative,You are not afraid of starting up something new by your own,is not afraid of starting up something on his own
+stress_tolerance,You know what triggers you stresses,{name} knows what triggers {his/her} stress
+stress_tolerance,Being late or being shout at do not change your mood that much,?????
+persistence,"When playing a game, you would not give up till you win","When playing a game, [name] would not give up till he/she wins"
+persistence,"When committed, you would not stop for convenience ",?????
+positive,"You see the glass half full, almost never half empty",is usually optimistic
+accept_critics,"When you are criticized, you listen and say thank you",When [name] is criticized he/she listens and says thank you
+facilitation,You bring people together and let them talk each others,????? same as 10
+facilitation,In a team you easily make sure that everyone is informed and that everything is organised,makes sure everyone on the team has the information they need
+facilitation,In a meeting you would make sure that everything run smoothly,makes sure meetings run smoothly
+strategic,You can easily come up with multiple options to decide the best decision to take,quickly develops options and chooses the best one
+delegation,You know how to keep yourself less busy by letting others do the job for you,[name] ????
+delegation,You love it when others do what needs to be done without you in talking,???
+coaching,You like to help children play football,loves to help kids
+coaching,You tend to ask questions more than making statements,good
+coaching,You love to see other people’s success,[name] love to see other people succeed
+empathy,You easily notice other people’s feeling,[name] notices how other people feel
+empathy,You show true interest in others by asking questions ,[name] asks good questions of others
+listening,You make other people feel heard,good
+presentation,"You like to be on stage, get the audience informed and entertained",[name] likes to be on stage
+sociability,You easily talk to strangers,[name] is a good proof reader
+efficient,You get things done without wasting time or energy,[name] talks easily to other people
+empathy,"Hearing about the painof friends, you feel with them",good
+persistence,You are able to endure in hard times,[name] feels the pain of others
+creative,You always come up with new ways of handling issues,[name] shows no let up when things get hard
+trustful,You always stand by your own words and promises,good
+assertive,You have no problem with saying what you want at any situations,[name] always stands by what he/she says or promises
+creative,Often you surprise people with totally unexpected ideas,"Regardless of the situation, [name] can say what he wants"
+initiative,You like to initiate a weekend plan for your friends,"[name] ofetn surprises me with good, new ideas"
+listening,You ask good questions not only interested in saying what you want to say,[name] likes to initate a weekend plan
+accept_critics,When you made a mistake you are able to accept it and apologise ,[name] asks good questions and is not only interested in stating his/her own ideas
+positive,You are a person remains calm and unaffected even tough you are trapped in a traffic for one hour,When [name] makes a mistake [name] is able to accept it and apologize
+accept_critics,You are not too stubborn to change after being criticized,"even after getting stuck in traffic for an hour [name] remains calm, even optimistic"
+,,good
+,,good
+,,gives other people credit as much as possible
+,,"When [name] keeps you waiting for something, [name] aplogises in a way you find legitimate "
+,,good
+,,good
+,,good
+,,uses intution to make decisions
+,,good
+,,good

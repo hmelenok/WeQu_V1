@@ -19,9 +19,9 @@ When [name] keeps you waiting [name] apologises ,Sometimes,
 "[name] pretends to like things to impress people
 ",Once and a while,
 ,Never,integrity
-[name] likes to hear about,Your family ,people_focsued
+[name] likes to hear about,Your family ,people_focused
 ,Your current project,
-"When comes into work, [name]",Always greets you,socialbility
+"When comes into work, [name]",Always greets you,sociability
 ,Can be pre-occupied,
 "[name] takes a real interest in your life
 ",Most of the time,people_focused
@@ -35,7 +35,7 @@ When [name] keeps you waiting [name] apologises ,Sometimes,
 ,Good data,
 "[name] hears about your taste in music or movies and offers
 ",Judgment,
-,Intereset,listening 
+,Intereset,listening
 "When it comes to learning [name] is
 ","Genuinely curious
 ",authenticity
@@ -43,7 +43,7 @@ When [name] keeps you waiting [name] apologises ,Sometimes,
 "[name] checks the value of advice against
 ","Her own internal beliefs
 ",authenticity
-,"How it will help her advance 
+,"How it will help him/her advance 
 ",coaching
 "When someone demonstrates they dislike [name], 
 ",[name] looks uncomfortable,
@@ -83,19 +83,19 @@ As a negotiator [name] is,Always prepared,negotiation
 ,Sincerity and humor,
 "You walk by [name]'s desk and see [name] is 
 ",Crushing the new viral game,
-,Learning a new language,self_learner
+,Learning a new language,self_learning
 "The day after [name] says “I did not know that” [name]
-",Has learned all about it,self_learner
+",Has learned all about it,self_learning
 ,Still does not know anything about it,
 "You think [name] loves to 
 ","Travel to see new things
-",self_learner
+",self_learning
 ,"Read about new things
 ",
 "Sometimes you think of [name]
-","Wow, how did she get all that done?
+","Wow, how did he/she get all that done?
 ",efficient
-,"Wow, when is she gonna get that done?
+,"Wow, when is he/she gonna get that done?
 ",
 You imagine [name]'s inbox as,"Including unanswered emails, some of which are important",
 ,"Neat and tidy   
@@ -104,3 +104,95 @@ You imagine [name]'s inbox as,"Including unanswered emails, some of which are im
 ,Proper delegation,delegation
 "To know about something new, [name]",Asks lots of good questions,initiative
 ,Reads a lot,
+[name] deals with stress by,Accepting it and learning to deal,stress_tolerance
+,Avoiding it,
+After a bad day [name] treats the next day as,A fresh start,stress_tolerance
+,A continuation of yesterday,
+When something goes wrong [name],Learns and improves,stress_tolerance
+,Looks unhappy,
+[name] talks about past difficulties or disappointments,With sadness or regret,
+,With perspective and humor,stress_tolerance
+[name] tracks down every possible solution ,Sometimes,
+,All the time,persistence
+[name] finishes what he/she starts,Some of the time,
+,All of the time,persistence
+When [name] asks you to do things,"[name] gives good, clear instructions",delegation
+,[name] just challenges you to get it done,
+If [name] asks you to do something he/she makes sure to follow up and see how you are doing,Almost all the time,delegation
+,Some of the time,
+[name] delegates things at the last minute,Only when you know he/she absolutely has to,delegation
+,A little too often,
+With really boring or unpleasant tasks [name] tends to,Take them on him/herself,delegation
+,Give them to others,
+"When [name] gives you something to do, he/she is thinking of how it might help you grow",Rarely,
+,When he/she can,delegation
+[name] is better at,Telling when someone wants to enter a conversation,empathy
+,Insisting on his/her point,
+[name] is more likely to know,How someone feels,empathy
+,What the rules are,
+[name] goes too far with a joke,Never,empathy
+,Sometimes,
+When talking with [name] about a problem he/she is more likely to,Help you find your way,coaching
+,Propose a solution for you,
+After you talk with [name] you feel like,You know yourself better,coaching
+,You know [name] better,
+"When you tell [name] something important to you, you have the sense he/she is",Concentrating on every word,listening
+,Thinking about lunch,
+[name] listens,Without judging,listening
+,With her own agenda,
+"When talking with [name], he/she makes you feel like",[name] has plenty of time for you,
+,Things are a bit rushed,
+Which is more likely of [name] to say,"I want to hear about that, I just can’t do it now",listening
+,"Uhm, sure, but can we do it later (which means never)",
+If you are talking to [name] about something important,[name] will check her phone occasionally,
+,[name] put her phone away,listening
+[name] is usually looking at,What he/she needs to do today,
+,What he/she can do today that will change tomorrow,strategic
+If someone suggests a wild idea [name] will,Probably let it fade away,
+,Consider what might be of value,strategic
+Insofar as [name] is a dreamer he/she,Let’s his/her dreams run wild,
+,Tempers his/her dreams well with a healthy dose of realism,strategic
+You know that an email from [name],Will be clear and to the point,written_communication
+,Might be a little scattered,
+For the slides in a presentation,Few people write better captions or text than [name],written_communication
+,Most people write better captions or text,
+For writing the last brochure or proposal you wish,Someone other than [name] had been put in charge,
+,[name] had been put in charge,written_communication
+When [name] writes something he/she tends to use,Cliches,
+,New phrases,written_communication
+When someone criticises [name] he/she,Gets flustered,
+,Listens and learns,accept_critics
+"If you were going to make a pointed criticism of something [name] does, you would",Know he/she wants to hear it,accept_critics 
+,Fear you need to be careful of how you say it,
+When someone attacks an idea of [name]'s,[name] gets a little defensive,
+,[name] listens carefully,accept_critics
+A good way to deal with criticism is to stop your first reaction. You think [name],Knows this and practices it well,accept_critics
+,Either doesn't know or struggles with it in the moment,
+"If [name] does not fully understand criticism made of her, he/she will",Sit with it,
+,Make sure to follow up and find out what her critic meant,accept_critics
+"When [name] says, “it is good to see you”, he/she",Means it,respectful
+,Is just being polite,
+[name] wants to learn from you because he/she,Respects your abilities,respectful
+,Is thinking about her career,
+"When [name] disagree with you, he/she does it",Calmly,respectful
+,As if there is something wrong with you,
+[name] probably,Get along with people who have different beliefs,respectful
+,Sticks to people who see the world the way he/she does,
+[name] is more likely to,Promote good ideas in a discussion,facilitation 
+,Offer his/her own ideas,
+"In a meeting, [name] is especially good at",Summarizing what has happened,facilitation 
+,Offering a clear point,
+[name] asks the kinds of questions that lead to,More ideas,facilitation 
+,A conclusion,
+If [name] tells a story,It will have an interesting character at the center,story_telling
+,It might just be about some person,
+[name] tells stories that,"Have a clear beginning, middle and end",story_telling
+,In which stuff happens,
+If you introduce a good friend to [name] and then have to leave for a few minutes your friend will,Enjoy themselves,sociability
+,Wonder when you are going to get back,
+You think of [name] as someone,on the fringe of the party,
+,At the center of the party,sociability
+If you end up sitting next to [name] at a social event,It will be fun,sociability
+,It might feel a little like work,
+[name] tends to,Set people at ease,sociability
+,Need someone to set her at ease,
