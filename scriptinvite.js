@@ -14,7 +14,7 @@ if (Meteor.isClient) {
         //for registered user redirect to quiz page
         //TODO: redirect to the user quiz
         if(feedback){
-            var user = Meteor.user.findOne({_id : feedback.from});
+            var user = Meteor.users.findOne({_id : feedback.from});
             if(user && user.profile && user.profile.pictureUrl) {
                 Router.go('/')
                 return;
