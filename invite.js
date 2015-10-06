@@ -89,7 +89,7 @@ if(Meteor.isServer)  {
             Email.send({
                 'to': email,
                 'from': 'WeQu <info@wequ.co>',
-                'subject': _.template("[to], let your opinion matter to [from]!")({ to: toName, from:name }),
+                'subject': _.template("Let’s learn from each other")({ to: toName, from:name }),
                 'text': template({
                     'from': name,
                     'to' : toName,
