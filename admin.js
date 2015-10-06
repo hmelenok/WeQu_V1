@@ -64,7 +64,7 @@ if(Meteor.isServer) {
             skill = l[0].trim()
 
             if(!skill2category[skill]) {
-                console.log("type1others, unknown skill", skill, l.join(" "));
+                console.log("type1others: unknown skill", skill, l.join(" "));
                 continue;
             }
             qdata.type1others.push({_id: String(i), skill: skill, text: l[1]});
@@ -77,7 +77,7 @@ if(Meteor.isServer) {
             skill = l[2].trim()
 
             if(skill && !skill2category[skill]) {
-                console.log("type3 unknown skill", skill, l.join(" "));
+                console.log("type3: unknown skill", skill, l.join(" "));
                 continue;
             }
             if(l[0]) {
