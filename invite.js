@@ -35,7 +35,7 @@ if(Meteor.isClient) {
                 quizPerson.set(userId);
                 return setLoginScript('finish');
             }
-            console.log(err, result);
+            console.log(err, userId);
         });
     }})
 }
@@ -44,6 +44,7 @@ if(Meteor.isServer)  {
         'inviteLogin' : function(token){
            var feedback = Feedback.findOne({_id : token}) 
            if(!feedback) return;
+           if(feedback.done) return;
            var user = Meteor.users.findOne({_id : feedback.from});
            if(!user) return;
            return user.username;
@@ -70,18 +71,19 @@ if(Meteor.isServer)  {
                     username: Random.id(), 
                     email: email, 
                     password: _id,
-                    profile : { emailAddress : email, name: toName }
+                    profile : { emailAddress : email, name: toName}
                 });
             } else {
                 userId = user._id;
             }
 
             var feedback = Feedback.findOne({ 'from': userId, 'to': Meteor.userId() });
-            if(feedback){
-                throw new Meteor.Error("exists");
-            }
 
-            Feedback.insert({_id: _id, from : userId, to: Meteor.userId(), qset : qset, invite : true, done: false });
+            var fbId = Feedback.insert({_id: _id, from : userId, to: Meteor.userId(), qset : qset, invite : true, done: false });
+
+            if(!user){
+                Meteor.users.update({_id: userId}, {$set : { "services.invitationId": _id}});
+            }
 
             var template = _.template(Assets.getText('emails/invite.txt'));
             Email.send({

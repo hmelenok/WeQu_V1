@@ -7,12 +7,16 @@ if(Meteor.isClient) {
             this.render('loading');
             return;
         }
+
+        var iid = Session.get('invitation-id');
+        if(iid) {
+            Session.clear("invitation-id");
+            Meteor.call("mergeAccounts", iid, function(err, result){
+                console.log("mergeAccounts", err, result);
+            });
+        }
+
         var feedbacks = Feedback.find().fetch()
-        /*var passed = _.chain(feedbacks).map(function(feedback){
-            var question = currentQuestion(feedback.qset);
-            // do not show friends that you've evaluated 
-            if(!question && feedback.from == Meteor.userId()) return feedback.to; 
-        }).compact().value()*/
         var friends =  _.chain(feedbacks).map(function(feedback){
             return [feedback.from, feedback.to];
         }).flatten().uniq().sortBy().value();

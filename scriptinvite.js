@@ -11,17 +11,17 @@ if (Meteor.isClient) {
             Router.go('/')
             return;
         }
-        //for registered user redirect to quiz page
-        //TODO: redirect to the user quiz
+        Session.setPersistent('invitation-id', this.params._id);
         if(feedback){
-            var user = Meteor.users.findOne({_id : feedback.from});
+            //var user = Meteor.users.findOne({_id : feedback.from});
+            var user = Meteor.user();
             if(user && user.profile && user.profile.pictureUrl) {
-                Router.go('/')
+                quizPerson.set(feedback.to);
+                Router.go('/quiz')
                 return;
             }
         }
         Session.setPersistent('invite', 'init');
-        Session.setPersistent('invitation-id', this.params._id);
         Router.go('/script-invitation');
     }, { 'name': '/invitation/:_id' });
 
@@ -89,50 +89,19 @@ if (Meteor.isClient) {
         if(Session.get('invite')) {
             Session.clear('invite');
         }
-        if(Session.get('invitation-id')){
-            Session.clear('invitation-id');
-        }
         Router.go('/');
     }
-    Accounts.onLogin(function(){
-        var token = Session.get("mergeToken");
-        var invitationId = Session.get('invitation-id');
-        if(!token || !invitationId) {
-            return;
-        }
-        if(token) Session.clear("mergeToken")
-        Meteor.call("mergeAccounts", token, function(err, result){
-            if(err){
-                console.log("failed to merge accounts", err)
-                return;
-            }
-            finishInviteScript();
-        });
-    });
-
-    Accounts.onLoginFailure(function(){
-        var token = Session.get("mergeToken");
-        if(token){
-            Session.clear("mergeToken");
-        }
-    });
 
     Template.scriptInvitationFillData.onCreated(function(){
         var user = Meteor.user()
         if(user && user.profile && user.profile.firstName && user.profile.pictureUrl) {
-            Session.setPersistent('invite', "finish");
+            finishInviteScript();
         }
     });
 
     Template.scriptInvitationFillData.events({
         "click button" : function(){
-            Meteor.call("getMergeToken", function(err, token){
-                if(err){
-                    return;
-                }
-                Session.setPersistent("mergeToken", token)
-                Meteor.loginWithLinkedin({});
-            });
+            Meteor.loginWithLinkedin({});
         }
     });
 
@@ -150,7 +119,7 @@ if (Meteor.isClient) {
 
 if(Meteor.isServer) {
     Meteor.methods({
-        "getMergeToken" : function(){
+        /* "getMergeToken" : function(){
             if(!Meteor.userId()) {
                 throw new Meteor.Error("not_logged_in");
             }
@@ -158,18 +127,20 @@ if(Meteor.isServer) {
             var token = Random.secret();
             Meteor.users.update({_id : Meteor.userId}, {$set : { "services.merge.token" : token }});
             return token;
-        },
-        "mergeAccounts" : function(token){
+        },*/
+        "mergeAccounts" : function(invitationId){
             if(!Meteor.userId()) {
                 throw new Meteor.Error("not_logged_in");
             }
-            var oldUser = Meteor.users.findOne({"services.merge.token" : token});
+            var oldUser = Meteor.users.findOne({"services.invitationId": invitationId});
             if(!oldUser){
                 throw new Meteor.Error("invalid_token");
             }
             var curUser = _.clone(Meteor.user())
+            console.log("mergeAccounts", oldUser._id, curUser._id);
             Feedback.update({from: oldUser._id}, {$set : { from : curUser._id}}, {multi : true});
             Feedback.update({to: oldUser._id}, {$set : { to : curUser._id}}, {multi : true});
+            Meteor.users.remove({ _id: oldUser._id });
         }
     });
     Meteor.startup(function () {
