@@ -27,7 +27,7 @@ Router.route('/profile/skills', function () {
     this.wait(Meteor.subscribe('feedback'));
     if(this.ready()){
         var data = { profile : Meteor.user().profile }
-        var otherFeedback = Feedback.find({ 'from': { '$ne': Meteor.userId() }, 'to' : Meteor.userId() }).fetch();
+        var otherFeedback = Feedback.find({ 'to' : Meteor.userId() }).fetch();
         var joinedQset = joinFeedbacks(otherFeedback);
 
         var validAnswers = _.filter(joinedQset, function(question) { return question.answer });
