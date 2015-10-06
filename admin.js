@@ -32,17 +32,8 @@ if (Meteor.isClient) {
 
 if(Meteor.isServer) {
 
-    qdata = { type1you : [], type1others : [], type3 : [] };
-    splitLine = function splitLine(line){
-        return line.split(",").map(function(el){
-            if(el.charAt(0) == '\"'){
-                return el.substr(1, el.length - 2);
-            }
-            return el;
-        })
-    }
-
     importQuestions = function importQuestions() {
+        qdata = { type1you : [], type1others : [], type3 : [] };
         var qs = Assets.getText('questionset - type1you.csv');
         var lines = Papa.parse(qs).data;
         var i; 
