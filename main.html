@@ -1,6 +1,7 @@
 <head>
   <title>WeQu</title>
   <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no">
+  <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
 </head>
 
 <body>
@@ -56,7 +57,7 @@
       <section class="ptb_h1">
         <img src="/img/icon_overview.png" class="titleIcon">
         <h3>Soft Skill Overview</h3>
-        <h5>Your soft skill profile based on self-answered questions</h5>
+        <h5>Your soft skill profile based on the questions<br> you answered about yourself</h5>
         <svg height="300" width="300" style="min-height:300px; background-image:url('/img/skills.png'); background-size: cover;">
           {{> radar score=myscore color="white" outline="#E96956"}}
         </svg>
@@ -67,15 +68,15 @@
       </section>
       <section class="bgGrey ptb_h1">
         <img src="/img/icon_top3.png" class="titleIcon">
-        <h3>Your top 3 strengths</h3>
+        <h3>Your 3 strengths</h3>
         {{> threeSkills data=top3}}
-        <h3>Your 3 weaknesses</h3>
+        <h3>Skills you could work out</h3>
         {{> threeSkills data=weak3}}
       </section>
       <section class="ptb_h1">
-        <img src="/img/icon_makethemost.png" class="titleIcon">
-        <h3>Make the most out of WeQu</h3>
-        <h5>Use WeQu to know how people around you perceive<br> your soft skills. Start inviting people to give you feedback.<br> Your journey just begins!</h5>
+        <img src="/img/icon_mirror.png" class="titleIcon">
+        <h3>Use WeQu to find out how others see you</h3>
+        <h3>Invite your friends and colleagues to give <br>you feedback. They are the helpful mirrors <br>you have in your life. </h3>
       </section>
       <!--<section class="bgGrey ptb_h1">
         <img src="/img/icon_track.png" class="titleIcon">
