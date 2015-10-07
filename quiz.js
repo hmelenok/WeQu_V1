@@ -20,6 +20,10 @@ if(Meteor.isClient) {
         var friends =  _.chain(feedbacks).map(function(feedback){
             return [feedback.from, feedback.to];
         }).flatten().uniq().sortBy().value();
+        //TODO: some friends disappear from friendlist???
+        var friends = Meteor.users.find({_id : {$in : friends}}, {profile : 1}).map(function(user){
+            return user._id;
+        });
 
         if(friends.length == 0) {
             this.render('quizNothing');
