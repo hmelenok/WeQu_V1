@@ -8,6 +8,7 @@ if(Meteor.isClient) {
         }
 
         var users = Feedback.find({ $or : [ {to: Meteor.userId()}, {from: Meteor.userId()} ]} ).map(function(fb){ return fb.from });
+        users = _.without(users, Meteor.userId());
 
         this.render('invite', {data : { users : Meteor.users.find({_id : {$in : users}}, {profile : 1}) }})
     }, { 'name': '/invite' });
