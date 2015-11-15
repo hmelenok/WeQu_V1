@@ -1,0 +1,20 @@
+<template name="signIn">
+  <section class="signIn">
+    {{#if signUpShow}}
+      {{>signUp}}
+    {{else}}
+    <form id="signIn">
+        <input type="email" name="loginEmail">
+        <input type="password" name="loginPassword">
+        <button type="submit">
+          Login
+        </button>
+    </form>
+    <div id="error"></div>
+    <br>
+    or
+    <a href="{{pathFor 'signUp'}}" id="signUp">Sign up</a>
+    {{/if}}
+  </section>
+
+</template>

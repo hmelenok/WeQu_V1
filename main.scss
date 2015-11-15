@@ -3,7 +3,7 @@
 
 $h1: 30px;
 $h2: 5vmin;
-$h3: 4vmin;  
+$h3: 4vmin;
 $h4: 3.5vmin;
 $h5: 3vmin;
 
@@ -19,20 +19,20 @@ html, body {
   overflow-y: hidden;
   //overflow-y: scroll;
   //-webkit-overflow-scrolling: touch;
-  
+
   cursor: pointer;
   //-webkit-backface-visibility: hidden;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  
-  margin: 0; 
+
+  margin: 0;
   padding: 0;
   height: 100%;
-  
+
   font-family: Raleway, sans-serif;
   font-size: $h3;
   line-height: 1.5;
   //text-align: center;
-  
+
   @include flexbox;
   @include flex-direction(column);
   @include flex-wrap(nowrap);
@@ -71,8 +71,8 @@ h3 + h5 {
 .ptb_h1 {padding: $h1 0}
 
 .whiteText {
-  color: white; 
-  
+  color: white;
+
   button, .button {
     background: none;
     border: 1px solid white;
@@ -85,7 +85,7 @@ button, .button {
   width: 80%;
   padding: 18px 0;
   margin: 20px 0;
-  
+
   background: #345BB5;
   color: white;
   border: none;
@@ -102,8 +102,8 @@ button, .button {
 
 .loginLinkedin {
   padding-top: $h4;
-  padding-bottom: $h4*5/4; 
-  
+  padding-bottom: $h4*5/4;
+
   img {
     width: $h1;
     margin-bottom: -$h1/4;
@@ -115,12 +115,12 @@ input {
   width: 80%;
   padding: 5px 0;
   margin: $h5 0;
-  
+
   background: none;
   color: white;
   font-size: 18px;
   text-align: center;
-  
+
   border: none;
   border-bottom: 2px solid white;
   border-radius: 0px;
@@ -137,7 +137,7 @@ input {
   @extend .avatar;
   height: 40px;
   border: none;
-}  
+}
 
 .menuBar {
   min-height: 50px;
@@ -145,7 +145,7 @@ input {
   border: none;
   color: white;
   background-color: #303030;
-  
+
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(nowrap);
@@ -155,11 +155,11 @@ input {
   @include flex-grow(0);
   @include flex-shrink(0);
   @include flex-basis(auto);
-  
+
   img {
     width: 40px;
   }
-  
+
   a {
     color: #fff;
     text-decoration: none;
@@ -171,11 +171,11 @@ section {
   //padding: 20px;
   //border: 1px solid red;
   min-width: 100vw;
-  
+
   @include flex-grow(1);
   @include flex-shrink(1);
-  @include flex-basis(auto); 
-  
+  @include flex-basis(auto);
+
   @include flexbox;
   @include flex-direction(column);
   @include flex-wrap(nowrap);
@@ -185,19 +185,19 @@ section {
 
 .person {
   //border: 1px solid red;
-  
+
   @include flex-direction(row);
   @include align-items(center);
-  
+
   div {
     text-align: center;
     @include flex-grow(1);
     @include flex-shrink(1);
-    @include flex-basis(auto); 
-  
+    @include flex-basis(auto);
+
     //border: 1px solid red;
   }
-  
+
   .nav {
     width: $h2;
     //margin: 0 15vw;
@@ -225,19 +225,19 @@ section {
 
 .feed {
   @extend section;
-  
+
   padding: 0;
-  
+
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   @include justify-content(flex-start);
-  
+
   > * {
     //border: 1px solid red;
     @include flex-grow(0);
     @include flex-shrink(0);
-    @include flex-basis(auto); 
+    @include flex-basis(auto);
   }
 
   .feedElement {
@@ -287,13 +287,13 @@ section {
   padding: 10px 20px;
   font-size: $h3;
   //border: 1px solid red;
-  
+
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
   @include align-items(center);
-  
+
   img {
     margin: 0 10px;
   }
@@ -303,13 +303,13 @@ section {
   width: 90%;
   min-height: 15px;
   padding: 5px 10px;
-  
+
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
   @include align-items(center);
- 
+
   > div {
     //border: 1px solid red;
   }
@@ -347,17 +347,17 @@ section {
   width: 100%;
   padding-bottom: $h3;
   //border: 1px solid lime;
-  
+
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(nowrap);
   @include justify-content(space-around);
   @include align-items(center);
-  
+
   > div {
     //border: 1px solid red;
   }
-  
+
   .skip {
     color: white;
     text-decoration: none;
@@ -365,14 +365,14 @@ section {
 }
 
 .answers {
-  padding: 0px; 
-  
+  padding: 0px;
+
   min-height: 20vh;
   width: 100vw;
 
-  -webkit-user-select: none; 
-  -moz-user-select: none; 
-  -ms-user-select: none; 
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
 
@@ -381,7 +381,7 @@ section {
   @include flex-wrap(wrap);
   @include justify-content(center);
   @include align-items(stretch);
-  
+
   @include flex-grow(1);
   @include flex-shrink(1);
   @include flex-basis(auto);
@@ -391,18 +391,18 @@ section {
   margin: 0px;
   margin-top: -1px;
   padding: 10px;
-  
+
   min-width: 40%;
   border: 1px solid black;
-  
+
   text-align: center;
-  
+
   @include flexbox;
   @include flex-direction(column);
   @include flex-wrap(nowrap);
   @include justify-content(center);
   @include align-items(center);
-  
+
   @include flex-grow(1);
   @include flex-shrink(0);
   @include flex-basis(40vw);
@@ -427,17 +427,17 @@ li.answer:nth-child(even) {
 .maxContainer {
   padding: 5% 10px;
   margin: 0px;
-  
+
   //min-height: 20vh;
   width: 90%;
   //border: 1px solid red;
-  
+
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(wrap);
   @include justify-content(center);
   @include align-items(stretch);
-  
+
   @include flex-grow(0);
   @include flex-shrink(0);
   @include flex-basis(auto);
@@ -447,24 +447,24 @@ li.answer:nth-child(even) {
   margin: 0px;
   margin-top: -1px;
   //padding: 10px;
-  
+
   //min-width: 30%;
   //max-width: 20%;
   //border: 1px solid black;
-  
+
   font-size: 13px;
   text-align: center;
-  
+
   @include flexbox;
   @include flex-direction(column);
   @include flex-wrap(nowrap);
   @include justify-content(flex-start);
   @include align-items(center);
-  
+
   @include flex-grow(1);
   @include flex-shrink(1);
   @include flex-basis(25%);
-  
+
   img {
     width: 80px;
     margin-bottom: 10px;
@@ -475,22 +475,22 @@ li.answer:nth-child(even) {
   width: 100%;
   padding: 20px 0;
   //border: 1px solid red;
-  
+
   @include flexbox;
   @include flex-direction(row);
   @include flex-wrap(nowrap);
   @include justify-content(center);
   @include align-items(space-between);
-  
+
   > * {
     //border: 1px solid red;
     text-align: center;
-    
+
     @include flex-grow(1);
     @include flex-shrink(1);
-    @include flex-basis(40%); 
+    @include flex-basis(40%);
   }
-  
+
   img {
     height: 24px;
   }
@@ -506,10 +506,16 @@ li.answer:nth-child(even) {
 
 .sendingStatus {
   margin-bottom: $h1/2;
-  
+
   img {
     height: $h1*3/2;
     margin-bottom: -$h1/2;
     margin-right: $h3;
+  }
+}
+.signIn{
+  input, button{
+    color: black;
+    width: 100%;
   }
 }

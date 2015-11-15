@@ -1,9 +1,9 @@
-if (Meteor.isClient) {  
-  
+if (Meteor.isClient) {
+
     Router.configure({ layoutTemplate: 'ApplicationLayout' });
     Router.onBeforeAction(function () {
         Meteor.userId() ? this.next() : this.render('login');
-    }, { 'except': [ '/invitation/:_id', '/script-invitation', '/admin'] });
+    }, { 'except': [ '/invitation/:_id', '/script-invitation', '/admin', '/signIn', '/signUp'] });
 
     Router.onBeforeAction(function () {
         if(Session.get('invite')) {
@@ -15,35 +15,51 @@ if (Meteor.isClient) {
     }, { 'except': [ '/script-login', '/admin', '/script-invitation', '/invitation/:_id' ] });
 
     route = new ReactiveVar("quiz");
-  
+
     Router.route('/', function () {
         Router.go('/quiz');
     }, { 'name': '/' });
+
+    Router.route('/signIn', function () {
+        return this.render('signIn');
+    } ,{
+        name: 'signUp' });
+        Router.route('/signUp', function () {
+            return this.render('signUp');
+        } ,{
+            name: 'signIn' });
 
     Router.route('/feed', function () {
         route.set('feed')
         return this.render('feed');
     }, { 'name': '/feed' });
-
-    Template.menu.helpers ({  
+    Template.menu.helpers ({
       route: function(status) {
         return status == route.get();
       }
     });
-  
-    Template.menuProfile.helpers ({  
+
+    Template.menuProfile.helpers ({
       route: function(status) {
         return status == route.get();
       }
     });
     Template.login.events({
-        "click button" : function(){
+        "click .loginLinkedin" : function(){
             Meteor.loginWithLinkedin(function(err){
                 console.log("login", err);
             })
-        }
+        },
+        "click .loginEmail" : function(){
+          Session.set("loginWithEmail", true);
+          Router.go('/signIn');
+        },
     })
-  
+    Template.login.helpers({
+      loginWithEmail: function () {
+        return Session.get('loginWithEmail');
+      },
+    });
     Template.registerHelper("username", getUserName);
     Template.registerHelper("case", function(){
         var pair =_.chain(this).pairs().first().value();
@@ -86,7 +102,7 @@ if (Meteor.isServer) {
             if(this.userId) {
                 //make api call
                 //this.added("connections", 1, {firstName : "Ilya Ovdin"});
-            } 
+            }
             this.ready();
         });
         // code to run on server at startup

@@ -8,11 +8,20 @@
 </body>
 
 <template name="login">
+  {{#if loginWithEmail}}
+      {{>signIn}}
+  {{else}}
   <section>
     <button class="loginLinkedin">
       <img src="/img/icon_linkedin.png">Login with LinkedIn
     </button>
+    <br>
+    or
+    <button class="loginEmail">
+      Login with email
+    </button>
   </section>
+  {{/if}}
 </template>
 
 <template name="menu">
@@ -327,13 +336,13 @@
         <b>Ivan Pashchenko</b> wrote:<br>
         Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free XOXO wolf typewriter mixtape small batch.
       </div>
-    </div>    
+    </div>
     <div class="feedElement">
       <div class="who">
         <img class="avatarSmall" src="https://lh4.googleusercontent.com/-bvrHTZDafaU/AAAAAAAAAAI/AAAAAAAAAAA/mudP_cQ1mYI/s128-c-k/photo.jpg">
       </div>
       <div class="what">
-        <b>Ivan Pashchenko</b> voted Empathy      
+        <b>Ivan Pashchenko</b> voted Empathy
       </div>
     </div>
   </section>
@@ -354,7 +363,7 @@
   <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
     <h2 style="width:65%">
       Well done!<br>
-      Check out your soft skills 
+      Check out your soft skills
     </h2>
     <img src="/img/next.png" id="next" style="width:60px; margin-top:30%">
   </section>
@@ -363,7 +372,7 @@
 <template name="scriptLoginFail">
   <section class="gradient{{currentUser.profile.gradient}} whiteText alignCenter">
     <h2 style="width:65%">
-        Something went wrong with initial setup 
+        Something went wrong with initial setup
         <button> restart </button>
     </h2>
   </section>
